@@ -71,6 +71,7 @@
       run-shell ${pkgs.tmuxPlugins.cpu}/share/tmux-plugins/cpu/cpu.tmux
     '';
     plugins = with pkgs.tmuxPlugins; [
+      cpu
     ];
   };
 

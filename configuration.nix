@@ -7,8 +7,8 @@
 {
   imports = [
     /etc/nixos/hardware-configuration.nix
-    ./vim/config.nix
-    ./tmux.nix
+    ./programs/neovim.nix
+    ./programs/tmux.nix
   ];
 
   # Use the systemd-boot EFI boot loader.
@@ -71,6 +71,7 @@
   #     thunderbird
   #   ];
   # };
+  users.defaultUserShell = pkgs.zsh;
   users.users.rohan = {
     isNormalUser = true;
     extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
@@ -95,6 +96,8 @@
     sourceHighlight
 
     fd
+    exa
+    bat
     fzf
     jq
     git
@@ -126,11 +129,17 @@
 
   programs.zsh = {
     enable = true;
+    shellInit = ''
+      # Preempt the annoying new user prompt.
+      if [ ! -e "$HOME/.zshrc" ]; then
+        touch $HOME/.zshrc
+      fi
+    '';
     interactiveShellInit = ''
       bindkey -e
     '';
     shellAliases = {
-      update = "sudo nix-collect-garbage -d && nixos-rebuild switch --upgrade";
+      update = "sudo nix-collect-garbage -d && sudo nixos-rebuild switch --upgrade";
     };
   };
 
@@ -144,6 +153,22 @@
         name = "Rohan Jain";
         email = "crodjer@proton.me";
       };
+      commit = {
+        verbose = true;
+        gpgsign = true;
+      };
+      rerere = {
+        enabled = true;
+      };
+      include = {
+        path = "~/.gitconfig.local";
+      };
+    };
+  };
+
+  programs.gnupg = {
+    agent = {
+      enable = true;
     };
   };
 

@@ -5,7 +5,7 @@
     enable = true;
     defaultEditor = true;
     configure = {
-      customRC = builtins.readFile ./init.vim;
+      customRC = builtins.readFile ./configs/init.vim;
       packages.myVimPackages = with pkgs.vimPlugins; {
         start = [ 
           ale
