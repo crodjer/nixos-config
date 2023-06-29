@@ -124,6 +124,16 @@
     '';
   };
 
+  programs.zsh = {
+    enable = true;
+    interactiveShellInit = ''
+      bindkey -e
+    '';
+    shellAliases = {
+      update = "sudo nix-collect-garbage -d && nixos-rebuild switch --upgrade";
+    };
+  };
+
   programs.git = {
     enable = true;
     config = {
@@ -132,7 +142,7 @@
       };
       user = {
         name = "Rohan Jain";
-        email = "crodjer@pm.me";
+        email = "crodjer@proton.me";
       };
     };
   };
