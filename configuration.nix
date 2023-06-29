@@ -15,7 +15,8 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "angier"; # Define your hostname.
+  # This goes in hardware configuration.
+  # networking.hostName = "angier"; # Define your hostname.
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
@@ -47,12 +48,20 @@
   services.printing.enable = true;
 
   # Enable sound.
-  sound.enable = true;
-  hardware.pulseaudio.enable = true;
+  # sound.enable = true;
+  # hardware.pulseaudio.enable = true;
+  security.rtkit.enable = true;
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+  };
 
   # Enable touchpad support (enabled default in most desktopManager).
   services.xserver.libinput.enable = true;
 
+  security.sudo.wheelNeedsPassword = false;
   # Define a user account. Don't forget to set a password with ‘passwd’.
   # users.users.alice = {
   #   isNormalUser = true;
@@ -69,6 +78,9 @@
     ];
   };
 
+  nix.settings.experimental-features = [
+    "nix-command"
+  ];
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   # environment.systemPackages = with pkgs; [
@@ -76,7 +88,7 @@
   #   wget
   # ];
   environment.systemPackages = with pkgs; [
-    fscryptctl
+    fscrypt-experimental
     light
 
     starship
@@ -86,6 +98,7 @@
     fzf
     jq
     git
+    bottom
 
     neovim-remote
     statix
@@ -105,6 +118,7 @@
     interactiveShellInit = ''
       shopt -s histappend
       PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+      alias tmux="tmux -2"
 
       source ${pkgs.fzf}/share/fzf/key-bindings.bash
     '';
