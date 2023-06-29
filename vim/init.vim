@@ -31,7 +31,6 @@ set wildmenu                "enable C-n and C-p to scroll through matches
 set wildignore=*.o,*~,*.pyc,*.hi,*.class
 
 "" Looks
-set background=light
 set colorcolumn=+1                      "mark the ideal max text width
 set relativenumber                      "show relative line numbers
 set number                              "show absolute current line number
@@ -39,11 +38,15 @@ set showmode                            "show current mode down the bottom
 set laststatus=2
 
 set ruler
-highlight Normal guibg=#fdf6e3 ctermbg=None
-highlight SpellBad cterm=underline gui=underline guisp=Grey
-highlight rubyDefine ctermbg=None
-" highlight ColorColumn ctermbg=LightGrey
-highlight SignColumn ctermbg=None
+
+colorscheme default
+set background=light
+highlight Visual ctermbg=003 cterm=bold
+highlight Search ctermbg=003
+highlight CursorLine cterm=None
+highlight CursorLineNR cterm=None ctermbg=gray ctermfg=black
+highlight ColorColumn ctermbg=black
+highlight SpellBad ctermbg=black cterm=undercurl,italic
 
 "display tabs and trailing spaces
 set list
@@ -63,7 +66,6 @@ set shiftwidth=2
 set nowrap                      "don't wrap lines
 set backspace=indent,eol,start  "backspace through everything in insert mode
 
-
 "" Searching
 set hlsearch        "highlight search by default
 set incsearch       "incremental search
@@ -78,48 +80,32 @@ let mapleader = ','
 "Open file relative to current file
 nnoremap <leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
 
-"restore messed up vim
-map <F8> :redraw! \| :noh \| <cr><c-w>=
-
 "<C-l> - Clear the highlight as well as redraw
 nnoremap <C-L> :nohls<CR><C-L>
-
-"`#` should follow neighbouring indentation
-inoremap # X<BS>#
 
 "reselect visual block after indent/outdent
 vnoremap < <gv
 vnoremap > >gv
 
-"use w!! to save with root permissions
-cmap w!! %!sudo tee > /dev/null %
-
 "toggle spell check
 nnoremap <leader>z :setlocal spell! spelllang=en<CR>
 
 "close preview windows
-nnoremap <leader>pc :pclose<CR>
+nnoremap <leader>x :pclose<CR>
 
-"paste mode
-nnoremap <leader>pm :set paste<CR>a
+"go into paste mode
+nnoremap <leader>mp :set paste<CR>a
 
-"" Custom functions
 
-" Custom commands
+"" Custom commands
+" Strip white spaces!
 command! STW %s/\s\+$//e
-
-" Gruvbox
-let g:gruvbox_termcolors=16
-colorscheme gruvbox
-
-" Lightline
-let g:lightline = {}
 
 " Ale
 let g:ale_lint_on_text_changed = 'never'
 " let g:ale_open_list = 1
-let g:ale_sign_error = 'x'
-let g:ale_sign_warning = '!'
+let g:ale_sign_error = '✗'
+let g:ale_sign_warning = '⚠'
 let g:ale_sign_column_always = 0
 let g:ale_hover_cursor=1
 let g:ale_set_balloons=1
@@ -133,61 +119,20 @@ let g:ale_fixers = {
 			\		'*': ['remove_trailing_lines', 'trim_whitespace'],
 			\ 	'nix': ['statix'],
 			\ }
-let g:ale_linters = {
-			\		'python': ['pylsp', 'pylint'],
-			\ 	'rust': ['analyzer', 'rls', 'cargo'],
-			\ 	'typescript': ['tsserver'],
-			\ 	'nix': ['statix'],
-			\ }
-
-nmap <silent> <leader>aj :ALENext<cr>
-nmap <silent> <leader>ak :ALEPrevious<cr>
-nmap <silent> <leader>ah :ALEHover<cr>
+nmap <silent> <leader>n :ALENext<cr>
+nmap <silent> <leader>p :ALEPrevious<cr>
 nmap <silent> <leader>d :ALEHover<cr>
-nmap <silent> <leader>ag :ALEGoToDefinition<cr>
-nmap <silent> <leader>ar :ALEFindReferences<cr>
-nmap <silent> <leader>aj :ALEImport<cr>
-nmap <silent> <leader>af :ALEFix<cr>
+nmap <silent> <leader>D :ALEGoToDefinition<cr>
+nmap <silent> <leader>r :ALEFindReferences<cr>
+nmap <silent> <leader>j :ALEImport<cr>
+nmap <silent> <leader>F :ALEFix<cr>
 
 augroup CloseLoclistWindowGroup
     autocmd!
     autocmd QuitPre * if empty(&buftype) | lclose | endif
 augroup END
 
-let g:lightline.component_expand = {
-            \  'linter_checking': 'lightline#ale#checking',
-            \  'linter_infos': 'lightline#ale#infos',
-            \  'linter_warnings': 'lightline#ale#warnings',
-            \  'linter_errors': 'lightline#ale#errors',
-            \  'linter_ok': 'lightline#ale#ok',
-            \ }
-let g:lightline.component_type = {
-      \     'linter_checking': 'right',
-      \     'linter_infos': 'tabsel',
-      \     'linter_warnings': 'warning',
-      \     'linter_errors': 'error',
-      \     'linter_ok': 'tabsel',
-      \ }
-
-let g:lightline#ale#indicator_checking = ' '
-let g:lightline#ale#indicator_infos = '  '
-let g:lightline#ale#indicator_warnings = ' '
-let g:lightline#ale#indicator_errors = ' '
-let g:lightline#ale#indicator_ok = ' '
-
 "" Language configurations
-
-" Clojure
-let g:iced_enable_default_key_mappings = v:true
-augroup clojure
-    autocmd FileType clojure nnoremap <buffer> <leader>ec :IcedInstantConnect babashka<cr>
-augroup END
-
-" Crontab
-augroup crontab
-    autocmd FileType crontab setlocal backupcopy=yes
-augroup END
-
 
 " FZF
 augroup fzf
@@ -216,7 +161,28 @@ augroup ledger
     autocmd FileType ledger noremap } /^\d<CR>
 augroup END
 
-" Lightline
+let g:lightline = {}
+let g:lightline.component_expand = {
+            \  'linter_checking': 'lightline#ale#checking',
+            \  'linter_infos': 'lightline#ale#infos',
+            \  'linter_warnings': 'lightline#ale#warnings',
+            \  'linter_errors': 'lightline#ale#errors',
+            \  'linter_ok': 'lightline#ale#ok',
+            \ }
+let g:lightline.component_type = {
+      \     'linter_checking': 'right',
+      \     'linter_infos': 'tabsel',
+      \     'linter_warnings': 'warning',
+      \     'linter_errors': 'error',
+      \     'linter_ok': 'tabsel',
+      \ }
+
+let g:lightline#ale#indicator_checking = '…'
+let g:lightline#ale#indicator_infos = 'i'
+let g:lightline#ale#indicator_warnings = '⚠'
+let g:lightline#ale#indicator_errors = '✗'
+let g:lightline#ale#indicator_ok = '✓'
+
 let g:lightline.active = {
     \ 'left': [ [ 'mode', 'paste' ],
 	\           [ 'readonly', 'filename', 'modified' ] ],

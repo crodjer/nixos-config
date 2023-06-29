@@ -16,7 +16,6 @@
           lightline-vim
           lightline-ale
           nvim-autopairs
-          gruvbox
           tagbar
         ];
       };
