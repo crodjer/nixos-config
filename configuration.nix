@@ -11,13 +11,8 @@
     ];
 
   # Bootloader.
-  boot = {
-    loader = {
-      systemd-boot.enable = true;
-      efi.canTouchEfiVariables = true;
-    };
-    initrd.luks.devices."swap".device = "/dev/disk/by-label/swap";
-  };
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
 
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -71,12 +66,12 @@
     ansible
     ansible-lint
     bat
+    bottom
     eza
     fd
     fzf
     git
     jq
-    bottom
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -93,10 +88,13 @@
       configure = {
         customRC = ''
           colorscheme default
+          set termguicolors
+          set colorcolumn=+1
+
           set expandtab tabstop=2 softtabstop=2 shiftwidth=2
           set showcmd wildmenu wildmode=full:lastused wildoptions=fuzzy
           set wildignore=*.o,*~,*.pyc,*.hi,*.class
-          set colorcolumn=+1 relativenumber number showmode laststatus=2
+          set relativenumber number showmode laststatus=2
 
           let mapleader = ','
 
@@ -145,7 +143,8 @@
         compinit
       '';
       shellAliases = {
-        update = "sudo nix-collect-garbage -d && sudo nixos-rebuild switch --upgrade";
+        clean-os = "sudo nix-collect-garbage -d";
+        rebuild = "sudo nixos-rebuild switch --upgrade";
       };
     };
 
@@ -161,7 +160,6 @@
         };
         commit = {
           verbose = true;
-          gpgsign = true;
         };
         rerere = {
           enabled = true;
