@@ -1,110 +1,82 @@
-#  Edit this configuration file to define what should be installed on
+# Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
 { config, pkgs, ... }:
 
 {
-  imports = [
-    /etc/nixos/hardware-configuration.nix
-    ./programs/neovim.nix
-    ./programs/tmux.nix
-  ];
+  imports =
+    [ # Include the results of the hardware scan.
+      /etc/nixos/hardware-configuration.nix
+    ];
 
-  # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  # Bootloader.
+  boot = {
+    loader = {
+      systemd-boot.enable = true;
+      efi.canTouchEfiVariables = true;
+    };
+    initrd.luks.devices."swap".device = "/dev/disk/by-label/swap";
+  };
 
-  # This goes in hardware configuration.
-  # networking.hostName = "angier"; # Define your hostname.
-  # Pick only one of the below networking options.
+  networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
-
-  # Set your time zone.
-  time.timeZone = "Asia/Kolkata";
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
-  # Select internationalisation properties.
-  # i18n.defaultLocale = "en_US.UTF-8";
-  # console = {
-  #   font = "Lat2-Terminus16";
-  #   keyMap = "us";
-  #   useXkbConfig = true; # use xkbOptions in tty.
-  # };
-  console.useXkbConfig = true;
+  # Enable networking
+  networking.networkmanager.enable = true;
 
-  # Enable the X11 windowing system.
-  services.xserver.enable = false;
+  # Set your time zone.
+  time.timeZone = "Asia/Kolkata";
+
+  # Select internationalisation properties.
+  i18n.defaultLocale = "en_GB.UTF-8";
+
+  i18n.extraLocaleSettings = {
+    LC_ADDRESS = "en_IN";
+    LC_IDENTIFICATION = "en_IN";
+    LC_MEASUREMENT = "en_IN";
+    LC_MONETARY = "en_IN";
+    LC_NAME = "en_IN";
+    LC_NUMERIC = "en_IN";
+    LC_PAPER = "en_IN";
+    LC_TELEPHONE = "en_IN";
+    LC_TIME = "en_IN";
+  };
 
   # Configure keymap in X11
-  services.xserver.layout = "us";
-  services.xserver.xkbOptions = "ctrl:nocaps";
-
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
-
-  # Enable sound.
-  # sound.enable = true;
-  # hardware.pulseaudio.enable = true;
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
+  services.xserver = {
+    layout = "us";
+    xkbVariant = "";
   };
 
-  # Enable touchpad support (enabled default in most desktopManager).
-  services.xserver.libinput.enable = true;
-
-  security.sudo.wheelNeedsPassword = false;
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  # users.users.alice = {
-  #   isNormalUser = true;
-  #   extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
-  #   packages = with pkgs; [
-  #     firefox
-  #     thunderbird
-  #   ];
-  # };
-  users.defaultUserShell = pkgs.zsh;
   users.users.rohan = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
-    packages = with pkgs; [
-    ];
+    description = "Rohan";
+    extraGroups = [ "networkmanager" "wheel" ];
+    packages = with pkgs; [];
+    shell = pkgs.zsh;
   };
 
-  nix.settings.experimental-features = [
-    "nix-command"
-  ];
+  # Allow unfree packages
+  nixpkgs.config.allowUnfree = true;
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  # environment.systemPackages = with pkgs; [
-  #   vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #   wget
-  # ];
   environment.systemPackages = with pkgs; [
-    fscrypt-experimental
-    light
-
-    starship
-    sourceHighlight
-
-    fd
-    exa
+    ansible
+    ansible-lint
     bat
+    eza
+    fd
     fzf
-    jq
     git
+    jq
     bottom
-
-    neovim-remote
-    statix
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -114,86 +86,113 @@
   #   enable = true;
   #   enableSSHSupport = true;
   # };
-
-  programs.bash = {
-    enableCompletion = true;
-    enableLsColors = true;
-    interactiveShellInit = ''
-      shopt -s histappend
-      PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
-      alias tmux="tmux -2"
-
-      source ${pkgs.fzf}/share/fzf/key-bindings.bash
-    '';
-  };
-
-  programs.zsh = {
-    enable = true;
-    shellInit = ''
-      # Preempt the annoying new user prompt.
-      if [ ! -e "$HOME/.zshrc" ]; then
-        touch $HOME/.zshrc
-      fi
-    '';
-    interactiveShellInit = ''
-      bindkey -e
-    '';
-    shellAliases = {
-      update = "sudo nix-collect-garbage -d && sudo nixos-rebuild switch --upgrade";
-    };
-  };
-
-  programs.git = {
-    enable = true;
-    config = {
-      init = {
-        defaultBranch = "main";
-      };
-      user = {
-        name = "Rohan Jain";
-        email = "crodjer@proton.me";
-      };
-      commit = {
-        verbose = true;
-        gpgsign = true;
-      };
-      rerere = {
-        enabled = true;
-      };
-      include = {
-        path = "~/.gitconfig.local";
-      };
-    };
-  };
-
-  programs.gnupg = {
-    agent = {
+  programs = {
+    neovim = {
       enable = true;
-    };
-  };
+      defaultEditor = true;
+      configure = {
+        customRC = ''
+          colorscheme default
+          set expandtab tabstop=2 softtabstop=2 shiftwidth=2
+          set showcmd wildmenu wildmode=full:lastused wildoptions=fuzzy
+          set wildignore=*.o,*~,*.pyc,*.hi,*.class
+          set colorcolumn=+1 relativenumber number showmode laststatus=2
 
-  programs.starship = {
-    enable = true;
-    settings = {
+          let mapleader = ','
+
+          nnoremap <leader>s :GFiles<CR>
+          nnoremap <leader>f :Files<CR>
+          nnoremap <leader>b :Buffers<CR>
+          nnoremap <leader>h :History<CR>
+          nnoremap <leader>c :Command<CR>
+
+          :cnoremap <C-A> <Home>
+          :cnoremap <C-F> <Right>
+          :cnoremap <C-B> <Left>
+          :cnoremap <Esc>b <S-Left>
+          :cnoremap <Esc>f <S-Right>
+        '';
+        packages.myVimPackages = with pkgs.vimPlugins; {
+          start = [ 
+            ale
+            ansible-vim
+            fzf-vim
+            rust-vim
+            statix
+            vim-nix
+            vim-ledger
+          ];
+        };
+      };
+    };
+
+    zsh = {
+      enable = true;
+      shellInit = ''
+        # Preempt the annoying new user prompt.
+        if [ ! -e "$HOME/.zshrc" ]; then
+          touch $HOME/.zshrc
+        fi
+      '';
+      interactiveShellInit = ''
+        bindkey -e
+        HISTFILE=~/.histfile
+        HISTSIZE=10000
+        SAVEHIST=100000
+        setopt autocd beep extendedglob nomatch notify
+        zstyle :compinstall filename '/home/rohan/.zshrc'
+        autoload -Uz compinit
+        compinit
+      '';
+      shellAliases = {
+        update = "sudo nix-collect-garbage -d && sudo nixos-rebuild switch --upgrade";
+      };
+    };
+
+    git = {
+      enable = true;
+      config = {
+        init = {
+          defaultBranch = "main";
+        };
+        user = {
+          name = "Rohan Jain";
+          email = "crodjer@proton.me";
+        };
+        commit = {
+          verbose = true;
+          gpgsign = true;
+        };
+        rerere = {
+          enabled = true;
+        };
+      };
+    };
+
+    gnupg.agent = {
+      enable = true;
+      settings = {
+        default-cache-ttl = 60480000;
+      };
+    };
+
+    starship = {
+      enable = true;
+      settings = {
+      };
     };
   };
 
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
+  # services.openssh.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
-  networking.firewall.allowedTCPPorts = [ 22 ];
   # Or disable the firewall altogether.
-  networking.firewall.enable = true;
-
-  # Copy the NixOS configuration file and link it from the resulting system
-  # (/run/current-system/configuration.nix). This is useful in case you
-  # accidentally delete configuration.nix.
-  # system.copySystemConfiguration = true;
+  # networking.firewall.enable = false;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
@@ -201,5 +200,6 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "22.11"; # Did you read the comment?
+  system.stateVersion = "23.11"; # Did you read the comment?
+
 }
