@@ -8,7 +8,9 @@
   imports =
     [ # Include the results of the hardware scan.
       /etc/nixos/hardware-configuration.nix
-    ] ++ lib.optional (builtins.pathExists /etc/nixos/configuration.local.nix) /etc/nixos/configuration.local.nix;
+    ] ++ lib.optional
+         (builtins.pathExists /etc/nixos/swap.nix)
+         /etc/nixos/swap.nix;
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
