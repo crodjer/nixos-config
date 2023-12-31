@@ -2,13 +2,13 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   imports =
     [ # Include the results of the hardware scan.
       /etc/nixos/hardware-configuration.nix
-    ];
+    ] ++ lib.optional (builtins.pathExists /etc/nixos/configuration.local.nix) /etc/nixos/configuration.local.nix;
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -104,6 +104,15 @@
           nnoremap <leader>h :History<CR>
           nnoremap <leader>c :Command<CR>
 
+          " Configure terminal within neovim
+          lua require("toggleterm").setup()
+          nnoremap <leader>$ :ToggleTerm size=25<CR>
+          tnoremap <C-w>h <C-\><C-n><C-w>h
+          tnoremap <C-w>j <C-\><C-n><C-w>j
+          tnoremap <C-w>k <C-\><C-n><C-w>k
+          tnoremap <C-w>l <C-\><C-n><C-w>l
+          autocmd BufEnter term://* startinsert
+
           :cnoremap <C-A> <Home>
           :cnoremap <C-F> <Right>
           :cnoremap <C-B> <Left>
@@ -119,6 +128,7 @@
             statix
             vim-nix
             vim-ledger
+            toggleterm-nvim
           ];
         };
       };
