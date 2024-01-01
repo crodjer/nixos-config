@@ -23,7 +23,8 @@ if [ ! -e $SWAP_FILE ]; then
 	fi
   echo -e "$CONFIGURATION" | sudo tee $SWAP_NIX_CONFIG
   echo "Rebuilding nixos..."
-	sudo nixos-rebuild test
+  sudo nixos-rebuild test
+  rm -r result
 fi
 
 OFFSET=$(sudo filefrag -v $SWAP_FILE | awk '{ if($1=="0:"){print substr($4, 1, length($4)-2)} }')
