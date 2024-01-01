@@ -66,35 +66,46 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    ansible
-    ansible-lint
-    bat
-    bottom
-    dufs
-    eza
-    fd
-    fzf
-    git
-    jq
+  environment = {
+    systemPackages = with pkgs; [
+      ansible
+      ansible-lint
+      bat
+      bottom
+      clipman
+      dufs
+      eza
+      fd
+      foot
+      fzf
+      gammastep
+      geoclue2-with-demo-agent
+      git
+      jq
+      wofi
+    ];
+
+    etc = {
+      "sway/config".source = ./configs/sway.conf;
+      "xdg/foot/foot.ini".source = ./configs/foot.ini;
+      "xdg/waybar".source = ./configs/waybar;
+    };
+  };
+
+  fonts.packages = with pkgs; [
+    (nerdfonts.override { fonts = [ "Hack" ]; })
   ];
 
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
   programs = {
     neovim = {
       enable = true;
       defaultEditor = true;
       configure = {
         customRC = ''
-          colorscheme default
+          set background=light
           set termguicolors
           set colorcolumn=+1
+          colorscheme gruvbox
 
           set expandtab tabstop=2 softtabstop=2 shiftwidth=2
           set showcmd wildmenu wildmode=full:lastused wildoptions=fuzzy
@@ -129,6 +140,7 @@
             ale
             ansible-vim
             fzf-vim
+            gruvbox-nvim
             rust-vim
             statix
             vim-nix
@@ -184,22 +196,31 @@
 
     gnupg.agent = {
       enable = true;
+      enableSSHSupport = true;
       settings = {
         default-cache-ttl = 60480000;
       };
     };
 
-    starship = {
-      enable = true;
-      settings = {
-      };
-    };
+    light.enable = true;
+    starship.enable = true;
+    sway.enable = true;
+    waybar.enable = true;
   };
+
 
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
+  services.greetd = {
+    enable = true;
+    settings = {
+      default_session = {
+        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --cmd sway";
+      };
+    };
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

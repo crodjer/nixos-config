@@ -1,0 +1,128 @@
+{
+    // "layer": "top", // Waybar at top layer
+    "position": "top", // Waybar position (top|bottom|left|right)
+    // "height": 30, // Waybar height (to be removed for auto height)
+    // Choose the order of the modules
+    "modules-left": ["sway/workspaces", "sway/mode","sway/window"],
+    "modules-center": [],
+    "modules-right": ["custom/wttr", "idle_inhibitor", "network", "cpu", "memory", "backlight", "battery", "pulseaudio", "clock", "tray"],
+    "sway/workspaces": {
+        "disable-scroll": true
+    },
+    "sway/mode": {
+        "format": "<span style=\"italic\">{}</span>"
+    },
+    "idle_inhibitor": {
+        "format": "{icon}",
+        "format-icons": {
+            "activated": "",
+            "deactivated": ""
+        }
+    },
+    "tray": {
+        "icon-size": 24,
+        "spacing": 3
+    },
+    "clock": {
+        "format": "{:%a %d %b %H:%M}",
+    },
+    "custom/wttr": {
+        "exec": "curl -s 'https://wttr.in/Jaipur?format=%c+%t\\n%l:+%c+%C,+feels+like+%f,+%h,+%w' | sed -s 's/+//g'",
+        "tooltip": true,
+        "format": " {} ",
+        "interval": 120
+    },
+    "cpu": {
+        "format": " ",
+        "tooltip": true,
+        "interval": 5,
+        "states": {
+            "normal": 25,
+            "medium": 50,
+            "high": 75
+        },
+    },
+    "memory": {
+        "format": " ",
+        "interval": 5,
+        "states": {
+            "normal": 40,
+            "medium": 60,
+            "high": 75
+        },
+        "format-good": "good"
+    },
+    "temperature": {
+        "thermal-zone": 5,
+        "critical-threshold": 80,
+        "interval": 5,
+        "format": "{icon}",
+        "format-icons": ["", "", "", "", "", ""]
+    },
+    "backlight": {
+        "format": "{icon}",
+        "format-icons": [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "],
+        "on-scroll-up": "light -A 0.2",
+        "on-scroll-down": "light -U 0.2"
+    },
+    "battery": {
+        "states": {
+            // Aything above 90 should alert, if charging.
+            "full": 90,
+            // Anything above 75 is good and shouldn't grab attention
+            "good": 75,
+            // Battery is nearing half, can plugin, but not urgent.
+            "normal": 60,
+            // Should plug in the charger below 30
+            "warning": 30,
+            // battery is too low!
+            "critical": 10
+        },
+        "format": "{icon}",
+        "tooltip-format": "{timeTo} | {capacity}%",
+        "format-charging": "{capacity}% ",
+        "format-plugged": " ",
+        "format-alt": "{time} {icon}",
+        // "format-good": "", // An empty format will hide the module
+        // "format-full": "",
+        "format-icons": [" ", " ", " ", " ", " "]
+    },
+    "network": {
+        "format-wifi": " ",
+        "format-ethernet": "⫘ ",
+        "format-linked": "{ifname}  ",
+        "format-disconnected": " ",
+        "format-alt": "{ifname}: {ipaddr}/{cidr}",
+        "tooltip-format-wifi": "{essid} ({signalStrength}%)",
+        "tooltip-format-ethernet": "{ifname}: {ipaddr}/{cidr}",
+        "interval": 5,
+        "states": {
+            "good": 50,
+            "normal": 40,
+            "medium": 25,
+            "low": 0
+        }
+    },
+    "pulseaudio": {
+        "format": "{icon} {format_source}",
+        "format-bluetooth": "{icon} {format_source}",
+        "format-bluetooth-muted": " {icon} {format_source}",
+        "format-muted": " {format_source}",
+        "format-source": "",
+        "format-source-muted": "",
+        "format-icons": {
+            "headphone": " ",
+            "hands-free": " ",
+            "headset": " ",
+            "phone": "",
+            "portable": "",
+            "car": " ",
+            "default": ["", "", "", " "]
+        },
+        "tooltip-format": "{desc}\n{icon}\t{volume}\n\t{source_volume}",
+        "on-click": "pulsemixer --toggle-mute",
+        "on-scroll-up": "pulsemixer --change-volume -5",
+        "on-scroll-down": "pulsemixer --change-volume +5 --max-volume 100",
+        "smooth-scrolling-threshold": 1
+    },
+}
