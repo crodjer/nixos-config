@@ -111,7 +111,7 @@
 
           " Configure terminal within neovim
           lua require("toggleterm").setup()
-          nnoremap <leader>$ :ToggleTerm size=25<CR>
+          nnoremap <leader>$ :ToggleTerm<CR>
           tnoremap <C-w>h <C-\><C-n><C-w>h
           tnoremap <C-w>j <C-\><C-n><C-w>j
           tnoremap <C-w>k <C-\><C-n><C-w>k
