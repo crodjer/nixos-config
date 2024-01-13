@@ -97,7 +97,6 @@ in {
       clipman
       dufs
       gammastep
-      geoclue2-with-demo-agent
       wl-clipboard
       wofi
 
@@ -284,6 +283,8 @@ in {
   services = {
     blueman.enable = true;
     fstrim.enable = true;
+    geoclue2.enable = true;
+    geoclue2.enableDemoAgent = lib.mkForce true;
     greetd = {
       enable = true;
       settings = {
