@@ -1,0 +1,5 @@
+{
+  "Enabled":  true,
+  "ProviderURL": "https://cloudflare-dns.com/dns-query",
+  "Locked": false
+}

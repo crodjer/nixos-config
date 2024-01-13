@@ -20,7 +20,6 @@
         }
     },
     "tray": {
-        "icon-size": 24,
         "spacing": 3
     },
     "clock": {
@@ -61,15 +60,13 @@
     },
     "backlight": {
         "format": "{icon}",
-        "format-icons": [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "],
-        "on-scroll-up": "light -A 0.2",
-        "on-scroll-down": "light -U 0.2"
+        "format-icons": ["", "", "", "", "", "", "", " ", " ", " ", " ", " ", " ", " "],
+        "on-scroll-up": "light -A 1",
+        "on-scroll-down": "light -N 5; light -U 1"
     },
     "battery": {
         "states": {
-            // Aything above 90 should alert, if charging.
-            "full": 90,
-            // Anything above 85 is good and shouldn't grab attention
+            // Anything above 75 is good and shouldn't grab attention
             "good": 75,
             // Battery is nearing half, can plugin, but not urgent.
             "normal": 60,
