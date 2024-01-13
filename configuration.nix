@@ -119,7 +119,12 @@ in {
       "xdg/waybar".source = ./configs/waybar;
       "xdg/wezterm/wezterm.lua".source = ./configs/wezterm.lua;
       "xdg/wofi".source = ./configs/wofi;
-      "sway/config".source = ./configs/sway.conf;
+      "sway/scripts".source = ./configs/sway/scripts;
+      "sway/config".source = ./configs/sway/sway.conf;
+    };
+
+    variables = {
+      BAT_THEME = "base16-256";
     };
   };
 
