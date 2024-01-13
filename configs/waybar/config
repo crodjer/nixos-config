@@ -15,8 +15,8 @@
     "idle_inhibitor": {
         "format": "{icon}",
         "format-icons": {
-            "activated": "",
-            "deactivated": ""
+            "activated": " ",
+            "deactivated": " "
         }
     },
     "tray": {
@@ -24,12 +24,6 @@
     },
     "clock": {
         "format": "{:%a %d %b %H:%M}",
-    },
-    "custom/wttr": {
-        "exec": "curl -s 'https://wttr.in/Jaipur?format=%c+%t\\n%l:+%c+%C,+feels+like+%f,+%h,+%w' | sed -s 's/+//g'",
-        "tooltip": true,
-        "format": " {} ",
-        "interval": 120
     },
     "cpu": {
         "format": " ",
