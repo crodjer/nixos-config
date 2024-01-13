@@ -4,9 +4,7 @@
 
 { config, pkgs, lib, ... }:
 
-let
-  user_name = "rohan";
-in {
+{
   imports = [
     # Include the results of the hardware scan.
     /etc/nixos/hardware-configuration.nix
@@ -72,7 +70,7 @@ in {
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.${user_name} = {
+  users.users.rohan = {
     isNormalUser = true;
     description = "Rohan";
     extraGroups = [ "networkmanager" "wheel" "video" ];
@@ -150,6 +148,7 @@ in {
         OverrideFirstRunPage = "";
         OverridePostUpdatePage = "";
         DontCheckDefaultBrowser = true;
+        DefaultDownloadDirectory = "\${home}/downloads";
         DisplayBookmarksToolbar = "newtab";
         DisplayMenuBar = "default-off";
         SearchBar = "unified";
@@ -159,7 +158,6 @@ in {
       };
       preferences = {
         "browser.warnOnQuitShortcut" = false;
-        "browser.download.dir" = "/home/${user_name}/downloads";
         "browser.uiCustomization.state" = builtins.readFile ./configs/firefox/ui-customization.json;
         "browser.newtabpage.pinned" = builtins.readFile ./configs/firefox/pinned.json;
 
