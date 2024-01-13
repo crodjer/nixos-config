@@ -92,16 +92,9 @@
       neovim-remote
       rbw
       signal-desktop
-      sway
-      waybar
-      wezterm
 
       # Services
-      clipman
       dufs
-      gammastep
-      wl-clipboard
-      wofi
 
       # Languages
       ansible
@@ -250,6 +243,15 @@
       };
     };
 
+    starship.enable = true;
+
+    sway = {
+      enable = true;
+      extraPackages = with pkgs; [
+        clipman gammastep swaylock swayidle waybar wezterm wl-clipboard wofi
+      ];
+    };
+
     zsh = {
       enable = true;
       shellInit = ''
@@ -272,8 +274,6 @@
         rebuild = "sudo nixos-rebuild switch --upgrade";
       };
     };
-
-    starship.enable = true;
   };
 
 
