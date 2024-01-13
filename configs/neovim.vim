@@ -24,9 +24,7 @@ nnoremap <leader>h :History<CR>
 nnoremap <leader>c :Command<CR>
 
 lua << END
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
-
+require("ibl").setup()
 
 require('lualine').setup({
   options = {
@@ -46,6 +44,10 @@ require('gitsigns').setup({
   }
 })
 
+-- LSP
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
+
 local on_lsp_attach = function(_, bufnr)
   local nmap = function(keys, func, desc)
     if desc then
@@ -64,12 +66,38 @@ local servers = {
   ansiblels = {},
   lua_ls = {},
   pyright = {},
+  rnix = {},
   rust_analyzer = {},
   solargraph = {},
+  tsserver = {}
 }
 
 for server, config in pairs(servers) do
   config.on_attach = on_attach
   lspconfig[server].setup(config)
 end
+
+-- Treesitter
+require('nvim-treesitter.configs').setup {
+  sync_install = false,
+  auto_install = false,
+  highlight = {
+    enable = true,
+  },
+  indent = { enable = true, disable = { "ledger", "ruby" } },
+  incremental_selection = {
+    enable = true,
+    keymaps = {
+      init_selection = "gnn", -- set to `false` to disable one of the mappings
+      node_incremental = "grn",
+      scope_incremental = "grc",
+      node_decremental = "grm",
+    },
+  },
+}
 END
+
+" Treesitter based folding
+set foldmethod=expr
+set foldexpr=nvim_treesitter#foldexpr()
+set nofoldenable                     " Disable folding at startup.

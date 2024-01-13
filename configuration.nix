@@ -102,10 +102,10 @@ in {
       ansible
 
       # LSP Services and Linters
-      ansible-language-server
-      ansible-lint
-      luajitPackages.lua-lsp
+      ansible-language-server ansible-lint
+      lua-language-server
       nodePackages.pyright
+      nodePackages.typescript-language-server
       rnix-lsp
       rubyPackages.solargraph
       rust-analyzer
@@ -224,8 +224,15 @@ in {
             lualine-nvim
             nvim-autopairs
             nvim-lspconfig
+            (nvim-treesitter.withPlugins (
+              plugins: with plugins; [
+                python rust ruby lua nix bash vim yaml ledger json
+                tsx javascript typescript go clojure haskell
+              ]
+            ))
             rust-vim
             statix
+            vim-commentary
             vim-nix
             vim-ledger
           ];
