@@ -4,13 +4,14 @@
 
 { config, pkgs, lib, ... }:
 
-{
-  imports =
-    [ # Include the results of the hardware scan.
-      /etc/nixos/hardware-configuration.nix
-    ] ++ lib.optional
-         (builtins.pathExists /etc/nixos/swap.nix)
-         /etc/nixos/swap.nix;
+let
+  user_name = "rohan";
+in {
+  imports = [
+    # Include the results of the hardware scan.
+    /etc/nixos/hardware-configuration.nix
+  ] ++ lib.optional (builtins.pathExists /etc/nixos/swap.nix) /etc/nixos/swap.nix
+    ++ lib.optional (builtins.pathExists /etc/nixos/local.nix) /etc/nixos/local.nix;
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -22,9 +23,20 @@
       powerOnBoot = true;
     };
   };
+  powerManagement.enable = true;
+
+  security = {
+    pam = {
+      enableFscrypt = true;
+    };
+    sudo = {
+      extraConfig = ''
+        Defaults        timestamp_timeout=30
+      '';
+    };
+  };
 
   networking = {
-    hostName = "nixos";
     networkmanager = {
       # Enable networking
       enable = true;
@@ -54,10 +66,10 @@
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.rohan = {
+  users.users.${user_name} = {
     isNormalUser = true;
     description = "Rohan";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "video" ];
     packages = with pkgs; [];
     shell = pkgs.zsh;
   };
@@ -69,32 +81,42 @@
   # $ nix search wget
   environment = {
     systemPackages = with pkgs; [
-      ansible
-      ansible-lint
-      bat
-      bottom
+      # Cli utilities
+      bat bottom eza fd fzf git jq rbw
+
+      # Applications
+      neovim-remote
+      rbw
+      signal-desktop
+      wezterm
+
+      # Services
       clipman
       dufs
-      eza
-      fd
-      firefox
-      wezterm
-      fzf
       gammastep
       geoclue2-with-demo-agent
-      git
-      jq
+      wl-clipboard
       wofi
+
+      # Languages
+      ansible
+
+      # LSP Services and Linters
+      ansible-language-server
+      ansible-lint
+      luajitPackages.lua-lsp
+      nodePackages.pyright
+      rnix-lsp
+      rubyPackages.solargraph
+      rust-analyzer
     ];
 
     etc = {
-      "sway/config".source = ./configs/sway.conf;
+      "xdg/user-dirs.defaults".source = ./configs/user-dirs.dirs;
       "xdg/waybar".source = ./configs/waybar;
-      "wezterm/wezterm.lua".source = ./configs/wezterm.lua;
-    };
-
-    variables = {
-      WEZTERM_CONFIG_FILE = "/etc/wezterm/wezterm.lua";
+      "xdg/wezterm/wezterm.lua".source = ./configs/wezterm.lua;
+      "xdg/wofi".source = ./configs/wofi;
+      "sway/config".source = ./configs/sway.conf;
     };
   };
 
@@ -103,74 +125,61 @@
   ];
 
   programs = {
-    neovim = {
+    firefox = {
       enable = true;
-      defaultEditor = true;
-      configure = {
-        customRC = ''
-          set background=light
-          set termguicolors
-          set colorcolumn=+1
-          colorscheme catppuccin
-
-          set expandtab tabstop=2 softtabstop=2 shiftwidth=2
-          set showcmd wildmenu wildmode=full:lastused wildoptions=fuzzy
-          set wildignore=*.o,*~,*.pyc,*.hi,*.class
-          set relativenumber number showmode laststatus=2
-
-          let mapleader = ','
-
-          nnoremap <leader>s :GFiles<CR>
-          nnoremap <leader>f :Files<CR>
-          nnoremap <leader>b :Buffers<CR>
-          nnoremap <leader>h :History<CR>
-          nnoremap <leader>c :Command<CR>
-
-          :cnoremap <C-A> <Home>
-          :cnoremap <C-F> <Right>
-          :cnoremap <C-B> <Left>
-          :cnoremap <Esc>b <S-Left>
-          :cnoremap <Esc>f <S-Right>
-        '';
-        packages.myVimPackages = with pkgs.vimPlugins; {
-          start = [ 
-            ale
-            ansible-vim
-            fzf-vim
-            catppuccin-nvim
-            rust-vim
-            statix
-            vim-nix
-            vim-ledger
-          ];
+      policies = {
+        DisableTelemetry = true;
+        DisableFirefoxStudies = true;
+        EnableTrackingProtection = {
+          Value= true;
+          Locked = true;
+          Cryptomining = true;
+          Fingerprinting = true;
         };
+        DisablePocket = true;
+        OverrideFirstRunPage = "";
+        OverridePostUpdatePage = "";
+        DontCheckDefaultBrowser = true;
+        DisplayBookmarksToolbar = "newtab";
+        DisplayMenuBar = "default-off";
+        SearchBar = "unified";
+
+        DNSOverHTTPS = lib.importJSON ./configs/firefox/dns-over-https.json;
+        ExtensionSettings = lib.mkForce(lib.importJSON ./configs/firefox/extensions.json);
+      };
+      preferences = {
+        "browser.warnOnQuitShortcut" = false;
+        "browser.download.dir" = "/home/${user_name}/downloads";
+        "browser.uiCustomization.state" = builtins.readFile ./configs/firefox/ui-customization.json;
+        "browser.newtabpage.pinned" = builtins.readFile ./configs/firefox/pinned.json;
+
+        "browser.newtabpage.activity-stream.discoverystream.newSponsoredLabel.enabled" = false;
+        "browser.newtabpage.activity-stream.discoverystream.saveToPocketCard.enabled" = false;
+        "browser.newtabpage.activity-stream.discoverystream.sendToPocket.enabled" = false;
+        "browser.newtabpage.activity-stream.discoverystream.sponsored-collections.enabled" = false;
+        "browser.newtabpage.activity-stream.section.highlights.includePocket" = false;
+        "browser.newtabpage.activity-stream.showSponsored" = false;
+        "browser.newtabpage.activity-stream.showSponsoredTopSites" = false;
+        "browser.newtabpage.activity-stream.system.showSponsored" = false;
+        "browser.urlbar.pocket.featureGate" = false;
+        "browser.urlbar.quicksuggest.impressionCaps.sponsoredEnabled" = false;
+        "browser.urlbar.sponsoredTopSites" = false;
+        "browser.urlbar.suggest.pocket" = false;
+        "browser.urlbar.suggest.quicksuggest.sponsored" = false;
+        "extensions.pocket.bffRecentSaves" = false;
+        "extensions.pocket.enabled" = false;
+        "extensions.pocket.refresh.emailButton.enabled" = false;
+        "extensions.pocket.refresh.hideRecentSaves.enabled" = false;
+        "extensions.pocket.showHome" = false;
+
+        # These aren't allowed to be overridden.
+        # "services.sync.prefs.sync-seen.browser.newtabpage.activity-stream.section.highlights.includePocket" = false;
+        # "services.sync.prefs.sync.browser.newtabpage.activity-stream.section.highlights.includePocket" = false;
+        # "services.sync.prefs.sync.browser.newtabpage.activity-stream.showSponsored" = false;
+        # "services.sync.prefs.sync.browser.newtabpage.activity-stream.showSponsoredTopSites" = false;
+
       };
     };
-
-    zsh = {
-      enable = true;
-      shellInit = ''
-        # Preempt the annoying new user prompt.
-        if [ ! -e "$HOME/.zshrc" ]; then
-          touch $HOME/.zshrc
-        fi
-      '';
-      interactiveShellInit = ''
-        bindkey -e
-        HISTFILE=~/.histfile
-        HISTSIZE=10000
-        SAVEHIST=100000
-        setopt autocd beep extendedglob nomatch notify
-        zstyle :compinstall filename '/home/rohan/.zshrc'
-        autoload -Uz compinit
-        compinit
-      '';
-      shellAliases = {
-        clean-os = "sudo nix-collect-garbage -d";
-        rebuild = "sudo nixos-rebuild switch --upgrade";
-      };
-    };
-
     git = {
       enable = true;
       config = {
@@ -199,6 +208,54 @@
     };
 
     light.enable = true;
+
+    neovim = {
+      enable = true;
+      defaultEditor = true;
+      configure = {
+        customRC = builtins.readFile ./configs/neovim.vim;
+        packages.myVimPackages = with pkgs.vimPlugins; {
+          start = [ 
+            ansible-vim
+            catppuccin-nvim
+            fzf-vim
+            gitsigns-nvim
+            indent-blankline-nvim
+            lualine-nvim
+            nvim-autopairs
+            nvim-lspconfig
+            rust-vim
+            statix
+            vim-nix
+            vim-ledger
+          ];
+        };
+      };
+    };
+
+    zsh = {
+      enable = true;
+      shellInit = ''
+        # Preempt the annoying new user prompt.
+        if [ ! -e "$HOME/.zshrc" ]; then
+          touch $HOME/.zshrc
+        fi
+      '';
+      interactiveShellInit = ''
+        bindkey -e
+        HISTFILE=~/.histfile
+        HISTSIZE=10000
+        SAVEHIST=100000
+        setopt autocd beep extendedglob nomatch notify
+        autoload -Uz compinit
+        compinit
+      '';
+      shellAliases = {
+        clean-os = "sudo nix-collect-garbage -d";
+        rebuild = "sudo nixos-rebuild switch --upgrade";
+      };
+    };
+
     starship.enable = true;
     sway.enable = true;
     waybar.enable = true;
@@ -210,6 +267,8 @@
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
   services = {
+    blueman.enable = true;
+    fstrim.enable = true;
     greetd = {
       enable = true;
       settings = {
@@ -218,27 +277,12 @@
         };
       };
     };
-    blueman = {
-      enable = true;
-    };
+    thermald.enable = true;
     tlp = {
       enable = true;
       settings = {
-        CPU_SCALING_GOVERNOR_ON_AC = "performance";
-        CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
-
-        CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
-        CPU_ENERGY_PERF_POLICY_ON_AC = "performance";
-
-        CPU_MIN_PERF_ON_AC = 0;
-        CPU_MAX_PERF_ON_AC = 100;
-        CPU_MIN_PERF_ON_BAT = 0;
-        CPU_MAX_PERF_ON_BAT = 20;
-
-       #Optional helps save long term battery health
-       START_CHARGE_THRESH_BAT0 = 40; # 40 and bellow it starts to charge
+       START_CHARGE_THRESH_BAT0 = 60; # 40 and bellow it starts to charge
        STOP_CHARGE_THRESH_BAT0 = 80; # 80 and above it stops charging
-
      };
    };
   };

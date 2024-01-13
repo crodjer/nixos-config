@@ -1,0 +1,30 @@
+[
+  {
+    "url": "http://mail.google.com/",
+    "label": "Gmail"
+  },
+  {
+    "url": "https://mail.proton.me/",
+    "label": "Proton Mail"
+  },
+  {
+    "url": "https://github.com/",
+    "label": "Github"
+  },
+  {
+    "url": "https://www.linkedin.com/",
+    "label": "LinkedIn"
+  },
+  {
+    "url": "https://news.google.com/home?hl=en-IN&gl=IN&ceid=IN:en",
+    "label": "Google News"
+  },
+  {
+    "url": "https://www.amazon.in/",
+    "label": "Amazon"
+  },
+  {
+    "url": "https://www.youtube.com/",
+    "label": "YouTube"
+  }
+]
