@@ -14,8 +14,11 @@ in {
     ++ lib.optional (builtins.pathExists /etc/nixos/local.nix) /etc/nixos/local.nix;
 
   # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot = {
+    kernelPackages = pkgs.linuxPackages_latest;
+    loader.systemd-boot.enable = true;
+    loader.efi.canTouchEfiVariables = true;
+  };
 
   hardware = {
     bluetooth = {
