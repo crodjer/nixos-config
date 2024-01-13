@@ -69,7 +69,7 @@
         "states": {
             // Aything above 90 should alert, if charging.
             "full": 90,
-            // Anything above 75 is good and shouldn't grab attention
+            // Anything above 85 is good and shouldn't grab attention
             "good": 75,
             // Battery is nearing half, can plugin, but not urgent.
             "normal": 60,
