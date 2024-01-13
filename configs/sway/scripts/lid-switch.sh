@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 if cat /proc/acpi/button/lid/LID*/state | grep closed &> /dev/null; then
     swaymsg output eDP-1 disable
