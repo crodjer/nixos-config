@@ -16,6 +16,13 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  hardware = {
+    bluetooth = {
+      enable = true;
+      powerOnBoot = true;
+    };
+  };
+
   networking = {
     hostName = "nixos";
     networkmanager = {
@@ -46,12 +53,6 @@
     LC_TIME = "en_IN";
   };
 
-  # Configure keymap in X11
-  services.xserver = {
-    layout = "us";
-    xkbVariant = "";
-  };
-
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.rohan = {
     isNormalUser = true;
@@ -76,7 +77,8 @@
       dufs
       eza
       fd
-      foot
+      firefox
+      wezterm
       fzf
       gammastep
       geoclue2-with-demo-agent
@@ -87,8 +89,12 @@
 
     etc = {
       "sway/config".source = ./configs/sway.conf;
-      "xdg/foot/foot.ini".source = ./configs/foot.ini;
       "xdg/waybar".source = ./configs/waybar;
+      "wezterm/wezterm.lua".source = ./configs/wezterm.lua;
+    };
+
+    variables = {
+      WEZTERM_CONFIG_FILE = "/etc/wezterm/wezterm.lua";
     };
   };
 
@@ -105,7 +111,7 @@
           set background=light
           set termguicolors
           set colorcolumn=+1
-          colorscheme gruvbox
+          colorscheme catppuccin
 
           set expandtab tabstop=2 softtabstop=2 shiftwidth=2
           set showcmd wildmenu wildmode=full:lastused wildoptions=fuzzy
@@ -120,15 +126,6 @@
           nnoremap <leader>h :History<CR>
           nnoremap <leader>c :Command<CR>
 
-          " Configure terminal within neovim
-          lua require("toggleterm").setup()
-          nnoremap <leader>$ :ToggleTerm<CR>
-          tnoremap <C-w>h <C-\><C-n><C-w>h
-          tnoremap <C-w>j <C-\><C-n><C-w>j
-          tnoremap <C-w>k <C-\><C-n><C-w>k
-          tnoremap <C-w>l <C-\><C-n><C-w>l
-          autocmd BufEnter term://* startinsert
-
           :cnoremap <C-A> <Home>
           :cnoremap <C-F> <Right>
           :cnoremap <C-B> <Left>
@@ -140,12 +137,11 @@
             ale
             ansible-vim
             fzf-vim
-            gruvbox-nvim
+            catppuccin-nvim
             rust-vim
             statix
             vim-nix
             vim-ledger
-            toggleterm-nvim
           ];
         };
       };
@@ -213,13 +209,38 @@
 
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
-  services.greetd = {
-    enable = true;
-    settings = {
-      default_session = {
-        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --cmd sway";
+  services = {
+    greetd = {
+      enable = true;
+      settings = {
+        default_session = {
+          command = "${pkgs.greetd.tuigreet}/bin/tuigreet --cmd sway";
+        };
       };
     };
+    blueman = {
+      enable = true;
+    };
+    tlp = {
+      enable = true;
+      settings = {
+        CPU_SCALING_GOVERNOR_ON_AC = "performance";
+        CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
+
+        CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
+        CPU_ENERGY_PERF_POLICY_ON_AC = "performance";
+
+        CPU_MIN_PERF_ON_AC = 0;
+        CPU_MAX_PERF_ON_AC = 100;
+        CPU_MIN_PERF_ON_BAT = 0;
+        CPU_MAX_PERF_ON_BAT = 20;
+
+       #Optional helps save long term battery health
+       START_CHARGE_THRESH_BAT0 = 40; # 40 and bellow it starts to charge
+       STOP_CHARGE_THRESH_BAT0 = 80; # 80 and above it stops charging
+
+     };
+   };
   };
 
   # This value determines the NixOS release from which the default
