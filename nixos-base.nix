@@ -5,10 +5,6 @@
 { config, pkgs, lib, ... }:
 
 {
-  imports = [ ]
-    ++ lib.optional (builtins.pathExists /etc/nixos/swap.nix) /etc/nixos/swap.nix
-    ++ lib.optional (builtins.pathExists /etc/nixos/local.nix) /etc/nixos/local.nix;
-
   # Bootloader.
   boot = {
     initrd.systemd.enable = true;
