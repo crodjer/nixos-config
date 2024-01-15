@@ -11,6 +11,7 @@
 
   # Bootloader.
   boot = {
+    initrd.systemd.enable = true;
     kernelPackages = pkgs.linuxPackages_latest;
     kernelModules = [ "ecryptfs" ];
     loader.systemd-boot.enable = true;
@@ -34,6 +35,11 @@
       extraConfig = ''
         Defaults        timestamp_timeout=30
       '';
+    };
+    tpm2 = {
+      enable = true;
+      pkcs11.enable = true;
+      tctiEnvironment.enable = true;
     };
   };
 
@@ -74,7 +80,7 @@
   users.users.rohan = {
     isNormalUser = true;
     description = "Rohan";
-    extraGroups = [ "networkmanager" "wheel" "video" ];
+    extraGroups = [ "networkmanager" "wheel" "video" "tss" ];
     packages = with pkgs; [];
     shell = pkgs.zsh;
   };
