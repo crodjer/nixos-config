@@ -1,5 +1,9 @@
 [
   {
+    "url": "https://search.nixos.org",
+    "label": "NixOS"
+  },
+  {
     "url": "http://mail.google.com/",
     "label": "Gmail"
   },
