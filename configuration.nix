@@ -117,7 +117,6 @@
       "xdg/wofi".source = ./configs/wofi;
       "sway/scripts".source = ./configs/sway/scripts;
       "sway/config".source = ./configs/sway/sway.conf;
-      "greetd/sway-config".source = ./configs/sway/greetd-sway.conf;
     };
 
     variables = {
@@ -253,8 +252,8 @@
       enable = true;
       wrapperFeatures.gtk = true;
       extraPackages = with pkgs; [
-        clipman gammastep grim greetd.gtkgreet swaylock swayidle waybar wezterm
-        wl-clipboard wofi
+        clipman gammastep grim swaylock swayidle waybar wezterm wl-clipboard
+        wofi
       ];
     };
 
@@ -290,7 +289,7 @@
       enable = true;
       settings = {
         default_session = {
-          command = "${pkgs.sway}/bin/sway --config /etc/greetd/sway-config";
+          command = "${pkgs.greetd.tuigreet}/bin/tuigreet --cmd ${pkgs.sway}/bin/sway";
         };
       };
     };
