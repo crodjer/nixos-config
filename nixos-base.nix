@@ -4,7 +4,9 @@
 
 { config, pkgs, lib, ... }:
 
-{
+let 
+  user_name = "rohan";
+in {
   # Bootloader.
   boot = {
     initrd.systemd.enable = true;
@@ -75,7 +77,7 @@
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.rohan = {
+  users.users.${user_name} = {
     isNormalUser = true;
     description = "Rohan";
     extraGroups = [ "networkmanager" "wheel" "video" "tss" ];
@@ -99,7 +101,7 @@
       rbw
       signal-desktop
 
-      # Tools
+      # Tools and Services
       ansible
       gocryptfs
 
@@ -302,6 +304,11 @@
       audio.enable = true;
       pulse.enable = true;
 
+    };
+    syncthing = {
+      enable = true;
+      user = "${user_name}";
+      dataDir = "/home/${user_name}";
     };
     thermald.enable = true;
     tlp = {
