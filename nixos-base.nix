@@ -93,10 +93,11 @@ in {
   environment = {
     systemPackages = with pkgs; [
       # Cli utilities
-      bat bottom eza fd fzf git jq rbw
+      bat bottom eza fd fzf git jq
 
       # Applications
       brave
+      ledger
       neovim-remote
       rbw
       signal-desktop
@@ -257,8 +258,8 @@ in {
       enable = true;
       wrapperFeatures.gtk = true;
       extraPackages = with pkgs; [
-        clipman gammastep grim swaylock swayidle waybar wezterm wl-clipboard
-        wofi
+        clipman gammastep grim mako swaylock swayidle waybar wezterm
+        wl-clipboard wofi
       ];
     };
 
