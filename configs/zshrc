@@ -11,3 +11,5 @@ setopt autocd beep extendedglob nomatch notify
 
 autoload -Uz compinit
 compinit
+
+eval "$(atuin init zsh)"

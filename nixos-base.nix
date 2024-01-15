@@ -93,9 +93,10 @@ in {
   environment = {
     systemPackages = with pkgs; [
       # Cli utilities
-      bat bottom eza fd fzf git jq
+      bat bottom entr eza fd fzf git jq
 
       # Applications
+      atuin
       brave
       ledger
       neovim-remote
