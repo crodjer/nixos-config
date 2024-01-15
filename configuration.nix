@@ -302,7 +302,9 @@
     pipewire = {
       enable = true;
       alsa.enable = true;
+      audio.enable = true;
       pulse.enable = true;
+
     };
     thermald.enable = true;
     tlp = {
