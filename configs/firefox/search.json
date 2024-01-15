@@ -1,0 +1,20 @@
+{
+  "Add": [
+    {
+      "Name": "NixOS Options",
+      "URLTemplate": "https://search.nixos.org/options?query={searchTerms}",
+      "Method": "GET",
+      "IconURL": "https://nixos.org/favicon.png",
+      "Alias": "nixo",
+      "Description": "Search NixOS Options"
+    },
+    {
+      "Name": "NixOS Packages",
+      "URLTemplate": "https://search.nixos.org/packages?query={searchTerms}",
+      "Method": "GET",
+      "IconURL": "https://nixos.org/favicon.png",
+      "Alias": "nixp",
+      "Description": "Search NixOS Packages"
+    }
+  ]
+}
