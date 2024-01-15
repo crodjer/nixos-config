@@ -111,9 +111,9 @@
             "default": ["", "", "", " "]
         },
         "tooltip-format": "{desc}\n{icon}\t{volume}\n\t{source_volume}",
-        "on-click": "pulsemixer --toggle-mute",
-        "on-scroll-up": "pulsemixer --change-volume -5",
-        "on-scroll-down": "pulsemixer --change-volume +5 --max-volume 100",
+        "on-click": "wpctl set-mute @DEFAULT_SINK@ toggle",
+        "on-scroll-up": "wpctl set-volume @DEFAULT_SINK@ 1-",
+        "on-scroll-down": "wpctl set-volume @DEFAULT_SINK@ 1+",
         "smooth-scrolling-threshold": 1
     },
 }
