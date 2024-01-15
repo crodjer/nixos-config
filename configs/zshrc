@@ -1,0 +1,13 @@
+bindkey -e
+
+HISTFILE=~/.histfile
+HISTSIZE=10000
+SAVEHIST=100000
+
+# Remove '/' from wordchars.
+WORDCHARS="${WORDCHARS/\//}"
+
+setopt autocd beep extendedglob nomatch notify
+
+autoload -Uz compinit
+compinit
