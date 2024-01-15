@@ -27,7 +27,8 @@ if [ ! -e $SWAP_FILE ]; then
   rm -r result
 fi
 
-OFFSET=$(sudo filefrag -v $SWAP_FILE | awk '{ if($1=="0:"){print substr($4, 1, length($4)-2)} }')
+FILEFRAG_OUTPUT=$(nix-shell -p e2fsprogs --command "sudo filefrag -v $SWAP_FILE")
+OFFSET=$(echo "$FILEFRAG_OUTPUT" | awk '{ if($1=="0:"){print substr($4, 1, length($4)-2)} }')
 RESUME_DEVICE=$(findmnt -no UUID -T $SWAP_FILE)
 SWAP_SIZE=$(ls -s --block-size=M $SWAP_FILE | grep -Po "^\d+" )
 
