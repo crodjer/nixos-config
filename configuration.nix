@@ -265,15 +265,7 @@
           touch $HOME/.zshrc
         fi
       '';
-      interactiveShellInit = ''
-        bindkey -e
-        HISTFILE=~/.histfile
-        HISTSIZE=10000
-        SAVEHIST=100000
-        setopt autocd beep extendedglob nomatch notify
-        autoload -Uz compinit
-        compinit
-      '';
+      interactiveShellInit = builtins.readFile ./configs/zshrc;
       shellAliases = {
         clean-os = "sudo nix-collect-garbage -d";
         rebuild = "sudo nixos-rebuild switch --upgrade";
