@@ -29,3 +29,8 @@ sudo mount -o subvol=log,compress=zstd,noatime /dev/disk/by-label/nixos-fs /mnt/
 sudo mkdir /mnt/boot
 sudo mount /dev/nvme0n1p1 /mnt/boot
 ```
+
+## Decryption:
+```bash
+sudo systemd-cryptenroll --tpm2-device=auto --tpm2-pcrs=0+7 /dev/disk/by-label/nixos
+```
