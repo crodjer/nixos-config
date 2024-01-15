@@ -30,9 +30,6 @@
   powerManagement.enable = true;
 
   security = {
-    pam = {
-      enableFscrypt = true;
-    };
     sudo = {
       extraConfig = ''
         Defaults        timestamp_timeout=30
