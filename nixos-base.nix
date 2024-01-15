@@ -10,8 +10,10 @@
     initrd.systemd.enable = true;
     kernelPackages = pkgs.linuxPackages_latest;
     kernelModules = [ "ecryptfs" ];
-    loader.systemd-boot.enable = true;
-    loader.efi.canTouchEfiVariables = true;
+    loader = {
+      systemd-boot.enable = true;
+      efi.canTouchEfiVariables = true;
+    };
     plymouth = {
       enable = true;
     };
@@ -92,6 +94,7 @@
       bat bottom eza fd fzf git jq rbw
 
       # Applications
+      brave
       neovim-remote
       rbw
       signal-desktop
@@ -307,6 +310,9 @@
        START_CHARGE_THRESH_BAT0 = 60; # 40 and bellow it starts to charge
        STOP_CHARGE_THRESH_BAT0 = 80; # 80 and above it stops charging
      };
+   };
+   udisks2 = {
+     enable = true;
    };
   };
 
