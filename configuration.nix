@@ -289,6 +289,7 @@
   services = {
     blueman.enable = true;
     dbus.enable = true;
+    flatpak.enable = true;
     fstrim.enable = true;
     geoclue2.enable = true;
     geoclue2.enableDemoAgent = lib.mkForce true;
@@ -319,9 +320,10 @@
 
   xdg = {
     portal = {
+      config.common.default = "gtk";
       enable = true;
-      wlr.enable = true;
       extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+      wlr.enable = true;
     };
   };
 
