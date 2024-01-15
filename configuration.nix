@@ -96,11 +96,9 @@
       rbw
       signal-desktop
 
-      # Services
-      dufs
-
-      # Languages
+      # Tools
       ansible
+      gocryptfs
 
       # LSP Services and Linters
       ansible-language-server ansible-lint
