@@ -116,6 +116,7 @@
       "xdg/wofi".source = ./configs/wofi;
       "sway/scripts".source = ./configs/sway/scripts;
       "sway/config".source = ./configs/sway/sway.conf;
+      "greetd/sway-config".source = ./configs/sway/greetd-sway.conf;
     };
 
     variables = {
@@ -229,7 +230,7 @@
             nvim-lspconfig
             (nvim-treesitter.withPlugins (
               plugins: with plugins; [
-                python rust ruby lua nix bash vim yaml ledger json
+                python rust ruby lua nix bash vim yaml ledger json markdown
                 tsx javascript typescript go clojure haskell
               ]
             ))
@@ -247,8 +248,10 @@
 
     sway = {
       enable = true;
+      wrapperFeatures.gtk = true;
       extraPackages = with pkgs; [
-        clipman gammastep swaylock swayidle waybar wezterm wl-clipboard wofi
+        clipman gammastep grim greetd.gtkgreet swaylock swayidle waybar wezterm
+        wl-clipboard wofi
       ];
     };
 
@@ -283,6 +286,7 @@
   # services.openssh.enable = true;
   services = {
     blueman.enable = true;
+    dbus.enable = true;
     fstrim.enable = true;
     geoclue2.enable = true;
     geoclue2.enableDemoAgent = lib.mkForce true;
@@ -290,9 +294,15 @@
       enable = true;
       settings = {
         default_session = {
-          command = "${pkgs.greetd.tuigreet}/bin/tuigreet --cmd ${pkgs.sway}/bin/sway";
+          command = "${pkgs.sway}/bin/sway --config /etc/greetd/sway-config";
+          user = "rohan";
         };
       };
+    };
+    pipewire = {
+      enable = true;
+      alsa.enable = true;
+      pulse.enable = true;
     };
     thermald.enable = true;
     tlp = {
@@ -302,6 +312,14 @@
        STOP_CHARGE_THRESH_BAT0 = 80; # 80 and above it stops charging
      };
    };
+  };
+
+  xdg = {
+    portal = {
+      enable = true;
+      wlr.enable = true;
+      extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    };
   };
 
   # This value determines the NixOS release from which the default
