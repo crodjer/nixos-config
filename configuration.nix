@@ -156,7 +156,7 @@
       preferences = {
         "browser.warnOnQuitShortcut" = false;
         "browser.uiCustomization.state" = builtins.readFile ./configs/firefox/ui-customization.json;
-        "browser.newtabpage.pinned" = builtins.readFile ./configs/firefox/pinned.json;
+        # "browser.newtabpage.pinned" = builtins.readFile ./configs/firefox/pinned.json;
 
         # Remove bloat and sponsored content.
         "browser.newtabpage.activity-stream.discoverystream.newSponsoredLabel.enabled" = false;
