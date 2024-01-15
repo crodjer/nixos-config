@@ -5,14 +5,10 @@ colorscheme catppuccin
 set expandtab tabstop=2 softtabstop=2 shiftwidth=2
 set relativenumber number cursorline signcolumn=yes
 set clipboard+=unnamedplus
-set breakindent
-set undofile
+set showcmd modeline undofile updatetime=100 timeoutlen=300
 set ignorecase smartcase
-set updatetime=100 timeoutlen=300
 set completeopt=menuone,noselect
-set termguicolors
-set textwidth=80 colorcolumn=+1
-set showcmd
+set breakindent termguicolors textwidth=80 colorcolumn=+1
 
 let mapleader = ','
 
