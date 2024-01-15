@@ -14,6 +14,7 @@
   # Bootloader.
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
+    kernelModules = [ "ecryptfs" ];
     loader.systemd-boot.enable = true;
     loader.efi.canTouchEfiVariables = true;
     plymouth = {
@@ -30,6 +31,7 @@
   powerManagement.enable = true;
 
   security = {
+    pam.enableEcryptfs = true;
     sudo = {
       extraConfig = ''
         Defaults        timestamp_timeout=30
