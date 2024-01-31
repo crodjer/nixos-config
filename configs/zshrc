@@ -12,4 +12,16 @@ setopt autocd beep extendedglob nomatch notify
 autoload -Uz compinit
 compinit
 
+venv() {
+  env=$1
+  if [ -z $env ]; then
+    return 1
+  fi
+  env_dir=~/.venv/$env
+  if [ ! -d $env_dir ]; then
+    python -m venv $env_dir
+  fi
+  source $env_dir/bin/activate
+}
+
 eval "$(atuin init zsh)"
