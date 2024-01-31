@@ -16,9 +16,6 @@ in {
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
     };
-    plymouth = {
-      enable = true;
-    };
   };
 
   hardware = {
@@ -80,7 +77,7 @@ in {
   users.users.${user_name} = {
     isNormalUser = true;
     description = "Rohan";
-    extraGroups = [ "networkmanager" "wheel" "video" "tss" ];
+    extraGroups = [ "adbusers" "networkmanager" "wheel" "video" "tss" ];
     packages = with pkgs; [];
     shell = pkgs.zsh;
   };
@@ -93,19 +90,23 @@ in {
   environment = {
     systemPackages = with pkgs; [
       # Cli utilities
-      bat bottom entr eza fd fzf git jq
+      atuin bat bc bottom entr eza fd fzf git jq ripgrep
 
       # Applications
-      atuin
       brave
+      helix
       ledger
       neovim-remote
       rbw
       signal-desktop
+      v4l-utils
 
       # Tools and Services
       ansible
       gocryptfs
+
+      # Languages
+      python3
 
       # LSP Services and Linters
       ansible-language-server ansible-lint
@@ -118,7 +119,9 @@ in {
     ];
 
     etc = {
+      "xdg/atuin".source = ./configs/atuin;
       "xdg/user-dirs.defaults".source = ./configs/user-dirs.dirs;
+      "xdg/mako/config".source = ./configs/mako;
       "xdg/waybar".source = ./configs/waybar;
       "xdg/wezterm/wezterm.lua".source = ./configs/wezterm.lua;
       "xdg/wofi".source = ./configs/wofi;
@@ -136,6 +139,7 @@ in {
   ];
 
   programs = {
+    adb.enable = true;
     firefox = {
       enable = true;
       policies = {
@@ -259,8 +263,8 @@ in {
       enable = true;
       wrapperFeatures.gtk = true;
       extraPackages = with pkgs; [
-        clipman gammastep grim mako swaylock swayidle waybar wezterm
-        wl-clipboard wofi
+        bemenu clipman gammastep grim mako swaylock swayidle waybar
+        wayland-utils wezterm wl-clipboard wofi
       ];
     };
 
@@ -270,6 +274,10 @@ in {
         # Preempt the annoying new user prompt.
         if [ ! -e "$HOME/.zshrc" ]; then
           touch $HOME/.zshrc
+        fi
+
+        if [ "$USER" = ${user_name} ] && [ -z "$WAYLAND_DISPLAY" ] && [ "$XDG_VTNR" -eq 1 ]; then
+          exec sway
         fi
       '';
       interactiveShellInit = builtins.readFile ./configs/zshrc;
@@ -292,20 +300,11 @@ in {
     fstrim.enable = true;
     geoclue2.enable = true;
     geoclue2.enableDemoAgent = lib.mkForce true;
-    greetd = {
-      enable = true;
-      settings = {
-        default_session = {
-          command = "${pkgs.greetd.tuigreet}/bin/tuigreet --cmd ${pkgs.sway}/bin/sway";
-        };
-      };
-    };
     pipewire = {
       enable = true;
       alsa.enable = true;
       audio.enable = true;
       pulse.enable = true;
-
     };
     syncthing = {
       enable = true;
@@ -327,10 +326,16 @@ in {
 
   xdg = {
     portal = {
-      config.common.default = "gtk";
       enable = true;
       extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
-      wlr.enable = true;
+      wlr = {
+        enable = true;
+        settings = {
+          screencast = {
+            max_fps = 24;
+          };
+        };
+      };
     };
   };
 
