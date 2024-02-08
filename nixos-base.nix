@@ -98,7 +98,6 @@ in {
       ledger
       neovim-remote
       rbw
-      signal-desktop
       v4l-utils
 
       # Tools and Services
@@ -111,19 +110,17 @@ in {
       # LSP Services and Linters
       ansible-language-server ansible-lint
       lua-language-server
+      nil
       nodePackages.pyright
       nodePackages.typescript-language-server
-      rnix-lsp
       rubyPackages.solargraph
       rust-analyzer
     ];
 
     etc = {
       "xdg/user-dirs.defaults".source = ./configs/user-dirs.dirs;
-      "xdg/mako/config".source = ./configs/mako;
       "xdg/waybar".source = ./configs/waybar;
       "xdg/wezterm/wezterm.lua".source = ./configs/wezterm.lua;
-      "xdg/wofi".source = ./configs/wofi;
       "sway/scripts".source = ./configs/sway/scripts;
       "sway/config".source = ./configs/sway/sway.conf;
     };
@@ -194,24 +191,6 @@ in {
         # "services.sync.prefs.sync.browser.newtabpage.activity-stream.showSponsored" = false;
         # "services.sync.prefs.sync.browser.newtabpage.activity-stream.showSponsoredTopSites" = false;
 
-      };
-    };
-    git = {
-      enable = true;
-      config = {
-        init = {
-          defaultBranch = "main";
-        };
-        user = {
-          name = "Rohan Jain";
-          email = "crodjer@proton.me";
-        };
-        commit = {
-          verbose = true;
-        };
-        rerere = {
-          enabled = true;
-        };
       };
     };
 

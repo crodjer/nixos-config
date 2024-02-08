@@ -41,6 +41,7 @@ require('gitsigns').setup({
 })
 
 -- LSP
+vim.keymap.set('n', '<space>e', vim.diagnostic.open_float)
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
 
@@ -62,7 +63,7 @@ local servers = {
   ansiblels = {},
   lua_ls = {},
   pyright = {},
-  rnix = {},
+  nil_ls = {},
   rust_analyzer = {},
   solargraph = {},
   tsserver = {}
