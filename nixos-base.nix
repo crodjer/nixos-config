@@ -119,7 +119,6 @@ in {
     ];
 
     etc = {
-      "xdg/atuin".source = ./configs/atuin;
       "xdg/user-dirs.defaults".source = ./configs/user-dirs.dirs;
       "xdg/mako/config".source = ./configs/mako;
       "xdg/waybar".source = ./configs/waybar;
@@ -263,7 +262,7 @@ in {
       enable = true;
       wrapperFeatures.gtk = true;
       extraPackages = with pkgs; [
-        bemenu clipman gammastep grim mako swaylock swayidle waybar
+        bemenu clipman gammastep glib grim mako swaylock swayidle waybar
         wayland-utils wezterm wl-clipboard wofi
       ];
     };
