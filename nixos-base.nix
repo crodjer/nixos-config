@@ -45,6 +45,10 @@ in {
       # Enable networking
       enable = true;
     };
+    nameservers = [
+      "1.1.1.1#one.one.one.one"
+      "1.0.0.1#one.one.one.one"
+    ];
     firewall = {
       enable = true;
       allowedTCPPorts = [ 5000 ];
@@ -90,7 +94,7 @@ in {
   environment = {
     systemPackages = with pkgs; [
       # Cli utilities
-      atuin bat bc bottom entr eza fd fzf git jq ripgrep
+      atuin bat bc bottom entr eza fd fzf git jq ripgrep unzip
 
       # Applications
       brave
@@ -283,6 +287,18 @@ in {
       alsa.enable = true;
       audio.enable = true;
       pulse.enable = true;
+    };
+    resolved = {
+      enable = true;
+      dnssec = "allow-downgrade";
+      domains = [ "~." ];
+      fallbackDns = [
+        "1.1.1.1#one.one.one.one"
+        "1.0.0.1#one.one.one.one"
+      ];
+      extraConfig = ''
+      DNSOverTLS=yes
+      '';
     };
     syncthing = {
       enable = true;
