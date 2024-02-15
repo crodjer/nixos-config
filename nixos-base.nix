@@ -115,7 +115,7 @@ in {
       ansible-language-server ansible-lint
       lua-language-server
       nil
-      nodePackages.pyright
+      ruff-lsp
       nodePackages.typescript-language-server
       rubyPackages.solargraph
       rust-analyzer
@@ -217,6 +217,7 @@ in {
         packages.myVimPackages = with pkgs.vimPlugins; {
           start = [ 
             ansible-vim
+            aerial-nvim
             catppuccin-nvim
             fzf-vim
             gitsigns-nvim
