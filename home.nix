@@ -27,6 +27,12 @@ in {
         userName = "Rohan Jain";
         userEmail = "crodjer@proton.me";
 
+        extraConfig = {
+          commit = {
+            verbose = true;
+          };
+        };
+
         signing = {
           key = null;
           signByDefault = true;
