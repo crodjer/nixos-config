@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, lib, ... }:
+{ pkgs, lib, ... }:
 
 let 
   user_name = "rohan";
@@ -127,6 +127,7 @@ in {
       "xdg/wezterm/wezterm.lua".source = ./configs/wezterm.lua;
       "sway/scripts".source = ./configs/sway/scripts;
       "sway/config".source = ./configs/sway/sway.conf;
+      "swaynag/config".source = ./configs/swaynag;
     };
 
     variables = {
