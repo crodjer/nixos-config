@@ -19,6 +19,9 @@ nnoremap <leader>b :Buffers<CR>
 nnoremap <leader>h :History<CR>
 nnoremap <leader>c :Command<CR>
 
+" ---------
+" Lua start
+" ---------
 lua << END
 require("ibl").setup()
 
@@ -54,6 +57,9 @@ local on_lsp_attach = function(_, bufnr)
     vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
   end
 
+  nmap('gd', vim.lsp.buf.definition, 'Go to Definition')
+  nmap('gD', vim.lsp.buf.declaration, 'Go to Declaration')
+
   nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
   nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
 end
@@ -62,8 +68,8 @@ local lspconfig = require('lspconfig');
 local servers = {
   ansiblels = {},
   lua_ls = {},
-  pyright = {},
   nil_ls = {},
+  ruff_lsp = {},
   rust_analyzer = {},
   solargraph = {},
   tsserver = {}
@@ -92,7 +98,22 @@ require('nvim-treesitter.configs').setup {
     },
   },
 }
+
+-- Aerial
+require("aerial").setup({
+  nerd_font = true,
+  on_attach = function(bufnr)
+    -- Jump forwards/backwards with '{' and '}'
+    vim.keymap.set("n", "{", "<cmd>AerialPrev<CR>", { buffer = bufnr })
+    vim.keymap.set("n", "}", "<cmd>AerialNext<CR>", { buffer = bufnr })
+  end,
+})
+-- You probably also want to set a keymap to toggle aerial
+vim.keymap.set("n", "<leader>a", "<cmd>AerialToggle!<CR>")
 END
+" --------
+" Lua ends
+" --------
 
 " Treesitter based folding
 set foldmethod=expr
