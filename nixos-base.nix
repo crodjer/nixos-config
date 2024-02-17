@@ -94,15 +94,18 @@ in {
   environment = {
     systemPackages = with pkgs; [
       # Cli utilities
-      atuin bat bc bottom entr eza fd fzf git jq ripgrep unzip
+      bat bc bottom entr eza fd fzf git jq ripgrep unzip xdg-utils zoxide
 
       # Applications
       brave
       helix
+      imv
       ledger
       neovim-remote
+      ranger
       rbw
       v4l-utils
+      vlc
 
       # Tools and Services
       ansible
@@ -115,7 +118,7 @@ in {
       ansible-language-server ansible-lint
       lua-language-server
       nil
-      ruff-lsp
+      ruff ruff-lsp
       nodePackages.typescript-language-server
       rubyPackages.solargraph
       rust-analyzer
@@ -230,47 +233,47 @@ in {
                 python rust ruby lua nix bash vim yaml ledger json markdown
                 tsx javascript typescript go clojure haskell
               ]
-            ))
-            rust-vim
-            statix
-            vim-commentary
-            vim-nix
-            vim-ledger
-          ];
+              ))
+              rust-vim
+              statix
+              vim-commentary
+              vim-nix
+              vim-ledger
+            ];
+          };
         };
       };
-    };
 
-    starship.enable = true;
+      starship.enable = true;
 
-    sway = {
-      enable = true;
-      wrapperFeatures.gtk = true;
-      extraPackages = with pkgs; [
-        bemenu clipman gammastep glib grim mako swaylock swayidle waybar
-        wayland-utils wezterm wl-clipboard wofi
-      ];
-    };
+      sway = {
+        enable = true;
+        wrapperFeatures.gtk = true;
+        extraPackages = with pkgs; [
+          bemenu clipman gammastep glib grim mako swaylock swayidle waybar
+          wayland-utils wezterm wl-clipboard wofi
+        ];
+      };
 
-    zsh = {
-      enable = true;
-      shellInit = ''
+      zsh = {
+        enable = true;
+        shellInit = ''
         # Preempt the annoying new user prompt.
         if [ ! -e "$HOME/.zshrc" ]; then
-          touch $HOME/.zshrc
+        touch $HOME/.zshrc
         fi
 
         if [ "$USER" = ${user_name} ] && [ -z "$WAYLAND_DISPLAY" ] && [ "$XDG_VTNR" -eq 1 ]; then
-          exec sway
+        exec sway
         fi
-      '';
-      interactiveShellInit = builtins.readFile ./configs/zshrc;
-      shellAliases = {
-        clean-os = "sudo nix-collect-garbage -d";
-        rebuild = "sudo nixos-rebuild switch --upgrade";
+        '';
+        interactiveShellInit = builtins.readFile ./configs/zshrc;
+        shellAliases = {
+          clean-os = "sudo nix-collect-garbage -d";
+          rebuild = "sudo nixos-rebuild switch --upgrade";
+        };
       };
     };
-  };
 
 
   # List services that you want to enable:
@@ -311,13 +314,13 @@ in {
     tlp = {
       enable = true;
       settings = {
-       START_CHARGE_THRESH_BAT0 = 60; # 40 and bellow it starts to charge
-       STOP_CHARGE_THRESH_BAT0 = 80; # 80 and above it stops charging
-     };
-   };
-   udisks2 = {
-     enable = true;
-   };
+        START_CHARGE_THRESH_BAT0 = 60; # 40 and bellow it starts to charge
+        STOP_CHARGE_THRESH_BAT0 = 80; # 80 and above it stops charging
+      };
+    };
+    udisks2 = {
+      enable = true;
+    };
   };
 
   xdg = {
@@ -333,6 +336,22 @@ in {
         };
       };
     };
+    mime = {
+      defaultApplications = builtins.zipAttrsWith
+      (_: values: values)
+      (let
+        subtypes = type: program: subt:
+        builtins.listToAttrs (builtins.map
+        (x: {name = type + "/" + x; value = program; })
+        subt);
+      in [
+        {
+          "application/pdf" = "firefox.desktop";
+        }
+        (subtypes "image" "imv-folder.desktop"
+        [ "png" "jpeg" "jpg" "gif" "svg" "svg+xml" "tiff" "x-tiff" "x-dcraw" ])
+    ]);
+  };
   };
 
   # This value determines the NixOS release from which the default
