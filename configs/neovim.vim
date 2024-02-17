@@ -12,18 +12,35 @@ set breakindent termguicolors textwidth=80 colorcolumn=+1
 
 let mapleader = ','
 
-" FZF
-nnoremap <leader>s :GFiles<CR>
-nnoremap <leader>f :Files<CR>
-nnoremap <leader>b :Buffers<CR>
-nnoremap <leader>h :History<CR>
-nnoremap <leader>c :Command<CR>
-
 " ---------
 " Lua start
 " ---------
 lua << END
 require("ibl").setup()
+
+-- Telescope
+local telescope = require('telescope')
+local telescope_actions = require('telescope.actions')
+local telescope_builtin = require('telescope.builtin')
+telescope.setup{
+  defaults = {
+    mappings = {
+      i = {
+        ["<esc>"] = telescope_actions.close,
+      },
+    },
+  },
+}
+telescope.load_extension('fzy_native')
+local find_without_preview = function()
+  telescope_builtin.find_files({ previewer = false })
+end
+vim.keymap.set('n', '<leader>s', find_without_preview, { desc = "Find files" })
+vim.keymap.set('n', '<leader>f', find_without_preview, { desc = "Find files" })
+vim.keymap.set('n', '<leader>b', telescope_builtin.buffers, { desc = "Find in buffers" })
+vim.keymap.set('n', '<leader>h', telescope_builtin.oldfiles , { desc = "Find from history" })
+vim.keymap.set('n', '<leader>c', telescope_builtin.command_history, { desc = "Find from command_history" })
+
 
 require('lualine').setup({
   options = {
