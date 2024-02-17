@@ -94,10 +94,11 @@ in {
   environment = {
     systemPackages = with pkgs; [
       # Cli utilities
-      bat bc bottom entr eza fd fzy git jq ripgrep unzip xdg-utils zoxide
+      bat bc bottom entr eza fd fzf git jq ripgrep unzip xdg-utils zoxide
 
       # Applications
       brave
+      gimp
       helix
       imv
       ledger
@@ -224,13 +225,12 @@ in {
             catppuccin-nvim
             gitsigns-nvim
             indent-blankline-nvim
+            fzf-lua
             lualine-nvim
             nvim-autopairs
             nvim-lspconfig
             rust-vim
             statix
-            telescope-nvim
-            telescope-fzy-native-nvim
             vim-commentary
             vim-nix
             vim-ledger
