@@ -18,29 +18,29 @@ let mapleader = ','
 lua << END
 require("ibl").setup()
 
--- Telescope
-local telescope = require('telescope')
-local telescope_actions = require('telescope.actions')
-local telescope_builtin = require('telescope.builtin')
-telescope.setup{
-  defaults = {
-    mappings = {
-      i = {
-        ["<esc>"] = telescope_actions.close,
-      },
-    },
-  },
-}
-telescope.load_extension('fzy_native')
-local find_without_preview = function()
-  telescope_builtin.find_files({ previewer = false })
-end
-vim.keymap.set('n', '<leader>s', find_without_preview, { desc = "Find files" })
-vim.keymap.set('n', '<leader>f', find_without_preview, { desc = "Find files" })
-vim.keymap.set('n', '<leader>b', telescope_builtin.buffers, { desc = "Find in buffers" })
-vim.keymap.set('n', '<leader>h', telescope_builtin.oldfiles , { desc = "Find from history" })
-vim.keymap.set('n', '<leader>c', telescope_builtin.command_history, { desc = "Find from command_history" })
+-- Fzf
+local fzf = require('fzf-lua')
 
+local function map(binding, mapping, desc)
+  vim.keymap.set('n', '<leader>' .. binding, mapping, {
+    noremap = true, silent = true, desc = desc
+  })
+end
+
+local find_files = function()
+  local git_dir = vim.fn.finddir('.git', vim.fn.getcwd() .. ";")
+  if git_dir == '' then
+    fzf.files()
+  else
+    fzf.git_files()
+  end
+end
+
+map('f', find_files, "Search Files")
+map('b', fzf.buffers, "Search Buffers")
+map('h', fzf.oldfiles, "Search History")
+map('sl', fzf.live_grep, "Search Live Grep")
+map('sc', fzf.commands, "Search Commands")
 
 require('lualine').setup({
   options = {
