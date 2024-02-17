@@ -30,7 +30,7 @@ in {
     pam.enableEcryptfs = true;
     sudo = {
       extraConfig = ''
-        Defaults        timestamp_timeout=30
+      Defaults        timestamp_timeout=30
       '';
     };
     tpm2 = {
@@ -82,7 +82,7 @@ in {
     isNormalUser = true;
     description = "Rohan";
     extraGroups = [ "adbusers" "networkmanager" "wheel" "video" "tss" ];
-    packages = with pkgs; [];
+    # packages = with pkgs; [];
     shell = pkgs.zsh;
   };
 
@@ -94,7 +94,7 @@ in {
   environment = {
     systemPackages = with pkgs; [
       # Cli utilities
-      bat bc bottom entr eza fd fzf git jq ripgrep unzip xdg-utils zoxide
+      bat bc bottom entr eza fd fzy git jq ripgrep unzip xdg-utils zoxide
 
       # Applications
       brave
@@ -222,49 +222,51 @@ in {
             ansible-vim
             aerial-nvim
             catppuccin-nvim
-            fzf-vim
             gitsigns-nvim
             indent-blankline-nvim
             lualine-nvim
             nvim-autopairs
             nvim-lspconfig
+            rust-vim
+            statix
+            telescope-nvim
+            telescope-fzy-native-nvim
+            vim-commentary
+            vim-nix
+            vim-ledger
+
             (nvim-treesitter.withPlugins (
               plugins: with plugins; [
-                python rust ruby lua nix bash vim yaml ledger json markdown
+                python rust ruby lua bash vim yaml ledger json markdown
                 tsx javascript typescript go clojure haskell
               ]
-              ))
-              rust-vim
-              statix
-              vim-commentary
-              vim-nix
-              vim-ledger
-            ];
-          };
+            ))
+          ];
         };
       };
+    };
 
-      starship.enable = true;
+    starship.enable = true;
 
-      sway = {
-        enable = true;
-        wrapperFeatures.gtk = true;
-        extraPackages = with pkgs; [
-          bemenu clipman gammastep glib grim mako swaylock swayidle waybar
-          wayland-utils wezterm wl-clipboard wofi
-        ];
-      };
+    sway = {
+      enable = true;
+      wrapperFeatures.gtk = true;
+      extraPackages = with pkgs; [
+        bemenu clipman gammastep glib grim mako swaylock swayidle waybar
+        wayland-utils wezterm wl-clipboard wofi
+      ];
+    };
 
-      zsh = {
-        enable = true;
-        shellInit = ''
+    zsh = {
+      enable = true;
+      shellInit = ''
         # Preempt the annoying new user prompt.
         if [ ! -e "$HOME/.zshrc" ]; then
-        touch $HOME/.zshrc
+          touch $HOME/.zshrc
         fi
 
         if [ "$USER" = ${user_name} ] && [ -z "$WAYLAND_DISPLAY" ] && [ "$XDG_VTNR" -eq 1 ]; then
-        exec sway
+          exec sway
         fi
         '';
         interactiveShellInit = builtins.readFile ./configs/zshrc;
@@ -350,8 +352,8 @@ in {
         }
         (subtypes "image" "imv-folder.desktop"
         [ "png" "jpeg" "jpg" "gif" "svg" "svg+xml" "tiff" "x-tiff" "x-dcraw" ])
-    ]);
-  };
+      ]);
+    };
   };
 
   # This value determines the NixOS release from which the default
