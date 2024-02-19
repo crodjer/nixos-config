@@ -18,7 +18,7 @@ let mapleader = ','
 lua << END
 require("ibl").setup()
 
--- Fzf
+-- fzf
 local fzf = require('fzf-lua')
 
 local function map(binding, mapping, desc)
@@ -86,6 +86,8 @@ end
 local lspconfig = require('lspconfig');
 local servers = {
   ansiblels = {},
+  elixirls = {},
+  gopls = {},
   lua_ls = {},
   nil_ls = {},
   ruff_lsp = {},
@@ -127,8 +129,17 @@ require("aerial").setup({
     vim.keymap.set("n", "}", "<cmd>AerialNext<CR>", { buffer = bufnr })
   end,
 })
--- You probably also want to set a keymap to toggle aerial
 vim.keymap.set("n", "<leader>a", "<cmd>AerialToggle!<CR>")
+
+-- Custom Functions
+local rooter = function()
+  local git_dir = vim.fn.finddir('.git', vim.fn.expand('%:p') .. ";")
+  if git_dir then
+    vim.cmd.tcd(new_dir)
+  end
+end
+vim.keymap.set("n", "<leader>r", rooter)
+
 END
 " --------
 " Lua ends

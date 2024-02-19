@@ -29,8 +29,19 @@ in {
   security = {
     pam.enableEcryptfs = true;
     sudo = {
+      extraRules = [
+        {
+          groups = [ "wheel" ];
+          commands = [
+            {
+              command = "${pkgs.nixos-rebuild}/bin/nixos-rebuild";
+              options = [ "NOPASSWD" ]; 
+            }
+          ];
+        }
+      ];
       extraConfig = ''
-      Defaults        timestamp_timeout=30
+        Defaults        timestamp_timeout=30
       '';
     };
     tpm2 = {
@@ -113,15 +124,18 @@ in {
       gocryptfs
 
       # Languages
+      elixir
       python3
+      go
 
       # LSP Services and Linters
       ansible-language-server ansible-lint
+      elixir-ls
+      gopls
       lua-language-server
       nil
       ruff ruff-lsp
       nodePackages.typescript-language-server
-      rubyPackages.solargraph
       rust-analyzer
     ];
 
@@ -229,6 +243,7 @@ in {
             lualine-nvim
             nvim-autopairs
             nvim-lspconfig
+            nvim-web-devicons
             rust-vim
             statix
             vim-commentary
@@ -238,7 +253,7 @@ in {
             (nvim-treesitter.withPlugins (
               plugins: with plugins; [
                 python rust ruby lua bash vim yaml ledger json markdown
-                tsx javascript typescript go clojure haskell
+                tsx javascript typescript go clojure haskell elixir
               ]
             ))
           ];
@@ -272,7 +287,8 @@ in {
         interactiveShellInit = builtins.readFile ./configs/zshrc;
         shellAliases = {
           clean-os = "sudo bash -c 'nix-collect-garbage -d; nixos-rebuild switch --upgrade; nix-collect-garbage -d'";
-          rebuild = "sudo nixos-rebuild switch --upgrade";
+          rebuild = "sudo ${pkgs.nixos-rebuild}/bin/nixos-rebuild switch --upgrade";
+          nvr = "nvr --remote-silent";
         };
       };
     };
@@ -363,5 +379,4 @@ in {
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "23.11"; # Did you read the comment?
-
 }
