@@ -287,7 +287,7 @@ in {
         '';
         interactiveShellInit = builtins.readFile ./configs/zshrc;
         shellAliases = {
-          clean-os = "sudo bash -c 'nix-collect-garbage -d; nixos-rebuild switch --upgrade; nix-collect-garbage -d'";
+          clean-os = "sudo bash -c 'nix-collect-garbage -d; nixos-rebuild switch; nix-collect-garbage -d'";
           rebuild = "sudo ${pkgs.nixos-rebuild}/bin/nixos-rebuild switch --upgrade";
           nvr = "nvr --remote-silent";
         };
