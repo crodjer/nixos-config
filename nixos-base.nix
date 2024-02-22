@@ -145,6 +145,7 @@ in {
       "xdg/wezterm/wezterm.lua".source = ./configs/wezterm.lua;
       "sway/scripts".source = ./configs/sway/scripts;
       "sway/config".source = ./configs/sway/sway.conf;
+      "sway/config.d/theme.conf".source = ./configs/sway/theme.conf;
       "swaynag/config".source = ./configs/swaynag;
     };
 
