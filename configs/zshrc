@@ -61,3 +61,4 @@ if [ -n "${commands[fzf-share]}" ]; then
 fi
 
 export GOPATH="$HOME/.local/share/go"
+export PATH="$HOME/.cargo/bin:$PATH"
