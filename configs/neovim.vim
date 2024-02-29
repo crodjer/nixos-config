@@ -7,7 +7,7 @@ set relativenumber number cursorline signcolumn=yes
 set clipboard+=unnamedplus
 set showcmd modeline undofile updatetime=100 timeoutlen=300
 set ignorecase smartcase
-set completeopt=menuone,noselect
+set completeopt=menuone,preview
 set breakindent termguicolors textwidth=80 colorcolumn=+1
 
 let mapleader = ','
@@ -62,6 +62,41 @@ require('gitsigns').setup({
 
 require("nvim-autopairs").setup()
 
+-- Completion
+local cmp = require'cmp'
+
+cmp.setup({
+  snippet = {
+    -- REQUIRED - you must specify a snippet engine
+    expand = function(args)
+      vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+      -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+      -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
+      -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+    end,
+  },
+  window = {
+    -- completion = cmp.config.window.bordered(),
+    -- documentation = cmp.config.window.bordered(),
+  },
+  mapping = cmp.mapping.preset.insert({
+    ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-e>'] = cmp.mapping.abort(),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+  }),
+  sources = cmp.config.sources({
+    { name = 'nvim_lsp' },
+    { name = 'vsnip' }, -- For vsnip users.
+    -- { name = 'luasnip' }, -- For luasnip users.
+    -- { name = 'ultisnips' }, -- For ultisnips users.
+    -- { name = 'snippy' }, -- For snippy users.
+  }, {
+    { name = 'buffer' },
+  })
+})
+
 -- LSP
 vim.keymap.set('n', '<space>e', vim.diagnostic.open_float)
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
@@ -84,10 +119,13 @@ local on_lsp_attach = function(_, bufnr)
 end
 
 local lspconfig = require('lspconfig');
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
+
 local servers = {
   ansiblels = {},
   elixirls = {},
   gopls = {},
+  html = {},
   lua_ls = {},
   nil_ls = {},
   ruff_lsp = {},
@@ -98,6 +136,7 @@ local servers = {
 
 for server, config in pairs(servers) do
   config.on_attach = on_attach
+  config.capabilities = capabilities
   lspconfig[server].setup(config)
 end
 
@@ -112,10 +151,10 @@ require('nvim-treesitter.configs').setup {
   incremental_selection = {
     enable = true,
     keymaps = {
-      init_selection = "gnn", -- set to `false` to disable one of the mappings
-      node_incremental = "grn",
-      scope_incremental = "grc",
-      node_decremental = "grm",
+      init_selection = "gnn",
+      node_incremental = "n",
+      scope_incremental = "s",
+      node_decremental = "p",
     },
   },
 }
@@ -149,3 +188,15 @@ END
 set foldmethod=expr
 set foldexpr=nvim_treesitter#foldexpr()
 set nofoldenable                     " Disable folding at startup.
+
+
+"" Ledger
+let g:ledger_default_commodity = '₹ '
+augroup ledger
+    autocmd FileType ledger inoremap <silent> <Tab> <C-R>=ledger#autocomplete_and_align()<CR>
+    autocmd FileType ledger inoremap <silent> <Esc> <Esc>:LedgerAlign<CR>
+    autocmd FileType ledger vnoremap <silent> <Tab> :LedgerAlign<CR>
+    autocmd FileType ledger nnoremap <silent> <Tab> :LedgerAlign<CR>
+    autocmd FileType ledger noremap { ?^\d<CR>
+    autocmd FileType ledger noremap } /^\d<CR>
+augroup END

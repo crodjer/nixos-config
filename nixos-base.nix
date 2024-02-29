@@ -105,7 +105,8 @@ in {
   environment = {
     systemPackages = with pkgs; [
       # Cli utilities
-      bat bc bottom entr eza fd fzf git jq ripgrep unzip xdg-utils zoxide
+      bat bc bottom entr eza fd fzf git jq ripgrep unzip xdg-utils
+      zsh-completions zoxide
 
       # Applications
       brave
@@ -127,6 +128,11 @@ in {
       elixir
       python3
       go
+      nodejs_21
+      rustup
+
+      # Compilation utilites
+      gcc gnumake openssl.dev pkg-config
 
       # LSP Services and Linters
       ansible-language-server ansible-lint
@@ -136,7 +142,7 @@ in {
       nil
       ruff ruff-lsp
       nodePackages.typescript-language-server
-      rust-analyzer
+      vscode-langservers-extracted
     ];
 
     etc = {
@@ -151,6 +157,7 @@ in {
 
     variables = {
       BAT_THEME = "base16-256";
+      PKG_CONFIG_PATH = "/run/current-system/sw/lib/pkgconfig";
     };
   };
 
@@ -243,6 +250,7 @@ in {
             fzf-lua
             lualine-nvim
             nvim-autopairs
+            nvim-cmp cmp-nvim-lsp
             nvim-lspconfig
             nvim-web-devicons
             rust-vim
@@ -365,6 +373,8 @@ in {
         subt);
       in [
         {
+          "x-scheme-handler/https x-scheme-handler/http" = "firefox.desktop";
+          "x-scheme-handler/https x-scheme-handler/https" = "firefox.desktop";
           "application/pdf" = "firefox.desktop";
         }
         (subtypes "image" "imv-folder.desktop"
