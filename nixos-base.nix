@@ -23,6 +23,12 @@ in {
       enable = true;
       powerOnBoot = true;
     };
+    opengl = {
+      enable = true;
+      extraPackages = with pkgs; [
+        intel-media-driver intel-ocl
+      ];
+    };
   };
   powerManagement.enable = true;
 
