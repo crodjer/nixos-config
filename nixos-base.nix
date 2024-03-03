@@ -283,6 +283,10 @@ in {
       };
     };
 
+    nix-ld = {
+      enable = true;
+    };
+
     starship.enable = true;
 
     sway = {
