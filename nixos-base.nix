@@ -260,6 +260,7 @@ in {
             catppuccin-nvim
             gitsigns-nvim
             indent-blankline-nvim
+            fidget-nvim
             fzf-lua
             lualine-nvim
             nvim-autopairs
