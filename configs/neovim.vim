@@ -62,15 +62,16 @@ local find_in_package = function()
     'Pipfile',
     'package.json'
   }
+  local parent_dir = vim.fn.expand("%:p:h")
   for _, file in pairs(interesting_files) do
-    project_file = vim.fn.findfile('Cargo.toml', vim.fn.getcwd() .. ";")
+    project_file = vim.fn.findfile('Cargo.toml', parent_dir .. ";")
     if project_file then
       fzf.files({ cwd=vim.fs.dirname(project_file) })
       return
     end
   end
 
-  fzf.files({ cwd=vim.fn.expand("%:p:h") })
+  fzf.files({ cwd=parent_dir })
 end
 
 nmapl('f', find_files, "Search Files")
@@ -78,6 +79,7 @@ nmapl('e', find_in_package, "Search Files in package.")
 nmapl('b', fzf.buffers, "Search Buffers")
 nmapl('h', fzf.oldfiles, "Search History")
 nmapl('sl', fzf.live_grep, "Search Live Grep")
+nmapl('sh', fzf.command_history, "Search Command History")
 nmapl('sc', fzf.commands, "Search Commands")
 
 require('lualine').setup({
