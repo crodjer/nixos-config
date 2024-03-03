@@ -200,6 +200,7 @@ in {
       preferences = {
         "browser.warnOnQuitShortcut" = false;
         "browser.uiCustomization.state" = builtins.readFile ./configs/firefox/ui-customization.json;
+        "browser.urlbar.update2.engineAliasRefresh" = true;
         # "browser.newtabpage.pinned" = builtins.readFile ./configs/firefox/pinned.json;
 
         # Remove bloat and sponsored content.
