@@ -201,7 +201,7 @@ in {
         # We need ESR for this to work.
         SearchEngines = lib.importJSON ./configs/firefox/search.json;
         DNSOverHTTPS = lib.importJSON ./configs/firefox/dns-over-https.json;
-        ExtensionSettings = lib.mkForce(lib.importJSON ./configs/firefox/extensions.json);
+        # ExtensionSettings = lib.mkForce(lib.importJSON ./configs/firefox/extensions.json);
       };
       preferences = {
         "browser.warnOnQuitShortcut" = false;
