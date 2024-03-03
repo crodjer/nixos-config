@@ -12,10 +12,27 @@ set breakindent termguicolors textwidth=80 colorcolumn=+1
 
 let mapleader = ','
 
-" ---------
-" Lua start
-" ---------
+
+"" Treesitter based folding
+set foldmethod=expr
+set foldexpr=nvim_treesitter#foldexpr()
+set nofoldenable                     " Disable folding at startup.
+
+"" Ledger
+let g:ledger_default_commodity = '₹ '
+augroup ledger
+    autocmd FileType ledger inoremap <silent> <Tab> <C-R>=ledger#autocomplete_and_align()<CR>
+    autocmd FileType ledger inoremap <silent> <Esc> <Esc>:LedgerAlign<CR>
+    autocmd FileType ledger vnoremap <silent> <Tab> :LedgerAlign<CR>
+    autocmd FileType ledger nnoremap <silent> <Tab> :LedgerAlign<CR>
+    autocmd FileType ledger noremap { ?^\d<CR>
+    autocmd FileType ledger noremap } /^\d<CR>
+augroup END
+
 lua << END
+------------
+-- Lua start
+------------
 require("ibl").setup()
 
 -- fzf
@@ -36,7 +53,25 @@ local find_files = function()
   end
 end
 
+local find_in_package = function()
+  interesting_files = {
+    'Cargo.toml',
+    'Pipfile',
+    'package.json'
+  }
+  for _, file in pairs(interesting_files) do
+    project_file = vim.fn.findfile('Cargo.toml', vim.fn.getcwd() .. ";")
+    if project_file then
+      fzf.files({ cwd=vim.fs.dirname(project_file) })
+      return
+    end
+  end
+
+  fzf.files({ cwd=vim.fn.expand("%:p:h") })
+end
+
 map('f', find_files, "Search Files")
+map('e', find_in_package, "Search Files in package.")
 map('b', fzf.buffers, "Search Buffers")
 map('h', fzf.oldfiles, "Search History")
 map('sl', fzf.live_grep, "Search Live Grep")
@@ -61,7 +96,6 @@ require('gitsigns').setup({
 })
 
 require("nvim-autopairs").setup()
-
 -- Completion
 local cmp = require'cmp'
 
@@ -88,10 +122,6 @@ cmp.setup({
   }),
   sources = cmp.config.sources({
     { name = 'nvim_lsp' },
-    { name = 'vsnip' }, -- For vsnip users.
-    -- { name = 'luasnip' }, -- For luasnip users.
-    -- { name = 'ultisnips' }, -- For ultisnips users.
-    -- { name = 'snippy' }, -- For snippy users.
   }, {
     { name = 'buffer' },
   })
@@ -179,24 +209,7 @@ local rooter = function()
 end
 vim.keymap.set("n", "<leader>r", rooter)
 
+----------
+-- Lua ends
+----------
 END
-" --------
-" Lua ends
-" --------
-
-" Treesitter based folding
-set foldmethod=expr
-set foldexpr=nvim_treesitter#foldexpr()
-set nofoldenable                     " Disable folding at startup.
-
-
-"" Ledger
-let g:ledger_default_commodity = '₹ '
-augroup ledger
-    autocmd FileType ledger inoremap <silent> <Tab> <C-R>=ledger#autocomplete_and_align()<CR>
-    autocmd FileType ledger inoremap <silent> <Esc> <Esc>:LedgerAlign<CR>
-    autocmd FileType ledger vnoremap <silent> <Tab> :LedgerAlign<CR>
-    autocmd FileType ledger nnoremap <silent> <Tab> :LedgerAlign<CR>
-    autocmd FileType ledger noremap { ?^\d<CR>
-    autocmd FileType ledger noremap } /^\d<CR>
-augroup END
