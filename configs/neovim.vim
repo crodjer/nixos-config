@@ -41,7 +41,7 @@ require("ibl").setup()
 -- fzf
 local fzf = require('fzf-lua')
 
-local function map(binding, mapping, desc)
+local function nmapl(binding, mapping, desc)
   vim.keymap.set('n', '<leader>' .. binding, mapping, {
     noremap = true, silent = true, desc = desc
   })
@@ -73,12 +73,12 @@ local find_in_package = function()
   fzf.files({ cwd=vim.fn.expand("%:p:h") })
 end
 
-map('f', find_files, "Search Files")
-map('e', find_in_package, "Search Files in package.")
-map('b', fzf.buffers, "Search Buffers")
-map('h', fzf.oldfiles, "Search History")
-map('sl', fzf.live_grep, "Search Live Grep")
-map('sc', fzf.commands, "Search Commands")
+nmapl('f', find_files, "Search Files")
+nmapl('e', find_in_package, "Search Files in package.")
+nmapl('b', fzf.buffers, "Search Buffers")
+nmapl('h', fzf.oldfiles, "Search History")
+nmapl('sl', fzf.live_grep, "Search Live Grep")
+nmapl('sc', fzf.commands, "Search Commands")
 
 require('lualine').setup({
   options = {
@@ -168,20 +168,29 @@ vim.api.nvim_create_autocmd('LspAttach', {
     -- See `:help vim.lsp.*` for documentation on any of the below functions
     local opts = { buffer = ev.buf }
 
-    vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
-    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
-    vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
-    vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
-    vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
-    vim.keymap.set('n', '<leader>D', vim.lsp.buf.type_definition, opts)
-    vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
-    vim.keymap.set({ 'n', 'v' }, '<leader>ca', vim.lsp.buf.code_action, opts)
-    vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
-    vim.keymap.set('n', '<leader>f', function()
+    local function map(modes, binding, mapping, desc)
+      vim.keymap.set(modes, binding, mapping, {
+        buffer = ev.buf, desc = "LSP: " .. desc
+      })
+    end
+
+    map('n', 'gD', vim.lsp.buf.declaration, "Go to Declaration")
+    map('n', 'gd', vim.lsp.buf.definition, "Go to Definition")
+    map('n', 'K', vim.lsp.buf.hover, "Hover")
+    map('n', 'gi', vim.lsp.buf.implementation, "Go to Implementation")
+    map('n', '<C-k>', vim.lsp.buf.signature_help, "Get Signature Help")
+    map('n', '<leader>D', vim.lsp.buf.type_definition, "Get Type Definition")
+    map('n', '<leader>rn', vim.lsp.buf.rename, "Rename Buffer")
+    map({ 'n', 'v' }, '<leader>ca', vim.lsp.buf.code_action, "Perform Code Action")
+    map('n', 'gr', vim.lsp.buf.references, "Get Refernces")
+    map('n', '<leader>cf', function()
       vim.lsp.buf.format { async = true }
-    end, opts)
+    end, "Format Code")
   end,
 })
+
+-- Fidget
+require("fidget").setup {}
 
 -- Treesitter
 require('nvim-treesitter.configs').setup {
