@@ -133,12 +133,10 @@ in {
       # Languages
       elixir
       python3
+      gcc
       go
       nodejs_21
       rustup
-
-      # Compilation utilites
-      gcc gnumake openssl.dev pkg-config
 
       # LSP Services and Linters
       ansible-language-server ansible-lint
