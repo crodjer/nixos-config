@@ -12,6 +12,8 @@ in {
         ".config/helix".source = ./configs/helix;
         ".config/mako/config".source = ./configs/mako;
         ".config/wofi".source = ./configs/wofi;
+        ".config/wireplumber/main.lua.d/51-disable-suspension.lua".source =
+          ./configs/wireplumber/51-disable-suspension.lua;
       };
       packages = with pkgs; [
         signal-desktop
