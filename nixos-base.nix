@@ -6,6 +6,7 @@
 
 let 
   user_name = "rohan";
+  update-system = pkgs.writeShellScriptBin "update" (builtins.readFile ./scripts/update.sh);
 in {
   # Bootloader.
   boot = {
@@ -40,7 +41,7 @@ in {
           groups = [ "wheel" ];
           commands = [
             {
-              command = "${pkgs.nixos-rebuild}/bin/nixos-rebuild";
+              command = "/run/current-system/sw/bin/nixos-rebuild";
               options = [ "NOPASSWD" ]; 
             }
           ];
@@ -105,6 +106,10 @@ in {
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+  nix.gc = {
+    automatic = true;
+    dates = "daily";
+  };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -137,6 +142,9 @@ in {
       go
       nodejs_21
       rustup
+
+      # My custom scripts
+      update-system
 
       # LSP Services and Linters
       ansible-language-server ansible-lint
@@ -300,8 +308,8 @@ in {
         '';
         interactiveShellInit = builtins.readFile ./configs/zshrc;
         shellAliases = {
-          clean-os = "sudo bash -c 'nix-collect-garbage -d; nixos-rebuild switch; nix-collect-garbage -d'";
-          rebuild = "sudo ${pkgs.nixos-rebuild}/bin/nixos-rebuild switch --upgrade";
+          clean-os = "sudo bash -c 'nix-env --delete-generations +3 && nix-collect-garbage -d'";
+          rebuild = "sudo nixos-rebuild switch";
           nvr = "nvr --remote-silent";
         };
       };
