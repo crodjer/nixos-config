@@ -263,7 +263,7 @@ in {
             fzf-lua
             lualine-nvim
             nvim-autopairs
-            nvim-cmp cmp-nvim-lsp
+            nvim-cmp cmp-nvim-lsp cmp-buffer
             nvim-lspconfig
             nvim-web-devicons
             rust-vim
