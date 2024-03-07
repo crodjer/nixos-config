@@ -313,8 +313,8 @@ in {
         '';
         interactiveShellInit = builtins.readFile ./configs/zshrc;
         shellAliases = {
-          clean-os = "sudo bash -c 'nix-env --delete-generations +3 && nix-collect-garbage -d'";
           rebuild = "sudo nixos-rebuild switch";
+          clean-os = "sudo bash -c 'nix-collect-garbage --delete-older-than 1d && nixos-rebuild switch'";
           nvr = "nvr --remote-silent";
         };
       };
