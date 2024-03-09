@@ -393,7 +393,7 @@ in {
           "x-scheme-handler/https x-scheme-handler/https" = "firefox.desktop";
           "application/pdf" = "firefox.desktop";
         }
-        (subtypes "image" "imv-folder.desktop"
+        (subtypes "image" "imv.desktop"
         [ "png" "jpeg" "jpg" "gif" "svg" "svg+xml" "tiff" "x-tiff" "x-dcraw" ])
       ]);
     };
