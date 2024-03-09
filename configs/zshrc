@@ -72,4 +72,4 @@ function when_dark() {
   fi
 }
 
-alias btm='btm --color $(when_dark nord nord-light)'
+alias btm='btm --battery --color $(when_dark nord nord-light)'
