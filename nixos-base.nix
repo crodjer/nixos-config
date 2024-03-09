@@ -295,6 +295,7 @@ in {
         bemenu clipman gammastep glib grim mako swaylock swayidle waybar
         wayland-utils wezterm wl-clipboard wofi
       ];
+      extraSessionCommands = builtins.readFile ./configs/sway/env.sh;
     };
 
     zsh = {
