@@ -1,18 +1,5 @@
 {
   "placements": {
-    "widget-overflow-fixed-list": [],
-    "unified-extensions-area": [],
-    "nav-bar": [
-      "back-button",
-      "forward-button",
-      "stop-reload-button",
-      "urlbar-container",
-      "downloads-button",
-      "screenshot-button",
-      "history-panelmenu",
-      "fxa-toolbar-menu-button",
-      "unified-extensions-button"
-    ],
     "toolbar-menubar": [
       "menubar-items"
     ],
@@ -24,9 +11,5 @@
     "PersonalToolbar": [
       "personal-bookmarks"
     ]
-  },
-  "dirtyAreaCache": [
-  ],
-  "currentVersion": 20,
-  "newElementCount": 4
+  }
 }
