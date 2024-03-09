@@ -65,13 +65,19 @@ local find_in_package = function()
   interesting_files = {
     'Cargo.toml',
     'Pipfile',
-    'package.json'
+    'package.json',
+    '.git'
   }
   local parent_dir = vim.fn.expand("%:p:h")
   for _, file in pairs(interesting_files) do
-    project_file = vim.fn.findfile('Cargo.toml', parent_dir .. ";")
-    if project_file then
-      fzf.files({ cwd=vim.fs.dirname(project_file) })
+    project_dir = vim.fs.dirname(vim.fs.find(file, {
+      path = parent_dir,
+      upward = true
+    })[1])
+    print(project_dir)
+
+    if project_dir then
+      fzf.files({ cwd=project_dir })
       return
     end
   end
