@@ -9,7 +9,6 @@ in {
   home-manager.users.${user_name} = {
     home = {
       file = {
-        ".profile".source = ./configs/profile;
         ".config/helix".source = ./configs/helix;
         ".config/mako/config".source = ./configs/mako;
         ".config/wofi".source = ./configs/wofi;
