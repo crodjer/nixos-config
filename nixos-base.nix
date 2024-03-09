@@ -168,7 +168,6 @@ in {
     };
 
     variables = {
-      BAT_THEME = "base16-256";
       PKG_CONFIG_PATH = "/run/current-system/sw/lib/pkgconfig";
     };
   };
@@ -201,7 +200,6 @@ in {
         # We need ESR for this to work.
         SearchEngines = lib.importJSON ./configs/firefox/search.json;
         DNSOverHTTPS = lib.importJSON ./configs/firefox/dns-over-https.json;
-        # ExtensionSettings = lib.mkForce(lib.importJSON ./configs/firefox/extensions.json);
       };
       preferences = {
         "browser.warnOnQuitShortcut" = false;

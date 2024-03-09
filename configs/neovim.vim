@@ -1,4 +1,9 @@
-set background=light
+if !empty($DARK_MODE)
+  set background=dark
+else
+  set background=light
+endif
+
 set termguicolors
 colorscheme catppuccin
 
