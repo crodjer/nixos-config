@@ -27,7 +27,7 @@
       # / turned off.
       wantedBy = [ "sleep.target" "shutdown.target" ];
       script = ''
-        ${pkgs.tlp}/bin/tlp setcharge 0 0
+        ${pkgs.tlp}/bin/tlp setcharge 0 1
       '';
     };
   };
