@@ -45,6 +45,7 @@ require("ibl").setup()
 
 -- fzf
 local fzf = require('fzf-lua')
+fzf.register_ui_select()
 
 local function nmapl(binding, mapping, desc)
   vim.keymap.set('n', '<leader>' .. binding, mapping, {
@@ -187,15 +188,15 @@ vim.api.nvim_create_autocmd('LspAttach', {
       })
     end
 
-    map('n', 'gD', vim.lsp.buf.declaration, "Go to Declaration")
-    map('n', 'gd', vim.lsp.buf.definition, "Go to Definition")
+    map('n', 'gD', fzf.lsp_declarations, "Go to Declaration")
+    map('n', 'gd', fzf.lsp_definitions, "Go to Definition")
     map('n', 'K', vim.lsp.buf.hover, "Hover")
-    map('n', 'gi', vim.lsp.buf.implementation, "Go to Implementation")
+    map('n', 'gi', fzf.lsp_implementations, "Go to Implementation")
     map('n', '<C-k>', vim.lsp.buf.signature_help, "Get Signature Help")
-    map('n', '<leader>D', vim.lsp.buf.type_definition, "Get Type Definition")
-    map('n', '<leader>rn', vim.lsp.buf.rename, "Rename Buffer")
-    map({ 'n', 'v' }, '<leader>ca', vim.lsp.buf.code_action, "Perform Code Action")
-    map('n', 'gr', vim.lsp.buf.references, "Get Refernces")
+    map('n', '<leader>t', fzf.lsp_typedefs, "Get Type Definition")
+    map('n', '<leader>rn', vim.lsp.buf.rename, "Rename")
+    map({ 'n', 'v' }, '<leader>ca', fzf.lsp_code_actions, "Perform Code Action")
+    map('n', 'gr', fzf.lsp_references, "Get Refernces")
     map('n', '<leader>cf', function()
       vim.lsp.buf.format { async = true }
     end, "Format Code")
