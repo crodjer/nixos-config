@@ -116,7 +116,7 @@ in {
   environment = {
     systemPackages = with pkgs; [
       # Cli utilities
-      bat bc bottom entr eza fd fzf git hugo jq ripgrep unzip xdg-utils
+      bat bc bottom dust entr eza fd fzf git hugo jq ripgrep unzip xdg-utils
       zsh-completions zoxide
 
       # Applications
