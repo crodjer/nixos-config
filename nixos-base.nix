@@ -317,6 +317,7 @@ in {
         shellAliases = {
           rebuild = "sudo nixos-rebuild switch";
           clean-os = "sudo bash -c 'nix-collect-garbage --delete-older-than 1d && nixos-rebuild switch'";
+          o = "xdg-open";
           nvr = "nvr --remote-silent";
         };
       };
@@ -387,8 +388,8 @@ in {
         subt);
       in [
         {
-          "x-scheme-handler/https x-scheme-handler/http" = "firefox.desktop";
-          "x-scheme-handler/https x-scheme-handler/https" = "firefox.desktop";
+          "x-scheme-handler/http" = "firefox.desktop";
+          "x-scheme-handler/https" = "firefox.desktop";
           "application/pdf" = "firefox.desktop";
         }
         (subtypes "image" "imv.desktop"
