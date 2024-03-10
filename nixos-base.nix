@@ -358,13 +358,7 @@ in {
       dataDir = "/home/${user_name}";
     };
     thermald.enable = true;
-    tlp = {
-      enable = true;
-      settings = {
-        START_CHARGE_THRESH_BAT0 = 60; # 40 and bellow it starts to charge
-        STOP_CHARGE_THRESH_BAT0 = 80; # 80 and above it stops charging
-      };
-    };
+    tlp.enable = true;
     udisks2 = {
       enable = true;
     };
