@@ -141,7 +141,11 @@ in {
       gcc
       go
       nodejs_21
-      rustup
+      # Rust
+      cargo cargo-generate rustc rust-analyzer
+
+      # Wasm
+      trunk lld
 
       # My custom scripts
       update-system
