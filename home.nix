@@ -14,6 +14,7 @@ in {
         ".config/wofi".source = ./configs/wofi;
         ".config/wireplumber/main.lua.d/51-disable-suspension.lua".source =
           ./configs/wireplumber/51-disable-suspension.lua;
+        ".cargo/config.toml".source = ./configs/cargo.toml;
       };
       packages = with pkgs; [
         signal-desktop
