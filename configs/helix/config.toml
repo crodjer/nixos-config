@@ -2,6 +2,7 @@ theme = "catppuccin_latte"
 
 [editor]
 line-number = "relative"
+rulers = [81]
 
 [editor.file-picker]
 hidden = false
