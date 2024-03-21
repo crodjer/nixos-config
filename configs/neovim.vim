@@ -8,6 +8,7 @@ set termguicolors
 colorscheme catppuccin
 
 set expandtab tabstop=2 softtabstop=2 shiftwidth=2
+set formatoptions-=t
 set relativenumber number cursorline signcolumn=yes
 set clipboard+=unnamedplus
 set showcmd modeline undofile updatetime=100 timeoutlen=300
