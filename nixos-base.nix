@@ -295,7 +295,10 @@ in {
       enable = true;
       wrapperFeatures.gtk = true;
       extraPackages = with pkgs; [
-        bemenu clipman gammastep glib grim mako swaylock swayidle waybar
+        bemenu clipman gammastep glib grim mako swaylock swayidle
+        (waybar.override {
+          wireplumberSupport = false;
+        })
         wayland-utils wezterm wl-clipboard wofi
       ];
       extraSessionCommands = builtins.readFile ./configs/sway/env.sh;
