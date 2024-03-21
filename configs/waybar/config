@@ -5,7 +5,7 @@
     // Choose the order of the modules
     "modules-left": ["sway/workspaces", "sway/mode","sway/window"],
     "modules-center": [],
-    "modules-right": ["custom/wttr", "idle_inhibitor", "network", "cpu", "memory", "backlight", "battery", "pulseaudio", "clock", "tray"],
+    "modules-right": ["idle_inhibitor", "network", "custom/ping", "cpu", "memory", "backlight", "battery", "pulseaudio", "clock", "tray"],
     "sway/workspaces": {
         "disable-scroll": true
     },
@@ -84,7 +84,7 @@
         "format-linked": "{ifname}  ",
         "format-disconnected": " ",
         "format-alt": "{ifname}: {ipaddr}/{cidr}",
-        "tooltip-format-wifi": "{essid} ({signalStrength}%)",
+        "tooltip-format-wifi": "{essid} ({signalStrength}%) | {frequency}",
         "tooltip-format-ethernet": "{ifname}: {ipaddr}/{cidr}",
         "interval": 5,
         "states": {
@@ -112,8 +112,13 @@
         },
         "tooltip-format": "{desc}\n{icon}\t{volume}\n\t{source_volume}",
         "on-click": "wpctl set-mute @DEFAULT_SINK@ toggle",
-        "on-scroll-up": "wpctl set-volume @DEFAULT_SINK@ 1%-",
-        "on-scroll-down": "wpctl set-volume @DEFAULT_SINK@ 1%+",
+        "on-scroll-up": "wpctl set-volume @DEFAULT_SINK@ 1%- -l 1",
+        "on-scroll-down": "wpctl set-volume @DEFAULT_SINK@ 1%+ -l 1",
         "smooth-scrolling-threshold": 1
     },
+    "custom/ping": {
+        "format": "{}",
+        "return-type": "json",
+        "exec": "ping-monitor -j"
+    }
 }
