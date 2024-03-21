@@ -7,6 +7,7 @@
 let 
   user_name = "rohan";
   update-system = pkgs.writeShellScriptBin "update" (builtins.readFile ./scripts/update.sh);
+  ping-monitor = pkgs.writeShellScriptBin "ping-monitor" (builtins.readFile ./scripts/ping-monitor.sh);
 in {
   # Bootloader.
   boot = {
@@ -295,7 +296,7 @@ in {
       enable = true;
       wrapperFeatures.gtk = true;
       extraPackages = with pkgs; [
-        bemenu clipman gammastep glib grim mako swaylock swayidle
+        bemenu clipman gammastep glib grim mako ping-monitor swaylock swayidle
         (waybar.override {
           wireplumberSupport = false;
         })

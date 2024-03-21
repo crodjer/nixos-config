@@ -137,3 +137,15 @@ window#waybar.hidden {
     background: @yellow;
     color: @subtext1;
 }
+
+#custom-ping.low {
+    color: @text;
+}
+
+#custom-ping.medium {
+    color: @yellow;
+}
+
+#custom-ping.high {
+    color: @red;
+}
