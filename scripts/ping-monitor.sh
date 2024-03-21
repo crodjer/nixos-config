@@ -32,7 +32,6 @@ grep="grep --line-buffered"
 ping 1.1.1.1 -i 3 | $grep time= | $grep -Po '\d+.\d*(?= ms)' | while read ping
 do
   if [ -z $JSON_OUTPUT ] ; then
-    {"text": "$text", "tooltip": "$tooltip", "class": "$class", "percentage": $percentage }
     echo $ping
   else
     class=high
