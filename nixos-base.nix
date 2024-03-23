@@ -127,7 +127,6 @@ in {
       imv
       ledger
       neovim-remote
-      nix-index
       ranger
       rbw
       v4l-utils
@@ -287,10 +286,7 @@ in {
       };
     };
 
-    nix-ld = {
-      enable = true;
-    };
-
+    nix-ld.enable = true;
     starship.enable = true;
 
     sway = {
