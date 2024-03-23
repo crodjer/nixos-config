@@ -127,6 +127,7 @@ in {
       imv
       ledger
       neovim-remote
+      nix-index
       ranger
       rbw
       v4l-utils
