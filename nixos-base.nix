@@ -117,7 +117,7 @@ in {
   environment = {
     systemPackages = with pkgs; [
       # Cli utilities
-      bat bc bottom dust entr eza fd fzf git hugo jq ripgrep unzip xdg-utils
+      bat bc bottom dust entr eza fd fzf git jq ripgrep unzip xdg-utils
       zsh-completions zoxide
 
       # Applications
@@ -183,6 +183,7 @@ in {
 
   programs = {
     adb.enable = true;
+    direnv.enable = true;
     firefox = {
       enable = true;
       policies = {
