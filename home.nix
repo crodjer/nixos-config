@@ -17,8 +17,9 @@ in {
         ".cargo/config.toml".source = ./configs/cargo.toml;
       };
       packages = with pkgs; [
-        signal-desktop
+        localsend
         pass 
+        signal-desktop
       ];
       stateVersion = "23.11";
     };
