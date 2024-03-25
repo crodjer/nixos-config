@@ -18,6 +18,10 @@ set breakindent termguicolors textwidth=80 colorcolumn=+1
 
 let mapleader = ','
 
+"" Custom Bindings
+"
+"Open file relative to current file
+nnoremap <leader>n :e <C-R>=expand("%:p:h") . "/" <CR>
 
 "" Treesitter based folding
 set foldmethod=expr
