@@ -68,7 +68,8 @@ local find_in_package = function()
     'Cargo.toml',
     'Pipfile',
     'package.json',
-    '.git'
+    '.git',
+    'shell.nix'
   }
   local parent_dir = vim.fn.expand("%:p:h")
   for _, file in pairs(interesting_files) do
@@ -157,6 +158,7 @@ local servers = {
   ansiblels = {},
   elixirls = {},
   gopls = {},
+  jdtls = {},
   html = {},
   lua_ls = {},
   nil_ls = {},
