@@ -277,6 +277,7 @@ in {
             vim-commentary
             vim-nix
             vim-ledger
+            ultisnips cmp-nvim-ultisnips
 
             (nvim-treesitter.withPlugins (
               plugins: with plugins; [

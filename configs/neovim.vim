@@ -118,14 +118,14 @@ require("nvim-autopairs").setup()
 -- Completion
 local cmp = require'cmp'
 
+-- UltiSnips
+require("cmp_nvim_ultisnips").setup {}
+local cmp_ultisnips_mappings = require("cmp_nvim_ultisnips.mappings")
+
 cmp.setup({
   snippet = {
-    -- REQUIRED - you must specify a snippet engine
     expand = function(args)
-      vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
-      -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
-      -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
-      -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+      vim.fn["UltiSnips#Anon"](args.body)
     end,
   },
   window = {
@@ -138,6 +138,18 @@ cmp.setup({
     ['<C-Space>'] = cmp.mapping.complete(),
     ['<C-e>'] = cmp.mapping.abort(),
     ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+    ["<Tab>"] = cmp.mapping(
+      function(fallback)
+        cmp_ultisnips_mappings.expand_or_jump_forwards(fallback)
+      end,
+      { "i", "s" }
+    ),
+    ["<S-Tab>"] = cmp.mapping(
+      function(fallback)
+        cmp_ultisnips_mappings.jump_backwards(fallback)
+      end,
+      { "i", "s" }
+    ),
   }),
   sources = cmp.config.sources({
     { name = 'nvim_lsp' },
