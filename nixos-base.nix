@@ -138,10 +138,11 @@ in {
 
       # Languages
       elixir
-      python3
+      hurl
       gcc
       go
       nodejs_21
+      python3
       # Rust
       cargo cargo-generate rustc rust-analyzer
 
@@ -265,6 +266,7 @@ in {
             indent-blankline-nvim
             fidget-nvim
             fzf-lua
+            hurl
             lualine-nvim
             nvim-autopairs
             nvim-cmp cmp-nvim-lsp cmp-buffer
