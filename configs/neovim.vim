@@ -15,11 +15,12 @@ set showcmd modeline undofile updatetime=100 timeoutlen=300
 set ignorecase smartcase
 set completeopt=menuone,preview
 set breakindent termguicolors textwidth=80 colorcolumn=+1
+set spell spelllang=en spellfile=~/.local/share/nvim/spell/en.add
 
 let mapleader = ','
 
 "" Custom Bindings
-"
+
 "Open file relative to current file
 nnoremap <leader>n :e <C-R>=expand("%:p:h") . "/" <CR>
 
