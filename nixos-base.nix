@@ -35,7 +35,13 @@ in {
   powerManagement.enable = true;
 
   security = {
-    pam.enableEcryptfs = true;
+    pam = {
+      enableEcryptfs = true;
+      services = {
+        swaylock.u2fAuth = true;
+        sudo.u2fAuth = true;
+      };
+    };
     sudo = {
       extraRules = [
         {
@@ -363,6 +369,9 @@ in {
     };
     thermald.enable = true;
     tlp.enable = true;
+    udev = {
+      packages = [ pkgs.yubikey-personalization ];
+    };
     udisks2 = {
       enable = true;
     };
