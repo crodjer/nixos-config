@@ -127,13 +127,13 @@ in {
       zsh-completions zoxide
 
       # Applications
+      anki-bin mpv
       brave
       gimp
       helix
       imv
       ledger
       neovim-remote
-      ranger
       rbw
       v4l-utils
       vlc
