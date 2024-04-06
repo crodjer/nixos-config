@@ -163,6 +163,10 @@ cmp.setup({
   })
 })
 
+cmp.setup.filetype('ledger', {
+  sources = cmp.config.sources()
+})
+
 -- LSP
 vim.keymap.set('n', '<space>e', vim.diagnostic.open_float)
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
