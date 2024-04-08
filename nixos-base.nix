@@ -137,6 +137,7 @@ in {
       rbw
       v4l-utils
       vlc
+      yazi
 
       # Tools and Services
       ansible
