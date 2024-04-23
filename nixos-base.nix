@@ -213,7 +213,7 @@ in {
         SearchBar = "unified";
         # We need ESR for this to work.
         SearchEngines = lib.importJSON ./configs/firefox/search.json;
-        DNSOverHTTPS = lib.importJSON ./configs/firefox/dns-over-https.json;
+        # DNSOverHTTPS = lib.importJSON ./configs/firefox/dns-over-https.json;
       };
       preferences = {
         "browser.warnOnQuitShortcut" = false;
