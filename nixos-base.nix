@@ -305,8 +305,8 @@ in {
       enable = true;
       wrapperFeatures.gtk = true;
       extraPackages = with pkgs; [
-        bemenu clipman foot gammastep glib grim mako ping-monitor swaylock
-        swayidle
+        bemenu clipman foot gammastep glib grim libnotify mako ping-monitor
+        swaylock swayidle
         (waybar.override {
           wireplumberSupport = false;
         })

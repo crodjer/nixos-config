@@ -21,6 +21,12 @@ in {
         pass 
         signal-desktop
       ];
+      pointerCursor = {
+        gtk.enable = true;
+        package = pkgs.catppuccin-cursors.latteLavender;
+        name = "Catppuccin-Latte-Lavender-Cursors";
+        size = 22;
+      };
       stateVersion = "23.11";
     };
 
