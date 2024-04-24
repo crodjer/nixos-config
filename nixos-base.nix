@@ -172,6 +172,7 @@ in {
 
     etc = {
       "xdg/user-dirs.defaults".source = ./configs/user-dirs.dirs;
+      "xdg/foot/foot.ini".source = ./configs/foot.ini;
       "xdg/waybar".source = ./configs/waybar;
       "xdg/wezterm/wezterm.lua".source = ./configs/wezterm.lua;
       "sway/scripts".source = ./configs/sway/scripts;
@@ -304,11 +305,12 @@ in {
       enable = true;
       wrapperFeatures.gtk = true;
       extraPackages = with pkgs; [
-        bemenu clipman gammastep glib grim mako ping-monitor swaylock swayidle
+        bemenu clipman foot gammastep glib grim mako ping-monitor swaylock
+        swayidle
         (waybar.override {
           wireplumberSupport = false;
         })
-        wayland-utils wezterm wl-clipboard wofi
+        wayland-utils wl-clipboard wofi
       ];
       extraSessionCommands = builtins.readFile ./configs/sway/env.sh;
     };
