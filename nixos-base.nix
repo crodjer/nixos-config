@@ -76,7 +76,8 @@ in {
     ];
     firewall = {
       enable = true;
-      allowedTCPPorts = [ 5000 ];
+      allowedTCPPorts = [ 5000 53317 ];
+      allowedUDPPorts = [ 53317 ];
     };
   };
 
@@ -123,8 +124,8 @@ in {
   environment = {
     systemPackages = with pkgs; [
       # Cli utilities
-      bat bc bottom dogdns dust entr eza fd fzf git jq ripgrep unzip xdg-utils
-      zsh-completions zoxide
+      bat bc bottom dogdns dust entr eza fd fzf git jq mtpfs ripgrep unzip
+      xdg-utils zsh-completions zoxide
 
       # Applications
       anki-bin mpv
@@ -148,7 +149,6 @@ in {
       hurl
       gcc
       go
-      nodejs_21
       python3
       # Rust
       cargo cargo-generate rustc rust-analyzer
@@ -413,6 +413,10 @@ in {
     };
   };
 
+  system.autoUpgrade = {
+    enable = true;
+    channel = "https://nixos.org/channels/nixos-24.05";
+  };
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
