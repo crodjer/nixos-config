@@ -27,7 +27,7 @@ in {
         name = "Catppuccin-Latte-Lavender-Cursors";
         size = 22;
       };
-      stateVersion = "23.11";
+      stateVersion = "24.05";
     };
 
     programs = {
