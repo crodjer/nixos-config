@@ -125,9 +125,10 @@ in {
     systemPackages = with pkgs; [
       # Cli utilities
       bat bc bottom dogdns dust entr eza fd fzf git jq mtpfs ripgrep unzip
-      xdg-utils zsh-completions zoxide
+      xdg-utils yt-dlp zsh-completions zoxide
 
       # Applications
+      audacity
       anki-bin mpv
       brave
       gimp

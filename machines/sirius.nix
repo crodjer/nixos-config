@@ -22,18 +22,20 @@
         Unit = "charge-limit.service";
       };
     };
-    services.charge-limit = {
-      script = builtins.readFile ../scripts/charge-limit.sh;
+    services = {
+      charge-limit = {
+        script = builtins.readFile ../scripts/charge-limit.sh;
+      };
+      prevent-overcharge = {
+        # Ensure that the system doesn't over charge when plugged in and suspended
+        # / turned off.
+        wantedBy = [ "sleep.target" "shutdown.target" ];
+        script = ''
+          ${pkgs.tlp}/bin/tlp setcharge 0 1
+        '';
+      };
     };
 
-    services.prevent-overcharge = {
-      # Ensure that the system doesn't over charge when plugged in and suspended
-      # / turned off.
-      wantedBy = [ "sleep.target" "shutdown.target" ];
-      script = ''
-        ${pkgs.tlp}/bin/tlp setcharge 0 1
-      '';
-    };
   };
 
   services.ratbagd.enable = true;

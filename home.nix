@@ -48,5 +48,12 @@ in {
         };
       };
     };
+
+    services.gammastep = {
+      enable = true;
+      provider = "manual";
+      latitude = 17.4065;
+      longitude = 78.4772;
+    };
   };
 }
