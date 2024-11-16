@@ -12,9 +12,9 @@
       audacity
       anki-bin
       mpv
-      brave
       gimp
       gocryptfs
+      google-chrome
       localsend
       piper
       signal-desktop
@@ -44,6 +44,11 @@
         script = ''
           ${pkgs.tlp}/bin/tlp setcharge 0 1
         '';
+      };
+      rfkill-unblock = {
+        after = [ "resume.target" ];
+        wantedBy = [ "multi-user.target" "resume.target" ];
+        script = "${pkgs.util-linux}/bin/rfkill unblock all";
       };
     };
 
