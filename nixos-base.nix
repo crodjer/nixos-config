@@ -135,47 +135,30 @@ in {
   # $ nix search wget
   environment = {
     systemPackages = with pkgs; [
-      # Cli utilities
-      bat bc bottom dogdns dust entr eza fd fzf git jq mtpfs ripgrep unzip
-      xdg-utils yt-dlp zsh-completions zoxide
+      ## Cli utilities
+      bat bc bottom dogdns dust entr fd fzf git jq mtpfs pass ripgrep unzip
+      xdg-utils zsh-completions zoxide
 
-      # Applications
-      audacity
-      anki-bin mpv
-      brave
-      gimp
-      helix
+      ## Applications
       imv
       ledger
       neovim-remote
       rbw
-      v4l-utils
-      vlc
       yazi
 
-      # Tools and Services
+      ## Tools and Services
       ansible
-      gocryptfs
 
-      # Languages
-      elixir
-      hurl
-      gcc
-      go
+      ## Languages
       python3
       # Rust
       cargo cargo-generate rustc rust-analyzer
 
-      # Wasm
-      trunk lld
-
       # My custom scripts
       update-system
 
-      # LSP Services and Linters
+      ## LSP Services and Linters
       ansible-language-server ansible-lint
-      elixir-ls
-      gopls
       lua-language-server
       nil
       ruff ruff-lsp

@@ -9,7 +9,18 @@
     };
 
     systemPackages = with pkgs; [
+      audacity
+      anki-bin
+      mpv
+      brave
+      gimp
+      gocryptfs
+      localsend
       piper
+      signal-desktop
+      v4l-utils
+      vlc
+      yt-dlp 
     ];
   };
 
