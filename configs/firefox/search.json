@@ -5,7 +5,7 @@
       "URLTemplate": "https://search.nixos.org/options?query={searchTerms}",
       "Method": "GET",
       "IconURL": "https://nixos.org/favicon.png",
-      "Alias": "nixo",
+      "Alias": "no",
       "Description": "Search NixOS Options"
     },
     {
@@ -13,7 +13,7 @@
       "URLTemplate": "https://search.nixos.org/packages?query={searchTerms}",
       "Method": "GET",
       "IconURL": "https://nixos.org/favicon.png",
-      "Alias": "nixp",
+      "Alias": "np",
       "Description": "Search NixOS Packages"
     }
   ]
