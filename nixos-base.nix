@@ -311,12 +311,12 @@ in {
       enable = true;
       wrapperFeatures.gtk = true;
       extraPackages = with pkgs; [
-        bemenu clipman foot gammastep glib grim libnotify mako ping-monitor
+        bemenu clipman foot glib grim libnotify mako ping-monitor
         swaylock swayidle
         (waybar.override {
           wireplumberSupport = false;
         })
-        wayland-utils wl-clipboard wofi
+        wayland-utils wl-clipboard wlsunset wofi
       ];
       extraSessionCommands = builtins.readFile ./configs/sway/env.sh;
     };
@@ -353,8 +353,6 @@ in {
     dbus.enable = true;
     flatpak.enable = true;
     fstrim.enable = true;
-    geoclue2.enable = true;
-    geoclue2.enableDemoAgent = lib.mkForce true;
     pipewire = {
       enable = true;
       alsa.enable = true;
