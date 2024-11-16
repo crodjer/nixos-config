@@ -66,19 +66,22 @@ in {
   };
 
   networking = {
-    networkmanager = {
-      # Enable networking
-      enable = false;
-      wifi.backend = "iwd";
-    };
     nameservers = [
       "1.1.1.1#one.one.one.one"
       "1.0.0.1#one.one.one.one"
     ];
     firewall = {
       enable = true;
-      allowedTCPPorts = [ 5000 53317 ];
-      allowedUDPPorts = [ 53317 ];
+      allowedTCPPorts = [
+        # To spawn temporary servers.
+        5000
+        # Localsend
+        53317
+      ];
+      allowedUDPPorts = [
+        # Localsend
+        53317
+      ];
     };
     wireless.iwd = {
       enable = true;
@@ -218,14 +221,10 @@ in {
         DisplayBookmarksToolbar = "newtab";
         DisplayMenuBar = "default-off";
         SearchBar = "unified";
-        # We need ESR for this to work.
-        SearchEngines = lib.importJSON ./configs/firefox/search.json;
-        # DNSOverHTTPS = lib.importJSON ./configs/firefox/dns-over-https.json;
       };
       preferences = {
         "browser.warnOnQuitShortcut" = false;
         "browser.urlbar.update2.engineAliasRefresh" = true;
-        # "browser.newtabpage.pinned" = builtins.readFile ./configs/firefox/pinned.json;
 
         # Remove bloat and sponsored content.
         "browser.newtabpage.activity-stream.discoverystream.newSponsoredLabel.enabled" = false;
