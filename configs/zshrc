@@ -29,16 +29,19 @@ function set-nvim-listen-address {
     local server_name="default"
     if [ "$TMUX" ]; then
         local tmux_window=$(tmux display-message -p '#S-#I' 2> /dev/null)
+        server_name="tmux-$tmux_window"
+        return
     fi
     local sway_ws=$(swaymsg -t  get_workspaces 2> /dev/null | \
        jq -r "map(select(.focused == true)) | map(.name) | first")
     local i3_ws=$(i3-msg -t  get_workspaces 2> /dev/null | \
        jq -r "map(select(.focused == true)) | map(.name) | first")
+    local hypr_ws=$(hyprctl activeworkspace -j | jq .id)
 
-    if [ "$tmux_window" ]; then
-        server_name="tmux-$tmux_window"
-    elif [ "$sway_ws" ]; then
+    if [ "$sway_ws" ]; then
         server_name="sway-$sway_ws"
+    elif [ "$hypr_ws" ]; then
+        server_name="hypr-$hypr_ws"
     elif [ "$i3_ws" ]; then
         server_name="i3-$i3_ws"
     fi
