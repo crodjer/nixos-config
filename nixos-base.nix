@@ -34,6 +34,10 @@ in {
   };
   powerManagement.enable = true;
 
+  console = {
+    keyMap = "emacs";
+  };
+
   security = {
     pam = {
       enableEcryptfs = true;
@@ -108,7 +112,7 @@ in {
   time.timeZone = "Asia/Kolkata";
 
   # Select internationalisation properties.
-  i18n.defaultLocale = "en_GB.UTF-8";
+  i18n.defaultLocale = "en_IN";
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.${user_name} = {
