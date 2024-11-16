@@ -38,5 +38,14 @@
 
   };
 
+  system.activationScripts = {
+    rfkillUnblock = {
+      text = ''
+      rfkill unblock all
+      '';
+      deps = [];
+    };
+  };
+
   services.ratbagd.enable = true;
 }
