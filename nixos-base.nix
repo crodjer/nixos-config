@@ -83,8 +83,12 @@ in {
     wireless.iwd = {
       enable = true;
       settings = {
-        IPv6 = {
-          Enabled = true;
+        General = {
+          EnableNetworkConfiguration = true;
+        };
+        Network = {
+          EnableIPv6 = true;
+          NameResolvingService = "systemd";
         };
         Settings = {
           AutoConnect = true;
@@ -170,6 +174,7 @@ in {
       "xdg/user-dirs.defaults".source = ./configs/user-dirs.dirs;
       "xdg/foot/foot.ini".source = ./configs/foot.ini;
       "xdg/waybar".source = ./configs/waybar;
+      "xdg/wofi".source = ./configs/wofi;
       "xdg/wezterm/wezterm.lua".source = ./configs/wezterm.lua;
       "sway/scripts".source = ./configs/sway/scripts;
       "sway/config".source = ./configs/sway/sway.conf;
