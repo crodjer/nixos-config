@@ -20,6 +20,7 @@
       signal-desktop
       v4l-utils
       vlc
+      whatsapp-for-linux
       yt-dlp 
     ];
   };
