@@ -130,9 +130,14 @@ in {
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
-  nix.gc = {
-    automatic = true;
-    dates = "daily";
+  nix = {
+    settings = {
+      experimental-features = [ "nix-command" "flakes" ];
+    };
+    gc = {
+      automatic = true;
+      dates = "daily";
+    };
   };
 
   # List packages installed in system profile. To search, run:
