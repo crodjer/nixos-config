@@ -333,7 +333,7 @@ in {
           rebuild = "sudo nixos-rebuild switch";
           clean-os = "sudo bash -c 'nix-collect-garbage --delete-older-than 1d && nixos-rebuild switch'";
           o = "xdg-open";
-          nvr = "nvr --remote-silent";
+          nvr = "nvr -s --remote-silent";
         };
       };
     };
