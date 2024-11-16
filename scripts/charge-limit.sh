@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 START=60
-STOP=95
+STOP=80
 SYS_POWR_SUPPLY=/sys/class/power_supply/
 BATTERY=$(ls $SYS_POWR_SUPPLY | grep BAT | head -1)
 CAPACITY=$(cat $SYS_POWR_SUPPLY/$BATTERY/capacity)

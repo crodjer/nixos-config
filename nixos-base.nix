@@ -68,7 +68,8 @@ in {
   networking = {
     networkmanager = {
       # Enable networking
-      enable = true;
+      enable = false;
+      wifi.backend = "iwd";
     };
     nameservers = [
       "1.1.1.1#one.one.one.one"
@@ -78,6 +79,17 @@ in {
       enable = true;
       allowedTCPPorts = [ 5000 53317 ];
       allowedUDPPorts = [ 53317 ];
+    };
+    wireless.iwd = {
+      enable = true;
+      settings = {
+        IPv6 = {
+          Enabled = true;
+        };
+        Settings = {
+          AutoConnect = true;
+        };
+      };
     };
   };
 
@@ -424,5 +436,5 @@ in {
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "23.11"; # Did you read the comment?
+  system.stateVersion = "24.05"; # Did you read the comment?
 }
