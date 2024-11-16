@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ pkgs, lib, ... }:
+{ pkgs, ... }:
 
 let 
   user_name = "rohan";
@@ -174,12 +174,13 @@ in {
       "xdg/user-dirs.defaults".source = ./configs/user-dirs.dirs.default;
       "xdg/foot/foot.ini".source = ./configs/foot.ini;
       "xdg/waybar".source = ./configs/waybar;
-      "xdg/wofi".source = ./configs/wofi;
-      "xdg/kanshi".source = ./configs/kanshi;
       "xdg/wezterm/wezterm.lua".source = ./configs/wezterm.lua;
       "sway/scripts".source = ./configs/sway/scripts;
       "sway/config".source = ./configs/sway/sway.conf;
       "sway/config.d/theme.conf".source = ./configs/sway/theme.conf;
+      "sway/kanshi".source = ./configs/kanshi;
+      "sway/wofi".source = ./configs/wofi;
+      "sway/swayidle".source = ./configs/swayidle;
       "swaynag/config".source = ./configs/swaynag;
     };
 
@@ -313,6 +314,8 @@ in {
       extraSessionCommands = builtins.readFile ./configs/sway/env.sh;
     };
 
+    hyprland.enable = true;
+
     zsh = {
       enable = true;
       shellInit = ''
@@ -321,9 +324,9 @@ in {
           touch $HOME/.zshrc
         fi
 
-        if [ "$USER" = ${user_name} ] && [ -z "$WAYLAND_DISPLAY" ] && [ "$XDG_VTNR" -eq 1 ]; then
-          exec sway
-        fi
+        # if [ "$USER" = ${user_name} ] && [ -z "$WAYLAND_DISPLAY" ] && [ "$XDG_VTNR" -eq 1 ]; then
+        #   exec sway
+        # fi
         '';
         interactiveShellInit = builtins.readFile ./configs/zshrc;
         shellAliases = {
@@ -379,7 +382,10 @@ in {
   xdg = {
     portal = {
       enable = true;
-      extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+      extraPortals = [
+        pkgs.xdg-desktop-portal-gtk
+        pkgs.xdg-desktop-portal-hyprland
+      ];
       wlr = {
         enable = true;
         settings = {
