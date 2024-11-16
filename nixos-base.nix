@@ -110,18 +110,6 @@ in {
   # Select internationalisation properties.
   i18n.defaultLocale = "en_GB.UTF-8";
 
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "en_IN";
-    LC_IDENTIFICATION = "en_IN";
-    LC_MEASUREMENT = "en_IN";
-    LC_MONETARY = "en_IN";
-    LC_NAME = "en_IN";
-    LC_NUMERIC = "en_IN";
-    LC_PAPER = "en_IN";
-    LC_TELEPHONE = "en_IN";
-    LC_TIME = "en_IN";
-  };
-
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.${user_name} = {
     isNormalUser = true;
@@ -149,7 +137,7 @@ in {
     systemPackages = with pkgs; [
       ## Cli utilities
       bat bc bottom dogdns dust entr fd fzf git jq mtpfs pass ripgrep unzip
-      xdg-utils zsh-completions zoxide
+      xdg-user-dirs xdg-utils zsh-completions zoxide
 
       ## Applications
       imv
@@ -179,7 +167,7 @@ in {
     ];
 
     etc = {
-      "xdg/user-dirs.defaults".source = ./configs/user-dirs.dirs;
+      "xdg/user-dirs.defaults".source = ./configs/user-dirs.dirs.default;
       "xdg/foot/foot.ini".source = ./configs/foot.ini;
       "xdg/waybar".source = ./configs/waybar;
       "xdg/wofi".source = ./configs/wofi;
