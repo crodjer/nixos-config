@@ -140,7 +140,7 @@ in {
   environment = {
     systemPackages = with pkgs; [
       ## Cli utilities
-      bat bc bottom dogdns dust entr fd fzf git jq mtpfs pass ripgrep unzip
+      bat bc bottom dogdns dust entr fd fzf git jq mtpfs pass ripgrep stow unzip
       xdg-user-dirs xdg-utils zsh-completions zoxide
 
       ## Applications
@@ -149,6 +149,9 @@ in {
       neovim-remote
       rbw
       yazi
+
+      # hyprland
+      eww socat
 
       ## Tools and Services
       ansible
@@ -285,13 +288,7 @@ in {
             vim-nix
             vim-ledger
             ultisnips cmp-nvim-ultisnips
-
-            (nvim-treesitter.withPlugins (
-              plugins: with plugins; [
-                python rust ruby lua bash vim yaml ledger json markdown
-                tsx javascript typescript go clojure haskell elixir
-              ]
-            ))
+            nvim-treesitter.withAllGrammars
           ];
         };
       };
