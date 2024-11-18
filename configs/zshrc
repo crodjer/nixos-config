@@ -76,3 +76,5 @@ function when_dark() {
 }
 
 alias btm='btm --battery --color $(when_dark nord nord-light)'
+
+PATH=$PATH:$HOME/.cargo/bin

@@ -157,9 +157,11 @@ in {
       ansible
 
       ## Languages
+      gcc
       python3
+
       # Rust
-      cargo cargo-generate rustc rust-analyzer
+      rustup cargo-binstall cargo-update
 
       # My custom scripts
       update-system
