@@ -3,4 +3,4 @@ timeout 605 'swaymsg "output * dpms off"'
 after-resume 'swaymsg "output * dpms on"'
 before-sleep 'loginctl lock-session self' 
 idlehint 30
-lock 'swaylock -f'
+lock 'swaylock -f -i ~/.lockscreen -c "#303446"'
