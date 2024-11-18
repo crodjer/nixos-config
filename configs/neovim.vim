@@ -1,4 +1,4 @@
-if system("gsettings get org.gnome.desktop.interface color-scheme") =~ "dark"
+if system("dconf read '/org/gnome/desktop/interface/color-scheme'") =~ "dark"
   set background=dark
 else
   set background=light

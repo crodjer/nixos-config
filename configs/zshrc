@@ -63,7 +63,7 @@ if [ -n "${commands[fzf-share]}" ]; then
 fi
 
 function is_dark() {
-  test `gsettings get org.gnome.desktop.interface color-scheme` = "'prefer-dark'"
+  test `dconf read "/org/gnome/desktop/interface/color-scheme"` = "'prefer-dark'"
 }
 
 function when_dark() {
