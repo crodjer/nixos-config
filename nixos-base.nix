@@ -430,7 +430,7 @@ in {
 
   system.autoUpgrade = {
     enable = true;
-    channel = "https://nixos.org/channels/nixos-24.05";
+    channel = "https://nixos.org/channels/nixos-24.11";
   };
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
