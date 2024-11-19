@@ -112,7 +112,21 @@ in {
   time.timeZone = "Asia/Kolkata";
 
   # Select internationalisation properties.
-  i18n.defaultLocale = "en_IN";
+  i18n = {
+    defaultLocale = "en_IN/UTF-8";
+    supportedLocales = [
+      "en_IN/UTF-8"
+      "C.UTF-8/UTF-8"
+      "en_US.UTF-8/UTF-8"
+    ];
+
+    extraLocaleSettings = {
+      LANG="en_IN.UTF-8";
+      LC_ALL = "en_IN.UTF-8";
+      LC_CTYPE = "en_US.UTF-8";
+    };
+
+  };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.${user_name} = {
