@@ -51,6 +51,7 @@ require("ibl").setup()
 
 -- fzf
 local fzf = require('fzf-lua')
+fzf.setup({'skim'})
 fzf.register_ui_select()
 
 local function nmapl(binding, mapping, desc)
@@ -183,10 +184,9 @@ local servers = {
   html = {},
   lua_ls = {},
   nil_ls = {},
-  ruff_lsp = {},
   rust_analyzer = {},
   solargraph = {},
-  tsserver = {}
+  ts_ls = {}
 }
 
 for server, config in pairs(servers) do

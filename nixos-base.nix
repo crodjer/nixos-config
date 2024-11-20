@@ -25,7 +25,7 @@ in {
       enable = true;
       powerOnBoot = true;
     };
-    opengl = {
+    graphics = {
       enable = true;
       extraPackages = with pkgs; [
         intel-media-driver intel-ocl
@@ -154,7 +154,7 @@ in {
   environment = {
     systemPackages = with pkgs; [
       ## Cli utilities
-      bat bc bottom dogdns dust entr fd fzf git jq mtpfs pass ripgrep stow unzip
+      bat bc bottom dogdns dust entr fd git jq mtpfs pass ripgrep stow unzip
       xdg-user-dirs xdg-utils zsh-completions zoxide
 
       ## Applications
@@ -165,7 +165,7 @@ in {
       yazi
 
       # hyprland
-      eww socat
+      hyprland eww socat
 
       ## Tools and Services
       ansible
@@ -197,8 +197,8 @@ in {
       "sway/scripts".source = ./configs/sway/scripts;
       "sway/config".source = ./configs/sway/sway.conf;
       "sway/config.d/theme.conf".source = ./configs/sway/theme.conf;
-      "sway/kanshi".source = ./configs/kanshi;
       "sway/wofi".source = ./configs/wofi;
+      "sway/shikane".source = ./configs/shikane;
       "sway/swayidle".source = ./configs/swayidle;
       "swaynag/config".source = ./configs/swaynag;
     };
@@ -276,6 +276,10 @@ in {
       };
     };
 
+    hyprland = {
+      enable = true;
+    };
+
     light.enable = true;
 
     neovim = {
@@ -304,21 +308,28 @@ in {
             vim-nix
             vim-ledger
             ultisnips cmp-nvim-ultisnips
-            nvim-treesitter.withAllGrammars
+            (nvim-treesitter.withPlugins (
+              plugins: with plugins; [
+                python rust ruby lua bash vim yaml ledger json markdown
+                tsx javascript typescript go clojure haskell elixir yuck
+                toml
+              ]
+            ))
           ];
         };
       };
     };
 
     nix-ld.enable = true;
+
     starship.enable = true;
 
     sway = {
       enable = true;
       wrapperFeatures.gtk = true;
       extraPackages = with pkgs; [
-        bemenu clipman foot glib grim kanshi libnotify mako ping-monitor
-        swaylock swayidle
+        bemenu clipman foot glib grim libnotify mako ping-monitor
+        shikane swaylock swayidle
         (waybar.override {
           wireplumberSupport = false;
         })
@@ -327,7 +338,10 @@ in {
       extraSessionCommands = builtins.readFile ./configs/sway/env.sh;
     };
 
-    hyprland.enable = true;
+    skim = {
+      keybindings = true;
+      fuzzyCompletion = true;
+    };
 
     zsh = {
       enable = true;
@@ -340,27 +354,32 @@ in {
         # if [ "$USER" = ${user_name} ] && [ -z "$WAYLAND_DISPLAY" ] && [ "$XDG_VTNR" -eq 1 ]; then
         #   exec sway
         # fi
-        '';
-        interactiveShellInit = builtins.readFile ./configs/zshrc;
-        shellAliases = {
-          rebuild = "sudo nixos-rebuild switch";
-          clean-os = "sudo bash -c 'nix-collect-garbage --delete-older-than 1d && nixos-rebuild switch'";
-          o = "xdg-open";
-          nvr = "nvr -s --remote-silent";
-        };
+      '';
+      interactiveShellInit = builtins.readFile ./configs/zshrc;
+      shellAliases = {
+        rebuild = "sudo nixos-rebuild switch";
+        clean-os = "sudo bash -c 'nix-collect-garbage --delete-older-than 1d && nixos-rebuild switch'";
+        o = "xdg-open";
+        nvr = "nvr -s --remote-silent";
       };
     };
+  };
 
 
   # List services that you want to enable:
 
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
   services = {
     blueman.enable = true;
     dbus.enable = true;
     flatpak.enable = true;
     fstrim.enable = true;
+    logind = {
+      powerKey = "suspend";
+      extraConfig = ''
+      IdleAction=suspend
+      IdleActionSec=600
+      '';
+    };
     pipewire = {
       enable = true;
       alsa.enable = true;
@@ -401,11 +420,6 @@ in {
       ];
       wlr = {
         enable = true;
-        settings = {
-          screencast = {
-            max_fps = 24;
-          };
-        };
       };
     };
     mime = {

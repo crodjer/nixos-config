@@ -1,6 +1,6 @@
-timeout 600 'loginctl lock-session self'
-timeout 605 'swaymsg "output * dpms off"'
+timeout 300 'loginctl lock-session self'
+timeout 310 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"'
 after-resume 'swaymsg "output * dpms on"'
 before-sleep 'loginctl lock-session self' 
-idlehint 30
+idlehint 600
 lock 'swaylock -f -i ~/.lockscreen -c "#303446"'
