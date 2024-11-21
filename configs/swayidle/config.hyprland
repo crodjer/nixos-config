@@ -1,6 +1,6 @@
-timeout 300 'loginctl lock-session self'
+timeout 300 'loginctl lock-session'
 timeout 310 'hyprctl dispatch dpms off' resume 'hyprctl dispatch dpms on'
 after-resume 'hyprctl dispatch dpms on'
-before-sleep 'loginctl lock-session self'
+before-sleep 'loginctl lock-session'
 idlehint 600
 lock 'swaylock -f -i ~/.lockscreen -c "#303446"'
