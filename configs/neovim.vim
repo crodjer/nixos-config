@@ -180,13 +180,13 @@ local servers = {
   ansiblels = {},
   elixirls = {},
   gopls = {},
-  jdtls = {},
   html = {},
+  jdtls = {},
   lua_ls = {},
   nil_ls = {},
   rust_analyzer = {},
   solargraph = {},
-  ts_ls = {}
+  vtsls = {}
 }
 
 for server, config in pairs(servers) do
