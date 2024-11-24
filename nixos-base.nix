@@ -181,12 +181,8 @@ in {
       update-system
 
       ## LSP Services and Linters
-      ansible-language-server ansible-lint
-      lua-language-server
-      nil
-      ruff ruff-lsp
-      nodePackages.typescript-language-server
-      vscode-langservers-extracted
+      ansible-language-server ansible-lint lua-language-server nil
+      ruff ruff-lsp vscode-langservers-extracted vtsls
     ];
 
     etc = {
@@ -310,9 +306,12 @@ in {
             ultisnips cmp-nvim-ultisnips
             (nvim-treesitter.withPlugins (
               plugins: with plugins; [
-                python rust ruby lua bash vim yaml ledger json markdown
-                tsx javascript typescript go clojure haskell elixir yuck
-                toml
+                bash c clojure css csv desktop elixir erlang fish go haskell
+                javascript lua markdown nix python ruby rust scss sql tsv tsx
+                typescript vim
+
+                git_config gitattributes gitcommit gitignore hurl jq json
+                ledger ssh_config sway terraform tmux toml xml yaml yuck
               ]
             ))
           ];
