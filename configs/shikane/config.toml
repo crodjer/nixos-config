@@ -5,7 +5,7 @@ name = "monitor"
      enable = true
      search = ["m=BenQ EX2710R", "v=BNQ"]
      mode = "2560x1440@59.951Hz"
-     position = "1280,0"
+     position = "0,0"
      scale = 1.0
      transform = "normal"
      adaptive_sync = false
@@ -14,22 +14,21 @@ name = "monitor"
      enable = false
      search = ["m=0x13B0", "s=", "v=Chimei Innolux Corporation"]
      mode = "2560x1600@60.002Hz"
-     position = "0,0"
+     position = "-1536,480"
      scale = 1.66667
      transform = "normal"
-     adaptive_sync = false
 
 [[profile]]
 name = "laptop"
 
-[[profile.output]]
-     enable = true  
-     search = ["m=0x13B0", "s=", "v=Chimei Innolux Corporation"]
-     mode = "2560x1600@60.002Hz"
-     position = "0,0"
-     scale = 1.66667
-     transform = "normal"
-     adaptive_sync = false
+    [[profile.output]]
+         enable = true
+         search = ["m=0x13B0", "s=", "v=Chimei Innolux Corporation"]
+         mode = "2560x1600@60.002Hz"
+         position = "0,0"
+         scale = 1.66667
+         transform = "normal"
+         adaptive_sync = false
 
 [[profile]]
 name = "dual"
@@ -38,16 +37,17 @@ name = "dual"
      enable = true
      search = ["m=BenQ EX2710R", "v=BNQ"]
      mode = "2560x1440@59.951Hz"
-     position = "1536,-480"
+     # position = "1536,-480"
+     position = "0,0"
      scale = 1.0
      transform = "normal"
      adaptive_sync = false
-     
+
      [[profile.output]]
      enable = true
      search = ["m=0x13B0", "s=", "v=Chimei Innolux Corporation"]
      mode = "2560x1600@60.002Hz"
-     position = "0,0"
+     position = "-1536,480"
      scale = 1.66667
      transform = "normal"
      adaptive_sync = false

@@ -5,7 +5,6 @@
 
   environment = {
     etc = {
-      "sway/config.d/monitor.conf".source = ../configs/sway/monitor.conf;
     };
 
     systemPackages = with pkgs; [
