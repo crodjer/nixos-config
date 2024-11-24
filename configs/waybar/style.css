@@ -1,9 +1,9 @@
-@import "latte.css";
+@import "mocha.css";
 
 * {
     border: none;
     border-radius: 0;
-    font-size: 10px;
+    font-size: 12px;
 }
 
 window#waybar {
@@ -35,8 +35,8 @@ window#waybar.hidden {
 }
 
 #workspaces button.urgent {
-    background: @rosewater;
-    color: @subtext1;
+    background: @red;
+    color: @subtext2;
 }
 
 #mode {
