@@ -260,7 +260,6 @@ in {
         # "services.sync.prefs.sync.browser.newtabpage.activity-stream.section.highlights.includePocket" = false;
         # "services.sync.prefs.sync.browser.newtabpage.activity-stream.showSponsored" = false;
         # "services.sync.prefs.sync.browser.newtabpage.activity-stream.showSponsoredTopSites" = false;
-
       };
     };
 
@@ -285,25 +284,23 @@ in {
         customRC = builtins.readFile ./configs/neovim.vim;
         packages.myVimPackages = with pkgs.vimPlugins; {
           start = [ 
-            ansible-vim
-            aerial-nvim
             catppuccin-nvim
-            gitsigns-nvim
-            indent-blankline-nvim
-            fidget-nvim
             fzf-lua
-            hurl
-            lualine-nvim
-            nvim-autopairs
-            nvim-cmp cmp-nvim-lsp cmp-buffer
+
+            mini-align
+            mini-bracketed
+            mini-comment
+            mini-completion
+            mini-cursorword
+            mini-indentscope
+            mini-move
+            mini-notify
+            mini-pairs
+            mini-statusline
+            mini-surround
+            mini-trailspace
+            
             nvim-lspconfig
-            nvim-web-devicons
-            rust-vim
-            statix
-            vim-commentary
-            vim-nix
-            vim-ledger
-            ultisnips cmp-nvim-ultisnips
             (nvim-treesitter.withPlugins (
               plugins: with plugins; [
                 bash c clojure css csv desktop elixir erlang fish go haskell
@@ -401,7 +398,12 @@ in {
       dataDir = "/home/${user_name}";
     };
     thermald.enable = true;
-    tlp.enable = true;
+    tlp = {
+      enable = true;
+      settings = {
+        SOUND_POWER_SAVE_ON_AC = 0;
+      };
+    };
     udev = {
       packages = [ pkgs.yubikey-personalization ];
     };
