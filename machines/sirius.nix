@@ -15,6 +15,7 @@
       gocryptfs
       google-chrome
       localsend
+      ollama
       piper
       signal-desktop
       v4l-utils
