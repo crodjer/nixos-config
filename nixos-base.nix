@@ -210,7 +210,10 @@ in {
 
   programs = {
     adb.enable = true;
-    direnv.enable = true;
+    direnv = {
+      enable = true;
+      nix-direnv.enable = true;
+    };
     firefox = {
       enable = true;
       policies = {
@@ -299,7 +302,7 @@ in {
             mini-statusline
             mini-surround
             mini-trailspace
-            
+
             nvim-lspconfig
             (nvim-treesitter.withPlugins (
               plugins: with plugins; [
@@ -307,7 +310,7 @@ in {
                 javascript lua markdown nix python ruby rust scss sql tsv tsx
                 typescript vim
 
-                git_config gitattributes gitcommit gitignore hurl jq json
+                git_config gitattributes gitcommit gitignore html hurl jq json
                 ledger ssh_config sway terraform tmux toml xml yaml yuck
               ]
             ))
