@@ -57,6 +57,11 @@ if [ -n "${commands[zoxide]}" ]; then
   eval "$(zoxide init zsh)"
 fi
 
+# Initialize mise
+if [ -n "${commands[mise]}" ]; then
+    eval "$(mise activate zsh)"
+fi
+
 function is_dark() {
   test `dconf read "/org/gnome/desktop/interface/color-scheme"` = "'prefer-dark'"
 }
