@@ -17,11 +17,12 @@
       localsend
       ollama
       piper
+      podman-compose
       signal-desktop
       v4l-utils
       vlc
       whatsapp-for-linux
-      yt-dlp 
+      yt-dlp
     ];
   };
 
@@ -56,4 +57,9 @@
   };
 
   services.ratbagd.enable = true;
+
+  virtualisation.podman = {
+    enable = true;
+    autoPrune.enable = true;
+  };
 }
