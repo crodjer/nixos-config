@@ -53,14 +53,21 @@ function set-nvim-listen-address {
 add-zsh-hook chpwd set-nvim-listen-address
 set-nvim-listen-address
 
+# Initialize zoxide when available.
 if [ -n "${commands[zoxide]}" ]; then
   eval "$(zoxide init zsh)"
 fi
 
-# Initialize mise
+# Initialize mise when available.
 if [ -n "${commands[mise]}" ]; then
     eval "$(mise activate zsh)"
 fi
+
+# Add completion for `invoice` when available.
+if [ -n "${commands[invoice]}" ]; then
+    eval "$(invoice completion zsh)"
+fi
+
 
 function is_dark() {
   test `dconf read "/org/gnome/desktop/interface/color-scheme"` = "'prefer-dark'"

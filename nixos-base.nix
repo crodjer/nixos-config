@@ -235,7 +235,6 @@ in {
         SearchBar = "unified";
       };
       preferences = {
-        "browser.warnOnQuitShortcut" = false;
         "browser.urlbar.update2.engineAliasRefresh" = true;
 
         # Remove bloat and sponsored content.
