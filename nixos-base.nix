@@ -154,14 +154,12 @@ in {
   environment = {
     systemPackages = with pkgs; [
       ## Cli utilities
-      bat bc bottom dogdns dust entr fd git jq mtpfs pass ripgrep stow unzip
+      bat bc bottom dogdns dust entr fd git jq pass ripgrep stow unzip
       xdg-user-dirs xdg-utils zsh-completions zoxide
 
       ## Applications
       imv
-      ledger
       neovim-remote
-      rbw
       yazi
 
       # hyprland
