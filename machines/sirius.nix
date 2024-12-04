@@ -17,6 +17,7 @@
       localsend
       ollama
       piper
+      pipx
       podman-compose
       signal-desktop
       v4l-utils
