@@ -14,6 +14,7 @@
       gimp
       gocryptfs
       google-chrome
+      inkscape
       localsend
       ollama
       piper
