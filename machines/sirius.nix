@@ -25,6 +25,7 @@
       vlc
       whatsapp-for-linux
       yt-dlp
+      zed-editor
     ];
   };
 
