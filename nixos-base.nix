@@ -369,6 +369,7 @@ in {
     dbus.enable = true;
     flatpak.enable = true;
     fstrim.enable = true;
+    gnome.gnome-keyring.enable = true;
     logind = {
       powerKey = "suspend";
       extraConfig = ''
