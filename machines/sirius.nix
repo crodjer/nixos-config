@@ -8,12 +8,8 @@
     };
 
     systemPackages = with pkgs; [
-      audacity
-      anki-bin
-      mpv
       gimp
       gocryptfs
-      google-chrome
       inkscape
       localsend
       ollama
@@ -23,9 +19,6 @@
       signal-desktop
       v4l-utils
       vlc
-      whatsapp-for-linux
-      yt-dlp
-      zed-editor
     ];
   };
 

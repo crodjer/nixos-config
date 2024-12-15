@@ -79,7 +79,10 @@ end
 --- File Picker
 -----------------------------
 local fzf = require('fzf-lua')
-if (vim.fn.executable('sk') == 1) then
+if (vim.fn.executable('fzf') == 1) then
+  -- If `fzf` is available use that. This will likely be false.
+  fzf.setup({'fzf'})
+elseif (vim.fn.executable('sk') == 1) then
   -- Prefer skim if available.
   fzf.setup({'skim'})
 end
