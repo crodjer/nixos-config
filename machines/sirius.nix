@@ -17,6 +17,7 @@
       pipx
       podman-compose
       signal-desktop
+      taskwarrior3 tasksh taskwarrior-tui timewarrior
       v4l-utils
       vlc
     ];

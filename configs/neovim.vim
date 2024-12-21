@@ -18,10 +18,11 @@ set breakindent termguicolors textwidth=80 colorcolumn=+1
 set spell spelllang=en spellfile=~/.local/share/nvim/spell/en.add
 
 let mapleader = ','
+let maplocalleader = ','
 
 "" Custom Bindings
 "Open file relative to current file
-nnoremap <leader>n :e <C-R>=expand("%:p:h") . "/" <CR>
+nnoremap <leader>o :e <C-R>=expand("%:p:h") . "/" <CR>
 
 "" Tree-sitter based folding
 set foldmethod=expr
@@ -41,7 +42,7 @@ require('mini.pairs').setup()				          -- Auto Pairs
 require('mini.statusline').setup()			      -- A bit nicer status line.
 require('mini.surround').setup()			        -- Surround tricks
 require('mini.trailspace').setup()            -- Highlight trailing white space.
-require('mini.notify').setup({                      -- Show notifications
+require('mini.notify').setup({                -- Show notifications
   window = {
     max_width_share = 0.75,
   }
@@ -173,6 +174,29 @@ require('nvim-treesitter.configs').setup {
     },
   },
 }
+
+-----------------------------
+--- Neorg
+-----------------------------
+require("neorg").setup({
+load = {
+  ["core.defaults"] = {},
+  ["core.concealer"] = {},
+  ["core.dirman"] = {
+    config = {
+      workspaces = {
+        notes = "~/documents/notes",
+      },
+      default_workspace = "notes",
+    },
+  },
+},
+})
+
+nlmap('no',[[:Neorg index<CR>]] , "[N]eorg Index [O]pen")
+nlmap('nc', [[:Neorg return<CR>]], "[N]eorg [C]lose")
+nlmap('nt', [[:Neorg journal today <CR>]], "[N]eorg Journal for [T]oday")
+nlmap('nj', [[:Neorg journal toc open<CR>]], "Open [N]eorg [J]ournal TOC")
 
 -----------------------------
 -- Lua ends

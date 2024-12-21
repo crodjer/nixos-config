@@ -300,6 +300,7 @@ in {
             mini-surround
             mini-trailspace
 
+            neorg
             nvim-lspconfig
             (nvim-treesitter.withPlugins (
               plugins: with plugins; [
@@ -307,10 +308,12 @@ in {
                 javascript lua markdown nix python ruby rust scss sql tsv tsx
                 typescript vim
 
-                git_config gitattributes gitcommit gitignore html hurl jq json
-                ledger ssh_config sway terraform tmux toml xml yaml yuck
+                git_config gitattributes gitcommit gitignore glimmer html hurl
+                jq json ledger norg ssh_config sway terraform tmux toml xml yaml
+                yuck
               ]
             ))
+            plenary-nvim
           ];
         };
       };
@@ -357,6 +360,8 @@ in {
         clean-os = "sudo bash -c 'nix-collect-garbage --delete-older-than 1d && nixos-rebuild switch'";
         o = "xdg-open";
         nvr = "nvr -s --remote-silent";
+        t = "task";
+        c = "timew";
       };
     };
   };
