@@ -350,9 +350,13 @@ in {
           touch $HOME/.zshrc
         fi
 
-        # if [ "$USER" = ${user_name} ] && [ -z "$WAYLAND_DISPLAY" ] && [ "$XDG_VTNR" -eq 1 ]; then
-        #   exec sway
-        # fi
+        if [ "$USER" = ${user_name} ] && [ -z "$WAYLAND_DISPLAY" ] && [ "$XDG_VTNR" -eq 1 ]; then
+          exec sway
+        fi
+
+        if [ -e "$HOME/.zshrc.local" ]; then
+          source "$HOME/.zshrc.local"
+        fi
       '';
       interactiveShellInit = builtins.readFile ./configs/zshrc;
       shellAliases = {
