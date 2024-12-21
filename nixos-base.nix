@@ -53,7 +53,11 @@ in {
           commands = [
             {
               command = "/run/current-system/sw/bin/nixos-rebuild";
-              options = [ "NOPASSWD" ]; 
+              options = [ "NOPASSWD" ];
+            }
+            {
+              command = "/run/current-system/sw/bin/nix-collect-garbage";
+              options = [ "NOPASSWD" ];
             }
           ];
         }
