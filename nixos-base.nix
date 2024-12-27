@@ -4,7 +4,7 @@
 
 { pkgs, ... }:
 
-let 
+let
   user_name = "rohan";
   update-system = pkgs.writeShellScriptBin "update" (builtins.readFile ./scripts/update.sh);
   ping-monitor = pkgs.writeShellScriptBin "ping-monitor" (builtins.readFile ./scripts/ping-monitor.sh);
@@ -352,10 +352,6 @@ in {
         # Preempt the annoying new user prompt.
         if [ ! -e "$HOME/.zshrc" ]; then
           touch $HOME/.zshrc
-        fi
-
-        if [ "$USER" = ${user_name} ] && [ -z "$WAYLAND_DISPLAY" ] && [ "$XDG_VTNR" -eq 1 ]; then
-          exec sway
         fi
 
         if [ -e "$HOME/.zshrc.local" ]; then
