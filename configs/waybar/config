@@ -70,7 +70,7 @@
         "format": "{icon}",
         "format-icons": ["", "", "", "", "", "", "", " ", " ", " ", " ", " ", " ", " "],
         "on-scroll-up": "light -A 1",
-        "on-scroll-down": "light -N 5; light -U 1",
+        "on-scroll-down": "light -N 2; light -U 1",
     },
     "battery": {
         "states": {
