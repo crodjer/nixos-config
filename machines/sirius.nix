@@ -18,6 +18,7 @@
       podman-compose
       signal-desktop
       taskwarrior3 tasksh taskwarrior-tui timewarrior
+      tty-clock
       v4l-utils
       vlc
     ];
