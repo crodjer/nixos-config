@@ -3,4 +3,7 @@
 set -e
 
 sudo nixos-rebuild switch --upgrade
-flatpak update -y
+
+if [ -n "${commands[flatpak]}" ]; then
+  flatpak update -y
+fi

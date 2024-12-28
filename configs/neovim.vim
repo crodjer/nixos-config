@@ -4,8 +4,12 @@ else
   set background=light
 endif
 
-set termguicolors
-colorscheme catppuccin
+if $TERM=~'linux'
+  colorscheme slate
+else
+  set termguicolors
+  colorscheme catppuccin
+end
 
 set expandtab tabstop=2 softtabstop=2 shiftwidth=2
 set formatoptions-=t
