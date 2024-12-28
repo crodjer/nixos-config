@@ -10,7 +10,10 @@ let
 in {
   # Bootloader.
   boot = {
-    initrd.systemd.enable = true;
+    initrd.systemd = {
+      enable = true;
+      network.wait-online.enable = false;
+    };
     kernelPackages = pkgs.linuxPackages_latest;
     kernelModules = [ "ecryptfs" ];
     loader = {
@@ -334,7 +337,20 @@ in {
       enable = true;
     };
   };
- 
+
+  systemd = {
+    network = {
+      enable = true;
+      networks = {
+        "10-ethernet" = {
+          matchConfig.Type = "ether";
+          networkConfig.DHCP = "yes";
+        };
+      };
+      wait-online.enable = false;
+    };
+  };
+
   system.autoUpgrade = {
     enable = true;
     channel = "https://nixos.org/channels/nixos-24.11";
