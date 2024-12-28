@@ -1,29 +1,19 @@
 bindkey -e
 
-HISTFILE=~/.histfile
-HISTSIZE=10000
-SAVEHIST=100000
-
 # Remove '/' from wordchars.
 WORDCHARS="${WORDCHARS/\//}"
 
 setopt autocd beep extendedglob nomatch notify
 
-autoload -Uz compinit
-autoload -U add-zsh-hook
-compinit
 
-venv() {
-  env=$1
-  if [ -z $env ]; then
-    return 1
-  fi
-  env_dir=~/.venv/$env
-  if [ ! -d $env_dir ]; then
-    python -m venv $env_dir
-  fi
-  source $env_dir/bin/activate
-}
+HISTFILE=~/.zsh_history
+HISTSIZE=10000
+SAVEHIST=100000
+
+setopt hist_ignore_all_dups hist_ignore_space share_history extended_history
+setopt hist_expire_dups_first
+
+autoload -U add-zsh-hook
 
 function set-nvim-listen-address {
     local server_name="default"
@@ -36,12 +26,9 @@ function set-nvim-listen-address {
        jq -r "map(select(.focused == true)) | map(.name) | first")
     local i3_ws=$(i3-msg -t  get_workspaces 2> /dev/null | \
        jq -r "map(select(.focused == true)) | map(.name) | first")
-    local hypr_ws=$(hyprctl activeworkspace -j 2> /dev/null | grep "id" | grep -Po "\d+")
 
     if [ "$sway_ws" ]; then
         server_name="sway-$sway_ws"
-    elif [ "$hypr_ws" ]; then
-        server_name="hypr-$hypr_ws"
     elif [ "$i3_ws" ]; then
         server_name="i3-$i3_ws"
     fi

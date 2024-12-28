@@ -264,22 +264,36 @@ in {
       fuzzyCompletion = true;
     };
 
+    tmux = {
+      enable = true;
+      keyMode = "vi";
+      shortcut = "s";
+      plugins = with pkgs.tmuxPlugins; [
+        catppuccin
+        power-theme
+        resurrect
+      ];
+      extraConfigBeforePlugins = builtins.readFile ./configs/tmux.conf;
+    };
+
     zsh = {
       enable = true;
-      shellInit = ''
-        # Preempt the annoying new user prompt.
-        if [ ! -e "$HOME/.zshrc" ]; then
-          touch $HOME/.zshrc
-        fi
+      enableCompletion = true;
+      autosuggestions.enable = true;
+      syntaxHighlighting.enable = true;
 
+      shellInit = ''
         if [ -e "$HOME/.zshrc.local" ]; then
           source "$HOME/.zshrc.local"
         fi
       '';
+
       interactiveShellInit = builtins.readFile ./configs/zshrc;
+      histSize = 100000;
       shellAliases = {
         rebuild = "sudo nixos-rebuild switch";
         clean-os = "sudo bash -c 'nix-collect-garbage --delete-older-than 1d && nixos-rebuild switch'";
+        addr = "ip -br -c addr";
         o = "xdg-open";
         nvr = "nvr -s --remote-silent";
         t = "task";
@@ -350,6 +364,14 @@ in {
       wait-online.enable = false;
     };
   };
+
+  # Prevent the new user dialog in zsh
+  system.userActivationScripts.zshrc = ''
+    # Preempt the annoying new user prompt.
+    if [ ! -e "$HOME/.zshrc" ]; then
+      touch $HOME/.zshrc
+    fi
+  '';
 
   system.autoUpgrade = {
     enable = true;
