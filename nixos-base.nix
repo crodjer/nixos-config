@@ -87,10 +87,15 @@ in {
         5000
         # Localsend
         53317
+        # Syncthing
+        22000
       ];
       allowedUDPPorts = [
         # Localsend
         53317
+        # Syncthing
+        22000
+        21027
       ];
     };
     wireless.iwd = {
