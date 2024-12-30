@@ -52,20 +52,16 @@ in {
       extraRules = [
         {
           groups = [ "wheel" ];
-          commands = [
-            {
-              command = "/run/current-system/sw/bin/nixos-rebuild";
+          commands = map
+            (cmd: {
+              command = "/run/current-system/sw/bin/${cmd}";
               options = [ "NOPASSWD" ];
-            }
-            {
-              command = "/run/current-system/sw/bin/nix-collect-garbage";
-              options = [ "NOPASSWD" ];
-            }
-            {
-              command = "/run/current-system/sw/bin/dmesg";
-              options = [ "NOPASSWD" ];
-            }
-          ];
+            })
+            [
+              "nixos-rebuild"
+              "nix-collect-garbage"
+              "dmesg"
+            ];
         }
       ];
       extraConfig = ''
