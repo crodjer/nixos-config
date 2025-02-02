@@ -9,8 +9,8 @@
 
   environment = {
     systemPackages = with pkgs; [
-      gimp
       gocryptfs
+      imagemagick
       inkscape
       localsend
       ollama
