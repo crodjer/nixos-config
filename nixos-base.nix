@@ -185,7 +185,7 @@ in {
 
       ## LSP Services and Linters
       ansible-language-server ansible-lint lua-language-server nil
-      ruff ruff-lsp vscode-langservers-extracted vtsls
+      ruff ruff-lsp
     ];
 
     etc = {
