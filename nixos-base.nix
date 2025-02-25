@@ -98,20 +98,12 @@ in {
         21027
       ];
     };
-    wireless.iwd = {
+
+    wireless = {
       enable = true;
-      settings = {
-        General = {
-          EnableNetworkConfiguration = true;
-        };
-        Network = {
-          EnableIPv6 = true;
-          NameResolvingService = "systemd";
-        };
-        Settings = {
-          AutoConnect = true;
-        };
-      };
+      # Run:
+      # wpa_passphrase SSID psk | sudo tee /etc/wpa_supplicant.conf
+      # to generate a valid wpa supplicant configuration.
     };
   };
 
