@@ -99,11 +99,8 @@ in {
       ];
     };
 
-    wireless = {
+    networkmanager = {
       enable = true;
-      # Run:
-      # wpa_passphrase SSID psk | sudo tee /etc/wpa_supplicant.conf
-      # to generate a valid wpa supplicant configuration.
     };
   };
 
