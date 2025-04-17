@@ -154,7 +154,7 @@ in {
   environment = {
     systemPackages = with pkgs; [
       ## Cli utilities
-      bat bc bottom dogdns dust entr fd fzf git jq mosh pass ripgrep stow unzip
+      bat bc bottom dogdns dust entr fd fzf git jq pass ripgrep stow unzip
       xdg-user-dirs xdg-utils zsh-completions zoxide
 
       ## Applications
@@ -357,6 +357,7 @@ in {
       };
       wait-online.enable = false;
     };
+    services.NetworkManager-wait-online.enable = false;
   };
 
   # Prevent the new user dialog in zsh
