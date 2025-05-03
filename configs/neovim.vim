@@ -1,15 +1,6 @@
-if system("dconf read '/org/gnome/desktop/interface/color-scheme'") =~ "dark"
-  set background=dark
-else
-  set background=light
-endif
-
-if $TERM=~'linux'
-  colorscheme slate
-else
-  set termguicolors
-  colorscheme catppuccin
-end
+set notermguicolors
+set background=light
+colorscheme vim
 
 set expandtab tabstop=2 softtabstop=2 shiftwidth=2
 set formatoptions-=t
@@ -180,29 +171,6 @@ require('nvim-treesitter.configs').setup {
     },
   },
 }
-
------------------------------
---- Neorg
------------------------------
-require("neorg").setup({
-load = {
-  ["core.defaults"] = {},
-  ["core.concealer"] = {},
-  ["core.dirman"] = {
-    config = {
-      workspaces = {
-        notes = "~/documents/notes",
-      },
-      default_workspace = "notes",
-    },
-  },
-},
-})
-
-nlmap('no',[[:Neorg index<CR>]] , "[N]eorg Index [O]pen")
-nlmap('nc', [[:Neorg return<CR>]], "[N]eorg [C]lose")
-nlmap('nt', [[:Neorg journal today <CR>]], "[N]eorg Journal for [T]oday")
-nlmap('nj', [[:Neorg journal toc open<CR>]], "Open [N]eorg [J]ournal TOC")
 
 -----------------------------
 -- Lua ends
