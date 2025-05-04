@@ -4,12 +4,12 @@ colorscheme vim
 
 set expandtab tabstop=2 softtabstop=2 shiftwidth=2
 set formatoptions-=t
-set relativenumber number cursorline signcolumn=yes
+set relativenumber number cursorline
 set clipboard+=unnamedplus
 set showcmd modeline undofile updatetime=100 timeoutlen=300
 set ignorecase smartcase
 set completeopt=menuone,preview
-set breakindent termguicolors textwidth=80 colorcolumn=+1
+set breakindent textwidth=80 colorcolumn=+1
 set spell spelllang=en spellfile=~/.local/share/nvim/spell/en.add
 
 let mapleader = ','
@@ -22,7 +22,7 @@ nnoremap <leader>o :e <C-R>=expand("%:p:h") . "/" <CR>
 "" Tree-sitter based folding
 set foldmethod=expr
 set foldexpr=nvim_treesitter#foldexpr()
-set nofoldenable                     " Disable folding at startup.
+set nofoldenable                            " Disable folding at startup.
 
 autocmd FileType swayconfig setlocal nospell
 
@@ -30,21 +30,21 @@ lua << END
 -----------------------------
 -- Lua start
 -----------------------------
-require('mini.align').setup()                 -- Align text, `ga` / `gA`
+require('mini.align').setup()               -- Align text, `ga` / `gA`
 require('mini.bracketed').setup()
-require('mini.comment').setup()				        -- Comments: `gc`, `gcc`
-require('mini.completion').setup()            -- Autocompletion
-require('mini.cursorword').setup()            -- Highlight word under cursor!
-require('mini.pairs').setup()				          -- Auto Pairs
-require('mini.statusline').setup()			      -- A bit nicer status line.
-require('mini.surround').setup()			        -- Surround tricks
-require('mini.trailspace').setup()            -- Highlight trailing white space.
-require('mini.notify').setup({                -- Show notifications
+require('mini.comment').setup()				      -- Comments: `gc`, `gcc`
+require('mini.completion').setup()          -- Autocompletion
+require('mini.cursorword').setup()          -- Highlight word under cursor!
+require('mini.pairs').setup()				        -- Auto Pairs
+require('mini.statusline').setup()			    -- A bit nicer status line.
+require('mini.surround').setup()			      -- Surround tricks
+require('mini.trailspace').setup()          -- Highlight trailing white space.
+require('mini.notify').setup({              -- Show notifications
   window = {
     max_width_share = 0.75,
   }
 })
-require('mini.move').setup({                  -- Move selections | M-< | M->
+require('mini.move').setup({                -- Move selections | M-< | M->
   mappings = {
     -- Visual selection
     left = '<', right = '>', up = '', down = '',
@@ -52,9 +52,8 @@ require('mini.move').setup({                  -- Move selections | M-< | M->
     line_left = '<', line_right = '>', line_up = '', line_down = ''
   },
 })
-
 require('mini.indentscope').setup({
-  delay = 30,
+  delay = 10,
   symbol = "│",
 })
 
@@ -78,7 +77,6 @@ end
 -----------------------------
 local fzf = require('fzf-lua')
 if (vim.fn.executable('fzf') == 1) then
-  -- If `fzf` is available use that. This will likely be false.
   fzf.setup({'fzf'})
 elseif (vim.fn.executable('sk') == 1) then
   -- Prefer skim if available.
@@ -130,20 +128,9 @@ local servers = {
   elixirls = {},
   gopls = {},
   html = {},
-  jdtls = {},
   lua_ls = {},
   nil_ls = {},
   rust_analyzer = {},
-  solargraph = {},
-  vtsls = {
-    settings = {
-      typescript = {
-        tsserver = {
-          maxTsServerMemory = 20480
-        }
-      }
-    }
-  }
 }
 
 for server, config in pairs(servers) do
