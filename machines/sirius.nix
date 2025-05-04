@@ -29,6 +29,15 @@
     ];
   };
 
+  services = {
+    tlp = {
+      enable = true;
+      settings = {
+        SOUND_POWER_SAVE_ON_AC = 0;
+      };
+    };
+  };
+
   systemd = {
     timers.charge-limit = {
       wantedBy = [ "timers.target" ];

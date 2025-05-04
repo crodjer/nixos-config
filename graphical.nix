@@ -23,6 +23,10 @@ in {
     gnome.gnome-keyring.enable = true;
   };
 
+  fonts.packages = with pkgs; [
+    (nerdfonts.override { fonts = [ "Hack" ]; })
+  ];
+
   programs = {
     firefox = {
       enable = true;
@@ -75,6 +79,8 @@ in {
       };
     };
 
+    light.enable = true;
+
     sway = {
       enable = true;
       wrapperFeatures.gtk = true;
@@ -118,10 +124,5 @@ in {
             [ "png" "jpeg" "jpg" "gif" "svg" "svg+xml" "tiff" "x-tiff" "x-dcraw" ])
         ]);
     };
-  };
-
-  virtualisation.podman = {
-    enable = true;
-    autoPrune.enable = true;
   };
 }

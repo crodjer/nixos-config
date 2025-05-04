@@ -1,7 +1,3 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-
 { pkgs, ... }:
 
 let
@@ -44,7 +40,6 @@ in {
     pam = {
       enableEcryptfs = true;
       services = {
-        swaylock.u2fAuth = true;
         sudo.u2fAuth = true;
       };
     };
@@ -154,11 +149,10 @@ in {
   environment = {
     systemPackages = with pkgs; [
       ## Cli utilities
-      bat bc bottom dogdns dust entr fd fzf git jq pass ripgrep stow unzip
-      xdg-user-dirs xdg-utils zsh-completions zoxide
+      bat bc bottom dogdns dust entr fd fzf git jq nix-index pass ripgrep stow
+      unzip xdg-user-dirs xdg-utils zsh-completions zoxide
 
       ## Applications
-      imv
       neovim-remote
       yazi
 
@@ -168,6 +162,7 @@ in {
       ## Languages
       gcc
       python3
+      deno
 
       # My custom scripts
       update-system
@@ -175,6 +170,10 @@ in {
       ## LSP Services and Linters
       ansible-language-server ansible-lint lua-language-server nil
       ruff ruff-lsp
+
+      pciutils
+      nvtopPackages.amd
+      amdgpu_top
     ];
 
     etc = {
@@ -186,15 +185,41 @@ in {
     };
   };
 
-  fonts.packages = with pkgs; [
-    (nerdfonts.override { fonts = [ "Hack" ]; })
-  ];
-
   programs = {
     adb.enable = true;
     direnv = {
       enable = true;
       nix-direnv.enable = true;
+    };
+
+    fzf = {
+      keybindings = true;
+      fuzzyCompletion = true;
+    };
+
+    git.config = {
+      commit.verbose = true;
+      init.defaultBranch = "main";
+      merge.summary = true;
+      rerere.enabeld = true;
+      user.name = "Rohan";
+
+      alias = {
+        l = "log --name-only";
+
+        # Add files using FZF
+        a = "!git ls-files --deleted --modified --other --exclude-standard | fzf -0 -m --preview 'git diff --color=always {-1}' | xargs -r git add";
+        # Add files using FZF in interactive patch mode.
+        ap = "!git ls-files --deleted --modified --exclude-standard | fzf -0 -m --preview 'git diff --color=always {-1}' | xargs -r -o git add -p";
+        # Checkout branch using FZF
+        b = "!git branch --all | grep -v '^[*+]' | awk '{print $1}' | fzf -0 --preview 'git show --color=always {-1}' | sed 's/remotes\\/origin\\///g' | xargs -r git checkout";
+        # Search stash using FZF and pop it.
+        sp = "!git stash list | fzf -0 --preview 'git show --pretty=oneline --color=always --patch \"$(echo {} | cut -d: -f1)\"' | cut -d: -f1 | xargs -r git stash pop";
+        # Search previous commits using FZF and create a fixup.
+        fx = "!git diff --name-only --cached | fzf -0 -m --preview 'git diff --color=always {-1}' | xargs -r git reset";
+        # Search staged files using FZF and reset the selected ones.
+        rs = "!git diff --name-only --cached | fzf -0 -m --preview 'git diff --color=always {-1}' | xargs -r git reset";
+      };
     };
 
     gnupg.agent = {
@@ -205,8 +230,6 @@ in {
       };
     };
 
-    light.enable = true;
-
     neovim = {
       enable = true;
       defaultEditor = true;
@@ -214,7 +237,6 @@ in {
         customRC = builtins.readFile ./configs/neovim.vim;
         packages.myVimPackages = with pkgs.vimPlugins; {
           start = [
-            catppuccin-nvim
             fzf-lua
 
             mini-align
@@ -230,7 +252,6 @@ in {
             mini-surround
             mini-trailspace
 
-            neorg
             nvim-lspconfig
             (nvim-treesitter.withPlugins (
               plugins: with plugins; [
@@ -251,12 +272,13 @@ in {
 
     nix-ld.enable = true;
 
-    starship.enable = true;
+    ssh.extraConfig = ''
+    Host *
+      ServerAliveInterval 10
+      ServerAliveCountMax 3
+    '';
 
-    skim = {
-      keybindings = true;
-      fuzzyCompletion = true;
-    };
+    starship.enable = true;
 
     tmux = {
       enable = true;
@@ -289,6 +311,7 @@ in {
         clean-os = "sudo bash -c 'nix-collect-garbage --delete-older-than 1d && nixos-rebuild switch'";
         addr = "ip -br -c addr";
         o = "xdg-open";
+        rm = "rm -i";
         nvr = "nvr -s --remote-silent";
         t = "task";
         c = "timew";
@@ -332,12 +355,6 @@ in {
       dataDir = "/home/${user_name}";
     };
     thermald.enable = true;
-    tlp = {
-      enable = true;
-      settings = {
-        SOUND_POWER_SAVE_ON_AC = 0;
-      };
-    };
     udev = {
       packages = [ pkgs.yubikey-personalization ];
     };
