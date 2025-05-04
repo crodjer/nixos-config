@@ -50,26 +50,7 @@ if [ -n "${commands[mise]}" ]; then
     eval "$(mise activate zsh)"
 fi
 
-# Add completion for `invoice` when available.
-if [ -n "${commands[invoice]}" ]; then
-    eval "$(invoice completion zsh)"
-fi
-
-
-function is_dark() {
-  test `dconf read "/org/gnome/desktop/interface/color-scheme"` = "'prefer-dark'"
-}
-
-function when_dark() {
-  if is_dark
-  then
-    echo "$1"
-  else
-    echo "$2"
-  fi
-}
-
-alias btm='btm --battery --theme $(when_dark nord nord-light)'
+alias btm='btm --battery'
 
 PATH=$PATH:$HOME/.local/bin
 PATH=$PATH:$HOME/.cargo/bin
