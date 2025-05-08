@@ -13,23 +13,12 @@ in {
     kernelPackages = pkgs.linuxPackages_latest;
     kernelModules = [ "ecryptfs" ];
     loader = {
+      timeout = 1;
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
     };
   };
 
-  hardware = {
-    bluetooth = {
-      enable = true;
-      powerOnBoot = true;
-    };
-    graphics = {
-      enable = true;
-      extraPackages = with pkgs; [
-        intel-media-driver intel-ocl
-      ];
-    };
-  };
   powerManagement.enable = true;
 
   console = {
