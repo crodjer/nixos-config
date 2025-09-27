@@ -1,165 +1,113 @@
+" Stoic Vim
+"""""""""""
+" A minimalist Neovim configuration, primarily in Vimscript.
+" For simple configuration, Vimscript is simply much more ergonomic than Lua.
+
+" Colors
+"""""""""
 set notermguicolors
 set background=light
 colorscheme vim
 
-set expandtab tabstop=2 softtabstop=2 shiftwidth=2
-set formatoptions-=t
-set relativenumber number cursorline
-set clipboard+=unnamedplus
-set showcmd modeline undofile updatetime=100 timeoutlen=300
-set ignorecase smartcase
-set completeopt=menuone,preview
-set breakindent textwidth=80 colorcolumn=+1
-set spell spelllang=en spellfile=~/.local/share/nvim/spell/en.add
+" Options
+""""""""""
+set number relativenumber
+set clipboard=unnamedplus
+set undofile
 
-let mapleader = ','
-let maplocalleader = ','
+set spelllang=en
 
-"" Custom Bindings
-"Open file relative to current file
-nnoremap <leader>o :e <C-R>=expand("%:p:h") . "/" <CR>
+set textwidth=80 colorcolumn=+1
+set tabstop=2 softtabstop=2 shiftwidth=2 expandtab
 
-"" Tree-sitter based folding
-set foldmethod=expr
-set foldexpr=nvim_treesitter#foldexpr()
-set nofoldenable                            " Disable folding at startup.
+" File path. Use LineNr highlight group.
+set statusline=\ %f%m\ %=
+" LSP
+set statusline+=%{luaeval('lspStatus()')}
+" File type, percentage in file, lines/total lines:column
+set statusline+=\ \ %Y\ \ %p%%\ \ %l/%L:%c\      " Don't trim space on end.
 
-autocmd FileType swayconfig setlocal nospell
+" Allow custom configuration per directory (.nvimrc, .nvim.lua)
+set exrc secure
 
+" File Types
+""""""""""""
+filetype indent plugin on
+
+" Configure file type specific config in:
+" neovim/.config/nvim/after/ftplugin/<ft>.[vim|lua]
+
+" Bindings and Functions
+""""""""""""""""""""""""
+let mapleader = ","
+let maplocalleader = ","
+
+nnoremap <Leader>$ :source $MYVIMRC<CR>"
+
+autocmd TermOpen * startinsert
+command! Trw execute '%s/\s\+$//e'
+
+" Plugins Configurations
+"""""""""""""""""""""""
+" Fzf
+nmap <leader>b :Buffers<CR>
+nmap <leader>f :Files<CR>
+nmap <leader>g :GFiles<CR>
+nmap <leader>h :History<CR>
+nmap <leader>m :Marks<CR>
+nmap <leader>sl :Rg<CR>
+nmap <leader>ss :History/<CR>
+
+" LSP
 lua << END
------------------------------
--- Lua start
------------------------------
-require('mini.align').setup()               -- Align text, `ga` / `gA`
-require('mini.bracketed').setup()
-require('mini.comment').setup()				      -- Comments: `gc`, `gcc`
-require('mini.completion').setup()          -- Autocompletion
-require('mini.cursorword').setup()          -- Highlight word under cursor!
-require('mini.pairs').setup()				        -- Auto Pairs
-require('mini.statusline').setup()			    -- A bit nicer status line.
-require('mini.surround').setup()			      -- Surround tricks
-require('mini.trailspace').setup()          -- Highlight trailing white space.
-require('mini.notify').setup({              -- Show notifications
-  window = {
-    max_width_share = 0.75,
-  }
-})
-require('mini.move').setup({                -- Move selections | M-< | M->
-  mappings = {
-    -- Visual selection
-    left = '<', right = '>', up = '', down = '',
-    -- Move current line in Normal mode
-    line_left = '<', line_right = '>', line_up = '', line_down = ''
-  },
-})
-require('mini.indentscope').setup({
-  delay = 10,
-  symbol = "│",
-})
+vim.lsp.enable('denols')
+vim.lsp.enable('ruby_lsp')
+vim.lsp.enable('rust_analyzer')
+vim.lsp.enable('lua-language-server')
 
------------------------------
--- Mapping Functions
------------------------------
-local function nmap(binding, mapping, desc)
-  -- Helper function to map in normal mode.
-  vim.keymap.set('n', binding, mapping, {
-    noremap = true, silent = true, desc = desc
-  })
-end
+-- Show diagnostics for the current line
+vim.keymap.set(
+  "n", "<leader>d", function ()
+    local opts = { focusable = true, border = "single", source = "always" }
+    vim.diagnostic.open_float(nil, opts)
+  end,
+  { noremap = true, silent = true, desc = "Show line diagnostics" }
+)
+vim.keymap.set(
+  "n", "<leader>ca", vim.lsp.buf.code_action,
+  { noremap = true, silent = true, desc = "LSP Code Actions" }
+)
+vim.keymap.set(
+  "n", "<leader>cf", vim.lsp.buf.format,
+  { noremap = true, silent = true, desc = "LSP Formatting" }
+)
 
-local function nlmap(binding, mapping, desc)
-  -- Helper function specifically for leader mappings.
-  nmap('<leader>' .. binding, mapping, desc)
-end
-
------------------------------
---- File Picker
------------------------------
-local fzf = require('fzf-lua')
-if (vim.fn.executable('fzf') == 1) then
-  fzf.setup({'fzf'})
-elseif (vim.fn.executable('sk') == 1) then
-  -- Prefer skim if available.
-  fzf.setup({'skim'})
-end
-
-local find_files = function()
-  local git_dir = vim.fn.finddir('.git', vim.fn.getcwd() .. ";")
-  if git_dir == '' then fzf.files()
-  else fzf.git_files()
-  end
-end
-
-local package_files = function()
-  local package_indicators = {
-    'Cargo.toml', 'Pipfile', 'Gemfile', 'package.json', '.git', 'shell.nix'
-  }
-  local parent_dir = vim.fs.dirname(vim.fn.resolve(vim.fn.expand("%:p")))
-  for _, file in pairs(package_indicators) do
-    local project_dir = vim.fs.dirname(vim.fs.find(file, {
-      path = parent_dir,
-      upward = true
-    })[1])
-
-    if project_dir then
-      fzf.files({ cwd= project_dir })
-      return
-    end
+function lspStatus()
+  local clients = vim.lsp.get_clients({ bufnr = vim.api.nvim_get_current_buf() })
+  if #clients == 0 then
+    return ""
   end
 
-  fzf.files({ cwd = parent_dir })
+  return vim.iter(clients):map(function(c) 
+    return c.server_info.name
+  end):join(", ")
 end
-
-nlmap('f', find_files, "Search [F]iles")
-nlmap('e', package_files, "Search Files in packag[e].")
-nlmap('b', fzf.buffers, "Search [B]uffers")
-nlmap('h', fzf.oldfiles, "Search [H]istory")
-nlmap('sl', fzf.live_grep, "[S]earch [L]ive Grep")
-nlmap('sh', fzf.command_history, "[S]earch Command [H]istory")
-nlmap('sc', fzf.commands, "[S]earch [C]ommands")
-
-
------------------------------
---- LSP
------------------------------
-local lspconfig = require('lspconfig');
-local servers = {
-  ansiblels = {},
-  elixirls = {},
-  gopls = {},
-  html = {},
-  lua_ls = {},
-  nil_ls = {},
-  rust_analyzer = {},
-}
-
-for server, config in pairs(servers) do
-  lspconfig[server].setup(config)
-end
-
------------------------------
---- Tree-sitter
------------------------------
-require('nvim-treesitter.configs').setup {
-  ensure_installed = {},
-  highlight = { enable = true },
-  indent = { enable = true, disable = { "ledger" } },
-  ignore_install = {},
-  modules = {},
-  sync_install = false,
-  auto_install = false,
-  incremental_selection = {
-    enable = true,
-    keymaps = {
-      init_selection = "gnn",
-      node_incremental = "n",
-      scope_incremental = "s",
-      node_decremental = "p",
-    },
-  },
-}
-
------------------------------
--- Lua ends
------------------------------
 END
+
+" Autocommands
+""""""""""""""
+
+" LSP
+augroup LspStatuslineUpdate
+  autocmd!
+  autocmd User LspProgressUpdate redrawstatus!
+  autocmd User LspAttach redrawstatus!
+  autocmd User LspDetach redrawstatus!
+augroup END
+
+" Spell Check
+augroup SpellCheck
+  autocmd FileType markdown setlocal spell
+  autocmd FileType gitcommit setlocal spell
+  autocmd FileType text setlocal spell
+augroup END
