@@ -98,11 +98,7 @@ in {
   # Select internationalisation properties.
   i18n = {
     defaultLocale = "en_IN/UTF-8";
-    supportedLocales = [
-      "en_IN/UTF-8"
-      "C.UTF-8/UTF-8"
-      "en_US.UTF-8/UTF-8"
-    ];
+    extraLocales = "all";
 
     extraLocaleSettings = {
       LANG="en_IN.UTF-8";
@@ -158,7 +154,6 @@ in {
 
       ## LSP Services and Linters
       ansible-language-server ansible-lint lua-language-server nil
-      ruff ruff-lsp
 
       pciutils
       nvtopPackages.amd
@@ -226,34 +221,8 @@ in {
         customRC = builtins.readFile ./configs/neovim.vim;
         packages.myVimPackages = with pkgs.vimPlugins; {
           start = [
-            fzf-lua
-
-            mini-align
-            mini-bracketed
-            mini-comment
-            mini-completion
-            mini-cursorword
-            mini-indentscope
-            mini-move
-            mini-notify
-            mini-pairs
-            mini-statusline
-            mini-surround
-            mini-trailspace
-
+            fzf-vim
             nvim-lspconfig
-            (nvim-treesitter.withPlugins (
-              plugins: with plugins; [
-                bash c clojure css csv desktop elixir erlang fish go haskell
-                javascript lua markdown nix python ruby rust scss sql tsv tsx
-                typescript vim
-
-                git_config gitattributes gitcommit gitignore glimmer html hurl
-                jq json ledger norg ssh_config sway terraform tmux toml xml yaml
-                yuck
-              ]
-            ))
-            plenary-nvim
           ];
         };
       };
@@ -319,7 +288,6 @@ in {
       powerKey = "suspend";
       extraConfig = ''
       IdleAction=suspend
-      IdleActionSec=600
       '';
     };
     pipewire = {
