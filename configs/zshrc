@@ -37,8 +37,8 @@ function set-nvim-listen-address {
     # and client (launched via `nvr`).
     export NVIM_LISTEN_ADDRESS="/tmp/nvim-${server_name:-$1}.sock"
 }
-add-zsh-hook chpwd set-nvim-listen-address
-set-nvim-listen-address
+# add-zsh-hook chpwd set-nvim-listen-address
+# set-nvim-listen-address
 
 # Initialize zoxide when available.
 if [ -n "${commands[zoxide]}" ]; then

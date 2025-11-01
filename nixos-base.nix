@@ -113,8 +113,7 @@ in {
     isNormalUser = true;
     description = "Rohan";
     extraGroups = [ "adbusers" "networkmanager" "wheel" "video" "tss" ];
-    # packages = with pkgs; [];
-    shell = pkgs.zsh;
+    shell = pkgs.fish;
   };
 
   # Allow unfree packages
@@ -164,8 +163,11 @@ in {
       "xdg/user-dirs.defaults".source = ./configs/user-dirs.dirs.default;
     };
 
-    variables = {
-      PKG_CONFIG_PATH = "/run/current-system/sw/lib/pkgconfig";
+    sessionVariables = rec {
+      PATH = [
+        "$HOME/.local/bin"
+        "$HOME/.cargo/bin"
+      ];
     };
   };
 
@@ -228,6 +230,12 @@ in {
       };
     };
 
+    nh = {
+      enable = true;
+      # clean.enable = true;
+      # clean.extraArgs = "--keep-since 3d --keep 2";
+    };
+
     nix-ld.enable = true;
 
     ssh.extraConfig = ''
@@ -250,29 +258,27 @@ in {
       extraConfigBeforePlugins = builtins.readFile ./configs/tmux.conf;
     };
 
-    zsh = {
+    fish = {
       enable = true;
-      enableCompletion = true;
-      autosuggestions.enable = true;
-      syntaxHighlighting.enable = true;
+      generateCompletions = true;
+      interactiveShellInit = ''
+        set -U fish_greeting
+        set -g fish_transient_prompt 1
 
-      shellInit = ''
-        if [ -e "$HOME/.zshrc.local" ]; then
-          source "$HOME/.zshrc.local"
-        fi
+        ${pkgs.zoxide}/bin/zoxide init fish | source
       '';
-
-      interactiveShellInit = builtins.readFile ./configs/zshrc;
-      histSize = 100000;
+      shellAbbrs =  {
+        j = " jrnl";
+      };
       shellAliases = {
-        rebuild = "sudo nixos-rebuild switch";
-        clean-os = "sudo bash -c 'nix-collect-garbage --delete-older-than 1d && nixos-rebuild switch'";
         addr = "ip -br -c addr";
-        o = "xdg-open";
+        b = "biip";  # My PII Stripping tool!
+        clean-os = "sudo bash -c 'nix-collect-garbage --delete-older-than 1d && nixos-rebuild switch'";
+        re = "exec $SHELL";
+        rebuild = "sudo nixos-rebuild switch";
         rm = "rm -i";
-        nvr = "nvr -s --remote-silent";
-        t = "task";
-        c = "timew";
+        t = "timew";
+        tw = "task";
       };
     };
   };

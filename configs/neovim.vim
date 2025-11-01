@@ -9,13 +9,25 @@ set notermguicolors
 set background=light
 colorscheme vim
 
+" We don't need a highlight on the SignColumn
+highlight SignColumn ctermbg=none cterm=bold
+highlight ColorColumn ctermbg=116
+
+" The floating hint highlight is too light. Match with `Info` instead.
+highlight link DiagnosticFloatingHint DiagnosticFloatingInfo
+" This is a nicer color for menu highlights.
+highlight Pmenu ctermbg=116
+highlight PmenuSel ctermbg=0 ctermfg=116 cterm=bold
+
 " Options
 """"""""""
 set number relativenumber
 set clipboard=unnamedplus
+set ignorecase smartcase
 set undofile
 
 set spelllang=en
+set spellfile=~/.config/nvim/spell/en.utf-8.add
 
 set textwidth=80 colorcolumn=+1
 set tabstop=2 softtabstop=2 shiftwidth=2 expandtab
@@ -60,10 +72,11 @@ nmap <leader>ss :History/<CR>
 
 " LSP
 lua << END
+vim.lsp.enable('ansiblels')
 vim.lsp.enable('denols')
+vim.lsp.enable('pyright')
 vim.lsp.enable('ruby_lsp')
 vim.lsp.enable('rust_analyzer')
-vim.lsp.enable('lua-language-server')
 
 -- Show diagnostics for the current line
 vim.keymap.set(
@@ -110,4 +123,13 @@ augroup SpellCheck
   autocmd FileType markdown setlocal spell
   autocmd FileType gitcommit setlocal spell
   autocmd FileType text setlocal spell
+augroup END
+
+" Ansible
+au BufRead,BufNewFile */plays/**.y*ml set filetype=yaml.ansible
+
+" Rust
+let g:rustfmt_autosave = 1
+augroup rust
+  autocmd FileType rust set tw=80
 augroup END
