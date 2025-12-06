@@ -152,7 +152,7 @@ in {
       update-system
 
       ## LSP Services and Linters
-      ansible-language-server ansible-lint lua-language-server nil
+      ansible-language-server lua-language-server nil
 
       pciutils
       nvtopPackages.amd
