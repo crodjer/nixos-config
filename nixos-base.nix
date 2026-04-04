@@ -43,6 +43,7 @@ in {
             })
             [
               "nixos-rebuild"
+              "nix-env"
               "nix-collect-garbage"
               "dmesg"
             ];
@@ -144,19 +145,14 @@ in {
       ansible
 
       ## Languages
+      babashka
       gcc
       python3
-      deno
 
       # My custom scripts
       update-system
 
-      ## LSP Services and Linters
-      ansible-language-server lua-language-server nil
-
       pciutils
-      nvtopPackages.amd
-      amdgpu_top
     ];
 
     etc = {
@@ -273,7 +269,7 @@ in {
       shellAliases = {
         addr = "ip -br -c addr";
         b = "biip";  # My PII Stripping tool!
-        clean-os = "sudo bash -c 'nix-collect-garbage --delete-older-than 1d && nixos-rebuild switch'";
+        clean-os = "sudo bash -c 'nix-env --delete-generations 3d && nix-collect-garbage --delete-older-than 1d && nixos-rebuild switch'";
         re = "exec $SHELL";
         rebuild = "sudo nixos-rebuild switch";
         rm = "rm -i";
@@ -290,11 +286,9 @@ in {
     blueman.enable = true;
     dbus.enable = true;
     fstrim.enable = true;
-    logind = {
-      powerKey = "suspend";
-      extraConfig = ''
-      IdleAction=suspend
-      '';
+    logind.settings.Login = {
+      HandlePowerKey = "suspend";
+      IdleAction = "suspend";
     };
     pipewire = {
       enable = true;
