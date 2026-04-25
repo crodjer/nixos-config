@@ -2,6 +2,7 @@
 
 set -e
 
+sudo nix-channel --update
 sudo nixos-rebuild switch --upgrade
 
 if [ -n "${commands[flatpak]}" ]; then
