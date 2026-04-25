@@ -12,6 +12,8 @@ colorscheme vim
 " We don't need a highlight on the SignColumn
 highlight SignColumn ctermbg=none cterm=bold
 highlight ColorColumn ctermbg=116
+highlight SpellBad ctermbg=none cterm=undercurl
+highlight SpellRare ctermbg=none cterm=underdotted
 
 " The floating hint highlight is too light. Match with `Info` instead.
 highlight link DiagnosticFloatingHint DiagnosticFloatingInfo
@@ -25,6 +27,7 @@ set number relativenumber
 set clipboard=unnamedplus
 set ignorecase smartcase
 set undofile
+set list
 
 set spelllang=en
 set spellfile=~/.config/nvim/spell/en.utf-8.add
@@ -35,7 +38,7 @@ set tabstop=2 softtabstop=2 shiftwidth=2 expandtab
 " File path. Use LineNr highlight group.
 set statusline=\ %f%m\ %=
 " LSP
-set statusline+=%{luaeval('lspStatus()')}
+set statusline+=%{get(b:,'lsp_status','')}
 " File type, percentage in file, lines/total lines:column
 set statusline+=\ \ %Y\ \ %p%%\ \ %l/%L:%c\      " Don't trim space on end.
 
@@ -67,16 +70,22 @@ nmap <leader>f :Files<CR>
 nmap <leader>g :GFiles<CR>
 nmap <leader>h :History<CR>
 nmap <leader>m :Marks<CR>
+" Look in the same directory as the current file.
+nmap <leader>F :execute 'Files' expand('%:p:h')<CR>
+" Look in the parent directory of the directory the current file is in.
+nmap <leader>P :execute 'Files' expand('%:p:h:h')<CR>
 nmap <leader>sl :Rg<CR>
 nmap <leader>ss :History/<CR>
 
 " LSP
 lua << END
-vim.lsp.enable('ansiblels')
-vim.lsp.enable('denols')
-vim.lsp.enable('pyright')
 vim.lsp.enable('ruby_lsp')
+vim.lsp.enable('ansiblels')
+vim.lsp.enable('clojure_lsp')
+vim.lsp.enable('denols')
+vim.lsp.enable('gleam')
 vim.lsp.enable('rust_analyzer')
+vim.lsp.enable('ty')
 
 -- Show diagnostics for the current line
 vim.keymap.set(
@@ -95,16 +104,14 @@ vim.keymap.set(
   { noremap = true, silent = true, desc = "LSP Formatting" }
 )
 
-function lspStatus()
-  local clients = vim.lsp.get_clients({ bufnr = vim.api.nvim_get_current_buf() })
-  if #clients == 0 then
-    return ""
+--  Update `lsp_status` for use in status line
+vim.api.nvim_create_autocmd({ "LspAttach", "LspDetach" }, {
+  callback = function(args)
+    local clients = vim.lsp.get_clients({ bufnr = args.buf })
+    local names = vim.iter(clients):map(function(c) return c.name end):join(", ")
+    vim.api.nvim_buf_set_var(args.buf, "lsp_status", names)
   end
-
-  return vim.iter(clients):map(function(c) 
-    return c.server_info.name
-  end):join(", ")
-end
+})
 END
 
 " Autocommands
@@ -127,6 +134,20 @@ augroup END
 
 " Ansible
 au BufRead,BufNewFile */plays/**.y*ml set filetype=yaml.ansible
+
+" Clojure
+augroup clojure
+  autocmd!
+  autocmd FileType clojure,fennel packadd conjure
+  autocmd FileType clojure let b:AutoPairs = copy(g:AutoPairs)
+    \ | call remove(b:AutoPairs, "'")
+    \ | call remove(b:AutoPairs, '`')
+augroup END
+
+let g:conjure#mapping#doc_word = v:false
+
+" Vim
+autocmd FileType vim let b:AutoPairs = copy(g:AutoPairs)  | call remove(b:AutoPairs, "\"")
 
 " Rust
 let g:rustfmt_autosave = 1

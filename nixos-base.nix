@@ -219,6 +219,8 @@ in {
         customRC = builtins.readFile ./configs/neovim.vim;
         packages.myVimPackages = with pkgs.vimPlugins; {
           start = [
+            auto-pairs
+            conjure
             fzf-vim
             nvim-lspconfig
           ];
