@@ -42,6 +42,7 @@ in {
               options = [ "NOPASSWD" ];
             })
             [
+              "nix-channel"
               "nixos-rebuild"
               "nix-env"
               "nix-collect-garbage"
